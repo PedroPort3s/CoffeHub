@@ -33,9 +33,9 @@ public class ProdutoDAO implements IProdutoDAO {
 
 			PreparedStatement statement = connection.prepareStatement(sql);
 
-			statement.setString(1, obj.getNome_produto());
-			statement.setDouble(2, obj.getValor());
-			statement.setInt(3, obj.getCategoria().getCod_categoria());
+			statement.setString(1, obj.getDescricao());
+			statement.setDouble(2, obj.getValor_un());
+			statement.setInt(3, obj.getCategoria().getCod());
 			statement.execute();
 			connection.close();
 		} catch (ClassNotFoundException classException) {
@@ -89,9 +89,9 @@ public class ProdutoDAO implements IProdutoDAO {
 
 			PreparedStatement statement = connection.prepareStatement(sql);
 
-			statement.setString(1, obj.getNome_produto());
-			statement.setDouble(2, obj.getValor());
-			statement.setDouble(3, obj.getCategoria().getCod_categoria());
+			statement.setString(1, obj.getDescricao());
+			statement.setDouble(2, obj.getValor_un());
+			statement.setDouble(3, obj.getCategoria().getCod());
 
 			statement.execute();
 			statement.close();

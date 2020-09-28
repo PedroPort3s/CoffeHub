@@ -37,7 +37,7 @@ public class PessoaDAO implements IPessoaDAO {
 
 			PreparedStatement statement = connection.prepareStatement(sql);
 
-			statement.setInt(1, obj.getId_Pessoa());
+			statement.setInt(1, obj.getCod());
 			statement.setString(2, obj.getNome());
 			statement.execute();
 			connection.close();
@@ -93,7 +93,7 @@ public class PessoaDAO implements IPessoaDAO {
 			PreparedStatement statement = connection.prepareStatement(sql);
 
 			statement.setString(1, obj.getNome());
-			statement.setInt(2, obj.getId_Pessoa());
+			statement.setInt(2, obj.getCod());
 
 			statement.execute();
 			statement.close();
@@ -126,8 +126,6 @@ public class PessoaDAO implements IPessoaDAO {
 			ResultSet resultSet = statement.executeQuery();
 
 			while(resultSet.next()) {
-				Pessoa p = new Pessoa(resultSet.getInt("ID_Pessoa"), resultSet.getNString("nome"));
-				lista.add(p);
 			}
 			
 			statement.close();
@@ -163,8 +161,6 @@ public class PessoaDAO implements IPessoaDAO {
 
 			while (resultSet.next()) {
 
-				Pessoa p = new Pessoa(resultSet.getInt("ID_Pessoa"), resultSet.getString("nome"));
-				listaPessoas.add(p);
 			}
 			statement.close();
 			connection.close();

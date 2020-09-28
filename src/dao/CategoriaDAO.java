@@ -28,7 +28,7 @@ public class CategoriaDAO implements ICategoriaDAO {
 
 			PreparedStatement statement = connection.prepareStatement(sql);
 
-			statement.setString(1, obj.getNome_categoria());
+			statement.setString(1, obj.getNome());
 			statement.execute();
 			connection.close();
 		} catch (ClassNotFoundException classException) {
@@ -81,8 +81,8 @@ public class CategoriaDAO implements ICategoriaDAO {
 
 			PreparedStatement statement = connection.prepareStatement(sql);
 
-			statement.setString(1, obj.getNome_categoria());
-			statement.setInt(2, obj.getCod_categoria());
+			statement.setString(1, obj.getNome());
+			statement.setInt(2, obj.getCod());
 
 			statement.execute();
 			statement.close();
