@@ -15,6 +15,7 @@ public class Home extends Application {
         try {
             AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("Home.fxml"));
             Scene scene = new Scene(root,815,400);
+            primaryStage.setTitle("CoffeHub");
             primaryStage.setScene(scene);
             primaryStage.show();
         }
