@@ -15,7 +15,7 @@ public class ConexaoMySql {
 	*/
 	private String url = "jdbc:mysql://localhost:3306/coffehub?useTimezone=true&serverTimezone=UTC";
 	private String root = "usuario";
-	private String key = "123123@senha";
+	private String key = "MySzK@138";
 	
 	
 	private static ConexaoMySql conexaoMySql;
