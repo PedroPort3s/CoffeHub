@@ -1,6 +1,4 @@
 /dao/
-/dto/
-/entitys/
-/exceptions/
-/utils/
 /views/
+/entitys/
+/utils/

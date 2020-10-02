@@ -37,7 +37,7 @@ public class PessoaDAO implements IPessoaDAO {
 
 			PreparedStatement statement = connection.prepareStatement(sql);
 
-			statement.setInt(1, obj.getCod());
+			statement.setString(1, obj.getCod());
 			statement.setString(2, obj.getNome());
 			statement.execute();
 			connection.close();
@@ -57,7 +57,7 @@ public class PessoaDAO implements IPessoaDAO {
 	}
 
 	@Override
-	public void deletar(int id) {
+	public void deletar(String id) {
 		try {
 			Connection connection = ConexaoMySql.getInstance().getConnection();
 
@@ -65,7 +65,7 @@ public class PessoaDAO implements IPessoaDAO {
 
 			PreparedStatement statement = connection.prepareStatement(sql);
 
-			statement.setInt(1, id);
+			statement.setString(1, id);
 			statement.execute();
 			statement.close();
 
@@ -93,7 +93,7 @@ public class PessoaDAO implements IPessoaDAO {
 			PreparedStatement statement = connection.prepareStatement(sql);
 
 			statement.setString(1, obj.getNome());
-			statement.setInt(2, obj.getCod());
+			statement.setString(2, obj.getCod());
 
 			statement.execute();
 			statement.close();
@@ -113,7 +113,7 @@ public class PessoaDAO implements IPessoaDAO {
 	}
 
 	@Override
-	public List<Pessoa> buscarId(int id) {
+	public List<Pessoa> buscarId(String id) {
 
 		List<Pessoa> lista = new ArrayList<Pessoa>();
 		try {

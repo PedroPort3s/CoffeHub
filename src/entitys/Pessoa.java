@@ -2,7 +2,7 @@ package entitys;
 
 public abstract class Pessoa {
 
-	private int cod;
+	private String cod;
 
 	private String documento;
 
@@ -14,11 +14,34 @@ public abstract class Pessoa {
 
 	private String email;
 
-	public int getCod() {
+	public Pessoa() {
+		super();
+	}
+
+	public Pessoa(String documento, String telefone, String nome, String endereco, String email) {
+		super();
+		this.documento = documento;
+		this.telefone = telefone;
+		this.nome = nome;
+		this.endereco = endereco;
+		this.email = email;
+	}
+
+	public Pessoa(String cod, String documento, String telefone, String nome, String endereco, String email) {
+		super();
+		this.cod = cod;
+		this.documento = documento;
+		this.telefone = telefone;
+		this.nome = nome;
+		this.endereco = endereco;
+		this.email = email;
+	}
+
+	public String getCod() {
 		return cod;
 	}
 
-	public void setCod(int cod) {
+	public void setCod(String cod) {
 		this.cod = cod;
 	}
 
@@ -60,5 +83,11 @@ public abstract class Pessoa {
 
 	public void setEmail(String email) {
 		this.email = email;
+	}
+
+	@Override
+	public String toString() {
+		return "Pessoa [cod=" + cod + ", documento=" + documento + ", telefone=" + telefone + ", nome=" + nome
+				+ ", endereco=" + endereco + ", email=" + email + "]";
 	}
 }
