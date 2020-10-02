@@ -1,6 +1,10 @@
 package entitys;
 
 import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
+
 
 public class Funcionario extends Pessoa {
 
@@ -9,6 +13,16 @@ public class Funcionario extends Pessoa {
 	private Date data_demissao;
 
 	private double salario;
+	
+	
+	
+	
+	public Funcionario() {
+		super();
+	}
+
+	
+	
 
 	public Date getData_contratacao() {
 		return data_contratacao;
@@ -37,5 +51,23 @@ public class Funcionario extends Pessoa {
 	public int calcularIdade() {
 		return 0;
 	}
+
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	@Override
+	public String toString() {
+		return "Funcionario [data_contratacao=" + data_contratacao + ", data_demissao=" + data_demissao + ", salario="
+				+ salario + "]";
+	}
+
+	
+	
 
 }
