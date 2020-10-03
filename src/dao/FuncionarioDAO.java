@@ -19,8 +19,35 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 
 	@Override
 	public void inserir(Funcionario obj) {
-		// TODO Auto-generated method stub
 		
+		try {
+			
+			Connection connection = ConexaoMySql.getInstance().getConnection();
+			String sql = "INSERT INTO funcionario() VALUES (?, ?, ?)";
+			
+			PreparedStatement statement= connection.prepareStatement(sql);
+			
+			
+			
+			
+			/*******
+			statement.setString(1, obj.getDescricao());
+			statement.setDouble(2, obj.getValor_un());
+			statement.setInt(3, obj.getCategoria().getCod());
+			statement.execute();
+			connection.close();
+			********/
+			
+			
+			
+			
+			
+			
+			
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override

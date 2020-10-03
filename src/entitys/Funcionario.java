@@ -16,8 +16,18 @@ public class Funcionario extends Pessoa {
 	public Funcionario() {
 		super();
 	}
-
 	
+		
+	public Funcionario(Date data_contratacao, Date data_demissao, double salario) {
+		super();
+		this.data_contratacao = data_contratacao;
+		this.data_demissao = data_demissao;
+		this.salario = salario;
+	}
+
+
+
+
 	public Date getData_contratacao() {
 		return data_contratacao;
 	}
