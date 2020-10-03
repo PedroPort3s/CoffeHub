@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import utils.ConexaoMySql;
-import utils.enuns.EnumFuncionario;
-import utils.enuns.EnumPessoa;
 
 import dao.interfaces.IFuncionarioDAO;
 import entitys.Funcionario;
