@@ -1,16 +1,24 @@
 package entitys;
 
 public class Produto {
+	
+	public Produto() {
+		
+	}
 
 	private int cod;
 
 	private String descricao;
 
 	private double valor_un;
+	
+	private int qtd_atual;
 
-	public Produto(int codProduto, String descricao, double valor_un, Categoria categoriaProd) {
-		// 
-	}
+	private String unidadeMedida;
+
+	private Categoria categoria;
+
+	
 
 	public int getCod() {
 		return cod;
@@ -59,12 +67,6 @@ public class Produto {
 	public void setCategoria(Categoria categoria) {
 		this.categoria = categoria;
 	}
-
-	private int qtd_atual;
-
-	private String unidadeMedida;
-
-	private Categoria categoria;
 
 	public double valorTotalEstoque() {
 		return 0;

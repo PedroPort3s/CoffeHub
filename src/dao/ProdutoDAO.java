@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import Helper.Verifica;
 import dao.interfaces.IProdutoDAO;
 import entitys.Categoria;
 import entitys.Pessoa;
@@ -14,180 +15,302 @@ import entitys.Produto;
 import utils.ConexaoMySql;
 
 public class ProdutoDAO implements IProdutoDAO {
-
-	private String nomeTable = "tb_produto";
-	private String pk = "cod_produto";
-	private String col1 = "nome_produto";
-	private String col2 = "valor_un";
-	private String col3 = "tb_categoria_cod_categoria";
-	private String nomeTablecategoria = "tb_categoria";
-	private String tc_col1 = "cod_categoria";
-	private String tc_col2 = "nome_categoria";
-
-	@Override
-	public void inserir(Produto obj) {
-		try {
-			Connection connection = ConexaoMySql.getInstance().getConnection();
-
-			String sql = "INSERT INTO " + nomeTable + "(" + col1 + "," + col2 + "," + col3 + ") VALUES (?, ?, ?)";
-
-			PreparedStatement statement = connection.prepareStatement(sql);
-
-			statement.setString(1, obj.getDescricao());
-			statement.setDouble(2, obj.getValor_un());
-			statement.setInt(3, obj.getCategoria().getCod());
-			statement.execute();
-			connection.close();
-		} catch (ClassNotFoundException classException) {
-			classException.printStackTrace();
-			System.out.println(
-					"esse erro vai acontecer por conta do connector, pesquisem sobre" + " ----  erro no inserir");
-		} catch (SQLException sqlException) {
-			sqlException.printStackTrace();
-			System.out.println("esse erro foi estritamente no DriverManeger, " + "deem uma olhada, criar o banco talvez"
-					+ "---erro no inserir");
-		} catch (Exception exception) {
-			exception.printStackTrace();
-			System.out.println("Fudeo marreco" + "---erro no inserir");
-		}
+	
+	private Connection conexao = null;
+	
+	public ProdutoDAO(Connection conn) {
+		this.conexao = conn;
+	}
+	
+	private String Select_ProdutoCategoria() {
+		StringBuilder sql = new StringBuilder();
+		sql.append("select p.cod_produto, p.nome_produto, p.valor_un, p.qtd_atual, p.un_medida, c.cod, c.nome");
+		sql.append(" from produto as p inner join categoria as c on c.cod = p.categoria_cod");
+		return sql.toString();
 	}
 
 	@Override
-	public void deletar(int id) {
+	public int Inserir(Produto prod) throws ClassNotFoundException, SQLException, Exception {
+		int retorno = 0;
+		
+		try {
+			String sql = "INSERT INTO produto(cod_produto,nome_produto,valor_un,qtd_atual,categoria_cod,un_medida) VALUES (?,?,?,?,?,?)";
+
+			PreparedStatement statement = conexao.prepareStatement(sql);
+			
+			statement.setInt(1, this.ProximoNumeroProduto());
+			statement.setString(2, prod.getDescricao());
+			statement.setDouble(3, prod.getValor_un());
+			statement.setInt(4, prod.getQtd_atual());
+			statement.setInt(5, prod.getCategoria().getCod());
+			statement.setString(6, prod.getUnidadeMedida());
+			
+			retorno = statement.executeUpdate();
+			
+			
+		} catch (ClassNotFoundException classEx) {
+			classEx.printStackTrace();
+			throw classEx;
+		} catch (SQLException sqlEx) {
+			sqlEx.printStackTrace();
+			throw sqlEx;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw ex;
+		}
+		
+		return retorno;
+	}
+
+	@Override
+	public int Deletar(int id) throws ClassNotFoundException, SQLException {
+		int retorno = 0;
+		try {
+			
+			String sql = "DELETE FROM produto WHERE cod_produto= " + id;
+
+			PreparedStatement statement = conexao.prepareStatement(sql);
+			
+			retorno = statement.executeUpdate();
+			
+			statement.close();
+			
+		}  catch (SQLException sqlEx) {
+			sqlEx.printStackTrace();
+			throw sqlEx;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw ex;
+		}
+		return retorno;
+	}
+
+	@Override
+	public int Editar(Produto prod) throws ClassNotFoundException, SQLException {
+		int retorno = 0;
 		try {
 			Connection connection = ConexaoMySql.getInstance().getConnection();
 
-			String sql = "DELETE FROM " + nomeTable + " WHERE " + pk + " = ?";
+			StringBuilder sql = new StringBuilder();
+			sql.append("UPDATE produto SET");
+			sql.append(" nome_produto = '" + prod.getDescricao() + "',");
+			sql.append("valor_un = "+prod.getValor_un()+",");
+			sql.append("qtd_atual = "+prod.getQtd_atual()+",");
+			sql.append("Categoria_cod = "+prod.getCategoria().getCod());
+			sql.append("un_medida = '"+prod.getUnidadeMedida()+"'");
+			sql.append(" WHERE cod_produto = "+prod.getCod());
 
-			PreparedStatement statement = connection.prepareStatement(sql);
+			PreparedStatement statement = connection.prepareStatement(sql.toString());
 
-			statement.setInt(1, id);
-			statement.execute();
+			retorno = statement.executeUpdate();
 			statement.close();
 
-		} catch (ClassNotFoundException classException) {
-			classException.printStackTrace();
-			System.out
-					.println("esse erro vai acontecer por conta do connector, pesquisem sobre" + "---erro no deletar");
-		} catch (SQLException sqlException) {
-			sqlException.printStackTrace();
-			System.out.println("esse erro foi estritamente no DriverManeger, " + "deem uma olhada, criar o banco talvez"
-					+ "---erro no deletar");
-		} catch (Exception exception) {
-			exception.printStackTrace();
-			System.out.println("Fudeo marreco" + "---erro no deletar");
+		} catch (ClassNotFoundException classEx) {
+			classEx.printStackTrace();
+			throw classEx;
+		} catch (SQLException sqlEx) {
+			sqlEx.printStackTrace();
+			throw sqlEx;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw ex;
 		}
+		return retorno;
 	}
 
 	@Override
-	public void editar(Produto obj) {
+	public Produto Carregar(int id) throws ClassNotFoundException, SQLException {
+		Produto produto = null;
+		
 		try {
-			Connection connection = ConexaoMySql.getInstance().getConnection();
 
-			String sql = "UPDATE " + nomeTable + " SET " + col1 + " = ?," + col2 + " = ?," + col3 + " = ?," + " WHERE "
-					+ pk + " = ?";
+			StringBuilder sql = new StringBuilder();
+			sql.append(this.Select_ProdutoCategoria());
+			sql.append(" where p.cod_produto ="+id);			
 
-			PreparedStatement statement = connection.prepareStatement(sql);
-
-			statement.setString(1, obj.getDescricao());
-			statement.setDouble(2, obj.getValor_un());
-			statement.setDouble(3, obj.getCategoria().getCod());
-
-			statement.execute();
-			statement.close();
-
-		} catch (ClassNotFoundException classException) {
-			classException.printStackTrace();
-			System.out.println("esse erro vai acontecer por conta do connector, pesquisem sobre" + "---erro no editar");
-		} catch (SQLException sqlException) {
-			sqlException.printStackTrace();
-			System.out.println("esse erro foi estritamente no DriverManeger, " + "deem uma olhada, criar o banco talvez"
-					+ "---erro no editar");
-		} catch (Exception exception) {
-			exception.printStackTrace();
-			System.out.println("Fudeo marreco" + "---erro no editar");
-		}
-	}
-
-	@Override
-	public List<Produto> buscarId(int id) {
-		List<Produto> lista = new ArrayList<Produto>();
-		try {
-			Connection connection = ConexaoMySql.getInstance().getConnection();
-
-			String sql = "SELECT * FROM " + nomeTable + " tp inner join " + nomeTablecategoria + " tc "
-					+ "on tp.tb_categoria_cod_categoria = tc.cod_categoria WHERE tp." + pk + " = ?";
-
-			PreparedStatement statement = connection.prepareStatement(sql);
-			statement.setInt(1, id);
+			PreparedStatement statement = conexao.prepareStatement(sql.toString());
+			
 			ResultSet resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				Produto produto = new Produto(
-						resultSet.getInt(pk), 
-						resultSet.getString(col1),
-						resultSet.getDouble(col2),
-						new Categoria(
-								resultSet.getInt(tc_col1), 
-								resultSet.getNString(tc_col2)));
-				lista.add(produto);
-			}
-
-			statement.close();
-			connection.close();
-		} catch (ClassNotFoundException classException) {
-			classException.printStackTrace();
-			System.out.println("esse erro vai acontecer por conta do connector, pesquisem sobre" + "---erro no buscar");
-		} catch (SQLException sqlException) {
-			sqlException.printStackTrace();
-			System.out.println("esse erro foi estritamente no DriverManeger, " + "deem uma olhada, criar o banco talvez"
-					+ "---erro no buscar");
-		} catch (Exception exception) {
-			exception.printStackTrace();
-			System.out.println("Fudeo marreco" + "---erro no buscar");
-		}
-		return lista;
-	}
-
-	@Override
-	public List<Produto> listar() {
-		List<Produto> lista = new ArrayList<Produto>();
-
-		try {
-			Connection connection = ConexaoMySql.getInstance().getConnection();
-
-			String sql = "SELECT * FROM " + nomeTable + " tp inner join " + nomeTablecategoria + " tc "
-					+ "on tp.tb_categoria_cod_categoria = tc.cod_categoria";
-
-			PreparedStatement statement = connection.prepareStatement(sql);
-			ResultSet resultSet = statement.executeQuery();
-
-			while (resultSet.next()) {
-				Produto produto = new Produto(
-						resultSet.getInt(pk), 
-						resultSet.getString(col1),
-						resultSet.getDouble(col2),
-						new Categoria(
-								resultSet.getInt(tc_col1), 
-								resultSet.getNString(tc_col2)));
-				lista.add(produto);
+			
+			if(resultSet.first()) {
+				produto = this.PreencherProduto(resultSet);
 			}
 			
 			statement.close();
-			connection.close();
-		} catch (ClassNotFoundException classException) {
-			classException.printStackTrace();
-			System.out.println("esse erro vai acontecer por conta do connector, pesquisem sobre" + "---erro no listar");
-		} catch (SQLException sqlException) {
-			sqlException.printStackTrace();
-			System.out.println("esse erro foi estritamente no DriverManeger, " + "deem uma olhada, criar o banco talvez"
-					+ "---erro no listar");
-		} catch (Exception exception) {
-			exception.printStackTrace();
-			System.out.println("Fudeo marreco" + "---erro no listar");
+			
+		} catch (ClassNotFoundException classEx) {
+			classEx.printStackTrace();
+			throw classEx;
+		} catch (SQLException sqlEx) {
+			sqlEx.printStackTrace();
+			throw sqlEx;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw ex;
 		}
+		
+		return produto;
+	}
 
+	@Override
+	public List<Produto> Buscar(String pesquisa) throws ClassNotFoundException, SQLException {
+		
+		List<Produto> lista = new ArrayList<Produto>();
+		
+		try {
+
+			StringBuilder sql = new StringBuilder();
+			
+			sql.append(this.Select_ProdutoCategoria());
+			
+			if(Verifica.ehNumeroInt(pesquisa)){
+				sql.append(" where cod="+pesquisa);
+			}
+			else{	
+				sql.append(" where nome like (%'"+pesquisa+"'%)");
+			}
+
+			PreparedStatement statement = conexao.prepareStatement(sql.toString());
+			
+			ResultSet resultSet = statement.executeQuery();
+
+			while(resultSet.next()) {
+				Produto prod = this.PreencherProduto(resultSet);
+				lista.add(prod);
+			}
+			
+			statement.close();
+			
+		} catch (ClassNotFoundException classEx) {
+			classEx.printStackTrace();
+			throw classEx;
+		} catch (SQLException sqlEx) {
+			sqlEx.printStackTrace();
+			throw sqlEx;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw ex;
+		}
 		return lista;
 	}
+	
+	public List<Produto> Buscar_Produtos_e_Categoria(String pesquisa, int codCategoria) throws ClassNotFoundException, SQLException {
+		List<Produto> lista = new ArrayList<Produto>();
+		try {
+
+			StringBuilder sql = new StringBuilder();
+			sql.append(this.Select_ProdutoCategoria());
+			
+			if(Verifica.ehNumeroInt(pesquisa)){
+				sql.append(" where cod="+pesquisa);
+			}
+			else{	
+				sql.append(" where nome like (%'"+pesquisa+"'%)");
+			}
+			
+			if(codCategoria > 0) {
+				sql.append("and c.cod="+codCategoria);
+			}
+
+			PreparedStatement statement = conexao.prepareStatement(sql.toString());
+			
+			ResultSet resultSet = statement.executeQuery();
+
+			while(resultSet.next()) {
+				Produto prod = this.PreencherProduto(resultSet);
+				lista.add(prod);
+			}
+			
+			statement.close();
+			
+		} catch (ClassNotFoundException classEx) {
+			classEx.printStackTrace();
+			throw classEx;
+		} catch (SQLException sqlEx) {
+			sqlEx.printStackTrace();
+			throw sqlEx;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw ex;
+		}
+		return lista;
+	}
+
+	@Override
+	public List<Produto> Buscar() throws ClassNotFoundException, SQLException {
+		List<Produto> lista = new ArrayList<Produto>();
+		try {
+
+			StringBuilder sql = new StringBuilder();
+			sql.append(this.Select_ProdutoCategoria());
+
+			PreparedStatement statement = conexao.prepareStatement(sql.toString());
+			
+			ResultSet resultSet = statement.executeQuery();
+
+			while(resultSet.next()) {
+				Produto prod = this.PreencherProduto(resultSet);
+				lista.add(prod);
+			}
+			
+			statement.close();
+			
+		} catch (ClassNotFoundException classEx) {
+			classEx.printStackTrace();
+			throw classEx;
+		} catch (SQLException sqlEx) {
+			sqlEx.printStackTrace();
+			throw sqlEx;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw ex;
+		}
+		return lista;
+	}
+	
+	public Produto PreencherProduto(ResultSet resultSet) throws SQLException, ClassNotFoundException {
+		Produto prod = new Produto();
+		prod.setCod(resultSet.getInt("p.cod_produto"));
+		prod.setDescricao(resultSet.getString("p.nome_produto"));
+		prod.setValor_un(resultSet.getDouble("p.valor_un"));
+		prod.setQtd_atual(resultSet.getInt("p.qtd_atual"));
+		prod.setUnidadeMedida(resultSet.getString("p.un_medida"));
+		prod.setCategoria(new CategoriaDAO(conexao).Carregar(resultSet.getInt("c.cod")));
+		return prod;
+	}
+	
+	private int ProximoNumeroProduto() throws Exception {
+		
+		
+		int numProduto = 0;
+
+		try {
+			Connection connection = ConexaoMySql.getInstance().getConnection();			
+
+			PreparedStatement statement = connection.prepareStatement("select max(cod_produto) as 'maior' from produto");
+
+			ResultSet resultSet = statement.executeQuery();
+
+			numProduto = resultSet.getInt("maior");
+			
+			if (numProduto <= 0) throw new Exception ("Não foi possível recuperar o proximo número dos produtos");
+			
+			statement.close();
+			connection.close();
+			
+		} catch (ClassNotFoundException classEx) {
+			classEx.printStackTrace();
+			throw classEx;
+		} catch (SQLException sqlEx) {
+			sqlEx.printStackTrace();
+			throw sqlEx;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw ex;
+		}
+
+		return numProduto + 1;
+	}
+
 
 }

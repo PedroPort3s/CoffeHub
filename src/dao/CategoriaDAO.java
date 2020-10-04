@@ -7,164 +7,224 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import Helper.Verifica;
 import dao.interfaces.ICategoriaDAO;
 import entitys.Categoria;
-import entitys.Pessoa;
 import utils.ConexaoMySql;
 
 public class CategoriaDAO implements ICategoriaDAO {
-
-	private String nomeTable = "tb_categoria";
-	private String pk = "cod_categoria";
-	private String col1 = "nome_categoria";
-
+	
+	private Connection conexao = null;
+	public CategoriaDAO(Connection conn) {
+		conexao = conn;
+	}
+	
+	private String Select_Categoria() {
+		StringBuilder sql = new StringBuilder();
+		sql.append("select cod,nome from categoria");
+		return sql.toString();
+	}
 	
 	@Override
-	public void inserir(Categoria obj) {
+	public int Inserir(Categoria cat) throws Exception {
+		
+		int retorno = 0;
+		
 		try {
-			Connection connection = ConexaoMySql.getInstance().getConnection();
 
-			String sql = "INSERT INTO "+nomeTable+"("+col1+") VALUES (?)";
+			String sql = "INSERT INTO categoria(cod,nome) VALUES (?,?)";
 
-			PreparedStatement statement = connection.prepareStatement(sql);
-
-			statement.setString(1, obj.getNome());
-			statement.execute();
-			connection.close();
-		} catch (ClassNotFoundException classException) {
-			classException.printStackTrace();
-			System.out.println(
-					"esse erro vai acontecer por conta do connector, pesquisem sobre" + " ----  erro no inserir");
-		} catch (SQLException sqlException) {
-			sqlException.printStackTrace();
-			System.out.println("esse erro foi estritamente no DriverManeger, " + "deem uma olhada, criar o banco talvez"
-					+ "---erro no inserir");
-		} catch (Exception exception) {
-			exception.printStackTrace();
-			System.out.println("Fudeo marreco" + "---erro no inserir");
+			PreparedStatement statement = conexao.prepareStatement(sql);
+			
+			statement.setInt(1, this.ProximoNumeroCategoria());
+			statement.setString(2, cat.getNome());
+			retorno = statement.executeUpdate();
+			
+		} catch (ClassNotFoundException classEx) {
+			classEx.printStackTrace();
+			throw classEx;
+		} catch (SQLException sqlEx) {
+			sqlEx.printStackTrace();
+			throw sqlEx;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw ex;
 		}
+		
+		return retorno;
 	}
 
 	@Override
-	public void deletar(int id) {
+	public int Deletar(int id) throws SQLException, ClassNotFoundException {
+		
+		int retorno = 0;
 		try {
-			Connection connection = ConexaoMySql.getInstance().getConnection();
 
-			String sql = "DELETE FROM "+nomeTable+" WHERE "+pk+" = ?";
+			String sql = "DELETE FROM categoria WHERE cod= ?";
 
-			PreparedStatement statement = connection.prepareStatement(sql);
+			PreparedStatement statement = conexao.prepareStatement(sql);
 
 			statement.setInt(1, id);
-			statement.execute();
+			retorno = statement.executeUpdate();
+			
 			statement.close();
-
-		} catch (ClassNotFoundException classException) {
-			classException.printStackTrace();
-			System.out
-					.println("esse erro vai acontecer por conta do connector, pesquisem sobre" + "---erro no deletar");
-		} catch (SQLException sqlException) {
-			sqlException.printStackTrace();
-			System.out.println("esse erro foi estritamente no DriverManeger, " + "deem uma olhada, criar o banco talvez"
-					+ "---erro no deletar");
-		} catch (Exception exception) {
-			exception.printStackTrace();
-			System.out.println("Fudeo marreco" + "---erro no deletar");
+		}  catch (SQLException sqlEx) {
+			sqlEx.printStackTrace();
+			throw sqlEx;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw ex;
 		}
+		return retorno;
 	}
 
 	@Override
-	public void editar(Categoria obj) {
+	public int Editar(Categoria cat) throws SQLException, ClassNotFoundException {
+		int retorno = 0;
 		try {
-			Connection connection = ConexaoMySql.getInstance().getConnection();
 
-			String sql = "UPDATE "+nomeTable+" SET "+col1+" = ? WHERE "+pk+" = ?";
+			String sql = "UPDATE categoria SET nome = ? WHERE cod = ?";
 
-			PreparedStatement statement = connection.prepareStatement(sql);
+			PreparedStatement statement = conexao.prepareStatement(sql);
 
-			statement.setString(1, obj.getNome());
-			statement.setInt(2, obj.getCod());
+			statement.setString(1, cat.getNome());
+			statement.setInt(2, cat.getCod());
 
-			statement.execute();
+			retorno = statement.executeUpdate();
 			statement.close();
 
-		} catch (ClassNotFoundException classException) {
-			classException.printStackTrace();
-			System.out.println("esse erro vai acontecer por conta do connector, pesquisem sobre" + "---erro no editar");
-		} catch (SQLException sqlException) {
-			sqlException.printStackTrace();
-			System.out.println("esse erro foi estritamente no DriverManeger, " + "deem uma olhada, criar o banco talvez"
-					+ "---erro no editar");
-		} catch (Exception exception) {
-			exception.printStackTrace();
-			System.out.println("Fudeo marreco" + "---erro no editar");
+		}  catch (SQLException sqlEx) {
+			sqlEx.printStackTrace();
+			throw sqlEx;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw ex;
 		}
+		return retorno;
 	}
 
 	@Override
-	public List<Categoria> buscarId(int id) {
+	public Categoria Carregar(int id) throws SQLException, ClassNotFoundException {
+		Categoria categoria = null;
+		
+		try {
+
+			StringBuilder sql = new StringBuilder();
+			sql.append(this.Select_Categoria());
+			sql.append(" where cod="+id);			
+
+			PreparedStatement statement = conexao.prepareStatement(sql.toString());
+			
+			ResultSet resultSet = statement.executeQuery();
+			
+			if(resultSet.first()) {
+				categoria = new Categoria(resultSet.getInt("cod"), resultSet.getString("nome"));	
+			}
+			
+			statement.close();
+		} catch (SQLException sqlEx) {
+			sqlEx.printStackTrace();
+			throw sqlEx;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw ex;
+		}
+		return categoria;
+	}
+
+	@Override
+	public List<Categoria> Buscar(String pesquisa) throws ClassNotFoundException, SQLException {
 		List<Categoria> lista = new ArrayList<Categoria>();
 		try {
-			Connection connection = ConexaoMySql.getInstance().getConnection();
 
-			String sql = "SELECT * FROM "+nomeTable+" WHERE "+pk+" = ?";
+			StringBuilder sql = new StringBuilder();
+			sql.append(this.Select_Categoria());
+			
+			if(Verifica.ehNumeroInt(pesquisa)){
+				sql.append(" where cod="+pesquisa);
+			}
+			else{	
+				sql.append(" where nome like (%'"+pesquisa+"'%)");
+			}
 
-			PreparedStatement statement = connection.prepareStatement(sql);
-			statement.setInt(1, id);
+			PreparedStatement statement = conexao.prepareStatement(sql.toString());
+			
 			ResultSet resultSet = statement.executeQuery();
 
 			while(resultSet.next()) {
-				Categoria categoria = new Categoria(resultSet.getInt(pk), resultSet.getString(col1));
+				Categoria categoria = new Categoria(resultSet.getInt("cod"), resultSet.getString("nome"));
 				lista.add(categoria);
 			}
 			
 			statement.close();
-			connection.close();
-		} catch (ClassNotFoundException classException) {
-			classException.printStackTrace();
-			System.out.println("esse erro vai acontecer por conta do connector, pesquisem sobre" + "---erro no buscar");
-		} catch (SQLException sqlException) {
-			sqlException.printStackTrace();
-			System.out.println("esse erro foi estritamente no DriverManeger, " + "deem uma olhada, criar o banco talvez"
-					+ "---erro no buscar");
-		} catch (Exception exception) {
-			exception.printStackTrace();
-			System.out.println("Fudeo marreco" + "---erro no buscar");
+		}  catch (SQLException sqlEx) {
+			sqlEx.printStackTrace();
+			throw sqlEx;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw ex;
 		}
 		return lista;
 	}
 
 	@Override
-	public List<Categoria> listar() {
+	public List<Categoria> Buscar() throws ClassNotFoundException, SQLException {
 		List<Categoria> lista = new ArrayList<Categoria>();
 
-		try {
-			Connection connection = ConexaoMySql.getInstance().getConnection();
+		try {	
 
-			String sql = "SELECT * FROM "+nomeTable;
-
-			PreparedStatement statement = connection.prepareStatement(sql);
+			PreparedStatement statement = conexao.prepareStatement(Select_Categoria());
 
 			ResultSet resultSet = statement.executeQuery();
 
 			while (resultSet.next()) {
-				Categoria categoria = new Categoria(resultSet.getInt(pk), resultSet.getString(col1));
-				lista.add(categoria);
+				lista.add(new Categoria(resultSet.getInt("cod"), resultSet.getString("nome")));
 			}
+			
 			statement.close();
-			connection.close();
-		} catch (ClassNotFoundException classException) {
-			classException.printStackTrace();
-			System.out.println("esse erro vai acontecer por conta do connector, pesquisem sobre" + "---erro no listar");
-		} catch (SQLException sqlException) {
-			sqlException.printStackTrace();
-			System.out.println("esse erro foi estritamente no DriverManeger, " + "deem uma olhada, criar o banco talvez"
-					+ "---erro no listar");
-		} catch (Exception exception) {
-			exception.printStackTrace();
-			System.out.println("Fudeo marreco" + "---erro no listar");
+			
+			
+		}catch (SQLException sqlEx) {
+			sqlEx.printStackTrace();
+			throw sqlEx;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw ex;
 		}
 
 		return lista;
+	}
+	
+	private int ProximoNumeroCategoria() throws Exception {
+		
+		
+		int numeroCategoria = 0;
+
+		try {		
+
+			PreparedStatement statement = conexao.prepareStatement("select max(cod) as 'maior' from categoria");
+
+			ResultSet resultSet = statement.executeQuery();
+
+			numeroCategoria = resultSet.getInt("maior");
+			
+			if (numeroCategoria <= 0) throw new Exception ("Não foi possível recuperar o proximo número da categoria");
+			
+			statement.close();
+			
+			
+		} catch (ClassNotFoundException classEx) {
+			classEx.printStackTrace();
+			throw classEx;
+		} catch (SQLException sqlEx) {
+			sqlEx.printStackTrace();
+			throw sqlEx;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw ex;
+		}
+
+		return numeroCategoria + 1;
 	}
 
 }
