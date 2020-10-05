@@ -39,31 +39,36 @@ public class LoginController implements Initializable {
     @FXML
     void btnAcessar_Action(ActionEvent event) throws Exception {
     	
-		int retorno = 0 ;
-		int cod = Integer.parseInt(txtUsuario.getText());
+		int retorno = 0 ;	
+		int cod = 0;
 		try 
-		{				
+		{	
+			if (txtUsuario.getText().equals("")) 
+			{				
+				throw new Exception("Informe o código de acesso");
+			}
+			else
+			{
+				cod = Integer.parseInt(txtUsuario.getText());				
+			}			
 			retorno = new AcessoController().CarregarLogin(cod, txtSenha.getText());
 			if (retorno == 1)
 			{
 				try {
-			    	Stage primaryStage = new Stage();
-					AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("/views/Home.fxml"));
-					Scene scene = new Scene(root);
-					primaryStage.setScene(scene);
-					primaryStage.setTitle("Produtos");
-					primaryStage.show();
-				} 
-			    catch(Exception e) {
-					Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
-			    	alert.showAndWait();	
-			    	}
-			}
-			else
-			{
-				throw new Exception("Não foi possível efetuar o login");
-			}
-		} 
+		    	Stage primaryStage = new Stage();
+				AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("/views/Home.fxml"));
+				Scene scene = new Scene(root);
+				primaryStage.setScene(scene);
+				primaryStage.setTitle("Home");
+				primaryStage.show();
+			} 			  
+		  catch(Exception e)
+		  	{
+			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+			  alert.showAndWait();	
+		  	}
+		}
+	} 
 		catch (Exception e) 
 		{
     		Alert alert = new Alert(AlertType.WARNING);

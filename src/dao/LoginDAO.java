@@ -14,7 +14,7 @@ public class LoginDAO extends ConexaoMySql{
 	
 	final String SQl_SELECT_FUNCIONARIO = "SELECT cod_pessoa, senha_funcionario FROM funcionario where cod_pessoa = ? and senha_funcionario = ?";
 	
-	public int CarregarLogin(int cod_pessoa, String senha_funcionario)
+	public int CarregarLogin(int cod_pessoa, String senha_funcionario) throws Exception
 	{
 		
 		Funcionario funcionario = null;
@@ -37,7 +37,7 @@ public class LoginDAO extends ConexaoMySql{
 				funcionario.setCod(rs.getInt("cod_pessoa"));
 				funcionario.setSenha_funcionario("senha_funcionario");
 							
-				if(funcionario.getCod() > 0 && funcionario.getSenha_funcionario() != "")
+				if(funcionario.getCod() > 0 && !funcionario.getSenha_funcionario().equals(""))
 				{
 					retorno = 1;
 				}
@@ -50,7 +50,7 @@ public class LoginDAO extends ConexaoMySql{
 		}
 		catch (Exception e)
 		{
-			e.printStackTrace();
+			throw e;
 		}
 		
 	

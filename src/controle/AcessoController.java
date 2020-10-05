@@ -14,17 +14,28 @@ public class AcessoController {
 				throw new Exception("Informe o código de acesso");
 			}
 			
-			if (senha_funcionario == "") 
+			if (senha_funcionario.equals("")) 
 			{
 				throw new Exception("Informe a senha de acesso");
 			}
 			
-			retorno = new LoginDAO().CarregarLogin(cod_pessoa, senha_funcionario);
-			
+			if (cod_pessoa > 0 && !senha_funcionario.equals("")) 
+			{
+				retorno = new LoginDAO().CarregarLogin(cod_pessoa, senha_funcionario);
+				if (retorno == 1) 
+				{
+					retorno = 1;
+				}
+				else
+				{
+					retorno = -1;
+					throw new Exception("Não foi possível efetuar o login");
+				}
+			}						
 		} 
 		catch (Exception e) 
 		{
-			e.printStackTrace();
+			throw e;
 		}
 		
 		return retorno;		
