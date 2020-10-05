@@ -19,6 +19,9 @@ public class PesquisaProdutoController {
 
     @FXML
     private JFXButton btnCadProduto;
+    
+    @FXML
+    private JFXTextField txtDescricao;
 
     @FXML
     void btnCadProduto_Action(ActionEvent event) {

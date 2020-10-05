@@ -30,6 +30,9 @@ public class CadProdutoController {
     private JFXTextField txtQtd;
 
     @FXML
+    private JFXTextField txtUnMedida;
+    
+    @FXML
     void btnGravar_Action(ActionEvent event) {
 
     }
