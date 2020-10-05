@@ -8,7 +8,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
-import controle.AcessoController;
+import control.acesso.ControlAcesso;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -51,7 +51,7 @@ public class LoginController implements Initializable {
 			{
 				cod = Integer.parseInt(txtUsuario.getText());				
 			}			
-			retorno = new AcessoController().CarregarLogin(cod, txtSenha.getText());
+			retorno = new ControlAcesso().CarregarLogin(cod, txtSenha.getText());
 			if (retorno == 1)
 			{
 				try {

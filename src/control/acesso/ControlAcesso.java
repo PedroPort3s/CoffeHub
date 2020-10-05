@@ -1,8 +1,8 @@
-package controle;
+package control.acesso;
 
 import dao.LoginDAO;
 
-public class AcessoController {
+public class ControlAcesso {
 
 	public int CarregarLogin(int cod_pessoa, String senha_funcionario) throws Exception{
 		
