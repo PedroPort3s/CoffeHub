@@ -1,14 +1,32 @@
 package entitys;
 
 import java.util.Date;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
+
 
 public class Funcionario extends Pessoa {
 
 	private Date data_contratacao;
-
 	private Date data_demissao;
-
 	private double salario;
+	
+	
+	public Funcionario() {
+		super();
+	}
+	
+		
+	public Funcionario(Date data_contratacao, Date data_demissao, double salario) {
+		super();
+		this.data_contratacao = data_contratacao;
+		this.data_demissao = data_demissao;
+		this.salario = salario;
+	}
+
+
+
 
 	public Date getData_contratacao() {
 		return data_contratacao;
@@ -37,5 +55,13 @@ public class Funcionario extends Pessoa {
 	public int calcularIdade() {
 		return 0;
 	}
+
+	
+	@Override
+	public String toString() {
+		return "Funcionario [data_contratacao=" + data_contratacao + ", data_demissao=" + data_demissao + ", salario="
+				+ salario + "]";
+	}
+
 
 }
