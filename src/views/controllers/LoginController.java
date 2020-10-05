@@ -19,6 +19,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class LoginController implements Initializable {
 
@@ -60,6 +61,7 @@ public class LoginController implements Initializable {
 				Scene scene = new Scene(root);
 				primaryStage.setScene(scene);
 				primaryStage.setTitle("Home");
+				primaryStage.initStyle(StageStyle.TRANSPARENT);
 				primaryStage.show();
 			} 			  
 		  catch(Exception e)

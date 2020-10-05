@@ -1,4 +1,7 @@
-/controle/
-/libs/
 /control/
+/dao/
+/dto/
+/entitys/
+/exceptions/
+/utils/
 /views/

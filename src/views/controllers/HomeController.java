@@ -14,9 +14,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class HomeController {
 
+	private static Stage Home;
     @FXML
     private Button btnOverview;
 
@@ -55,7 +57,28 @@ public class HomeController {
 
     @FXML
     private VBox pnItems;
+    
 
+	public Stage getHome() {
+		if (Home == null)
+		{
+			try {
+		    	Stage primaryStage = new Stage();
+				AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("/views/Produto/PesquisaProduto.fxml"));
+				Scene scene = new Scene(root);
+				primaryStage.setScene(scene);
+				primaryStage.initStyle(StageStyle.TRANSPARENT);
+				Home = primaryStage;
+			}
+		  catch(Exception e)
+		  	{
+			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+			  alert.showAndWait();	
+		  	}
+		}
+		return Home;
+	}
+    
     @FXML
     void btnClientes_Action(ActionEvent event) {
 
@@ -84,6 +107,7 @@ public class HomeController {
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
 		primaryStage.setTitle("Produtos");
+		primaryStage.initStyle(StageStyle.TRANSPARENT);
 		primaryStage.show();
 	} 
     catch(Exception e) {
