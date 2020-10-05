@@ -8,12 +8,17 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
+import controle.AcessoController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.layout.AnchorPane;
+import javafx.stage.Stage;
 
 public class LoginController implements Initializable {
 
@@ -23,12 +28,55 @@ public class LoginController implements Initializable {
 
     @FXML
     private JFXPasswordField txtSenha;
-
-    @FXML
-    private JFXButton btnSignIn;
     
     @FXML
     private JFXButton btnSair;
+    
+    @FXML
+    private JFXButton btnAcessar;
+
+
+    @FXML
+    void btnAcessar_Action(ActionEvent event) throws Exception {
+    	
+		int retorno = 0 ;
+		int cod = Integer.parseInt(txtUsuario.getText());
+		try 
+		{				
+			retorno = new AcessoController().CarregarLogin(cod, txtSenha.getText());
+			if (retorno == 1)
+			{
+				try {
+			    	Stage primaryStage = new Stage();
+					AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("/views/Home.fxml"));
+					Scene scene = new Scene(root);
+					primaryStage.setScene(scene);
+					primaryStage.setTitle("Produtos");
+					primaryStage.show();
+				} 
+			    catch(Exception e) {
+					Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+			    	alert.showAndWait();	
+			    	}
+			}
+			else
+			{
+				throw new Exception("Não foi possível efetuar o login");
+			}
+		} 
+		catch (Exception e) 
+		{
+    		Alert alert = new Alert(AlertType.WARNING);
+
+            alert.setTitle("Atenção");
+            alert.setHeaderText(e.getMessage());
+            
+            alert.showAndWait();
+            
+		}
+	}
+    
+
 
     @FXML
     void btnSair_Action(ActionEvent event) {
@@ -48,9 +96,4 @@ public class LoginController implements Initializable {
 		// TODO Auto-generated method stub
 
 	}
-
-	@FXML
-	public void handleSignIn(ActionEvent actionEvent) {
-	}
-
 }

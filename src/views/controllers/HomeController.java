@@ -83,7 +83,7 @@ public class HomeController {
 		AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("/views/Produto/PesquisaProduto.fxml"));
 		Scene scene = new Scene(root);
 		primaryStage.setScene(scene);
-		primaryStage.setTitle("Prudutos");
+		primaryStage.setTitle("Produtos");
 		primaryStage.show();
 	} 
     catch(Exception e) {

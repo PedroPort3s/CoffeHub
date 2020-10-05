@@ -22,7 +22,7 @@
 						</Label>
 						<JFXTextField fx:id="txtUsuario" focusColor="#2e1d04" labelFloat="true" layoutX="56.0" layoutY="108.0" prefHeight="40.0" prefWidth="217.0" promptText="Usuario" unFocusColor="BLACK" AnchorPane.leftAnchor="56.0" AnchorPane.rightAnchor="19.0" />
 						<JFXPasswordField fx:id="txtSenha" focusColor="#2e1d04" layoutX="56.0" layoutY="186.0" prefHeight="40.0" prefWidth="217.0" promptText="Senha" unFocusColor="BLACK" AnchorPane.leftAnchor="56.0" AnchorPane.rightAnchor="19.0" />
-						<JFXButton fx:id="btnSignIn" buttonType="RAISED" layoutX="56.0" layoutY="336.0" onAction="#handleSignIn" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Acessar" textFill="WHITE" />
+						<JFXButton fx:id="btnAcessar" buttonType="RAISED" layoutX="56.0" layoutY="336.0" onAction="#btnAcessar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Acessar" textFill="WHITE" />
                   <JFXButton fx:id="btnSair" buttonType="RAISED" layoutX="163.0" layoutY="336.0" onAction="#btnSair_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Sair" textFill="WHITE" />
 					</children>
                <effect>

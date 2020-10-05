@@ -9,6 +9,17 @@ public class Funcionario extends Pessoa {
 	private Date data_demissao;
 
 	private double salario;
+	
+	private String senha_funcionario;
+
+	public String getSenha_funcionario() {
+		return senha_funcionario;
+	}
+
+	public void setSenha_funcionario(String senha_funcionario) {
+		this.senha_funcionario = senha_funcionario;
+	}
+
 
 	public Date getData_contratacao() {
 		return data_contratacao;
