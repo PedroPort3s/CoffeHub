@@ -1,11 +1,21 @@
 package views.controllers;
 
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 
+import control.produto.ControlCategoria;
+import control.produto.ControlProduto;
+import entitys.Categoria;
+import entitys.Produto;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -14,7 +24,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class PesquisaProdutoController {
+public class PesquisaProdutoController implements Initializable{
 
 	private static Stage PesquisaProduto;
 	
@@ -32,6 +42,9 @@ public class PesquisaProdutoController {
     
     @FXML
     private JFXTextField txtDescricao;
+    
+    @FXML
+    private JFXListView<Produto> lvProdutos;
 
 	public Stage getPesquisaProduto() {
 		if (PesquisaProduto == null)
@@ -55,6 +68,7 @@ public class PesquisaProdutoController {
     
     @FXML
     void btnCadProduto_Action(ActionEvent event) {
+    	PesquisaProduto.hide();
     	new CadProdutoController().getCadProduto().show();
     }
     
@@ -68,5 +82,37 @@ public class PesquisaProdutoController {
     	PesquisaProduto.hide();
     	new HomeController().getHome().show();
     }
+    
+    void ListarProdutos() 
+    {
+    	List<Produto>lstProdutos;
+    	lvProdutos.getItems().clear();
+    	
+    	try 
+    	{
+    		lstProdutos = new ControlProduto().Listar();
+			if (lstProdutos != null) 
+			{
+				lstProdutos.forEach(p -> lvProdutos.getItems().add(p));
+			}
+		}
+    	
+    	catch (Exception e) 
+    	{
+			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+			  alert.showAndWait();
+    	}
+    	
+    	catch(Error e) 
+    	{
+			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+			  alert.showAndWait();
+    	}
+    }
+    
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		this.ListarProdutos();
+	}
 
 }

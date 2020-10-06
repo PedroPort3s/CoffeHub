@@ -1,11 +1,19 @@
 package views.controllers;
 
+import java.net.URL;
+import java.util.List;
+import java.util.ResourceBundle;
+
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 
+import control.produto.ControlCategoria;
+import entitys.Categoria;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -14,7 +22,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class PesquisaCategoriaController {
+public class PesquisaCategoriaController implements Initializable{
 	
 	private static Stage PesquisaCategoria;
 
@@ -29,6 +37,9 @@ public class PesquisaCategoriaController {
 
     @FXML
     private JFXButton btnCadCategoria;
+    
+    @FXML
+    private JFXListView<Categoria> lvCategorias;
 
 	public Stage getPesquisaCategoria() {
 		if (PesquisaCategoria == null)
@@ -75,4 +86,35 @@ public class PesquisaCategoriaController {
 		}
     }
 
+    void ListarCategorias() 
+    {
+    	List<Categoria>	lstCategorias;
+    	lvCategorias.getItems().clear();
+    	
+    	try 
+    	{
+			lstCategorias = new ControlCategoria().Listar(txtDescricao.getText());
+			if (lstCategorias != null) 
+			{
+				lstCategorias.forEach(f -> lvCategorias.getItems().add(f));
+			}
+		}
+    	
+    	catch (Exception e) 
+    	{
+			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+			  alert.showAndWait();
+    	}
+    	
+    	catch(Error e) 
+    	{
+			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+			  alert.showAndWait();
+    	}
+    }
+    
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		this.ListarCategorias();
+	}
 }

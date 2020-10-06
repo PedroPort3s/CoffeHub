@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
@@ -11,8 +12,9 @@
       <JFXTextField fx:id="txtCodProd" disable="true" focusColor="#2e1d04" labelFloat="true" layoutX="14.0" layoutY="26.0" prefHeight="40.0" prefWidth="136.0" promptText="Codigo" unFocusColor="BLACK" />
       <JFXTextField fx:id="txtDescricao" focusColor="#2e1d04" labelFloat="true" layoutX="157.0" layoutY="26.0" prefHeight="40.0" prefWidth="418.0" promptText="Descrição" unFocusColor="BLACK" />
       <JFXButton fx:id="btnLimpar" buttonType="RAISED" layoutX="371.0" layoutY="305.0" onAction="#btnLimpar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Limpar" textFill="WHITE" />
-      <JFXTextField fx:id="txtValor" editable="false" focusColor="#2e1d04" labelFloat="true" layoutX="10.0" layoutY="109.0" prefHeight="40.0" prefWidth="136.0" promptText="Valor" unFocusColor="BLACK" />
+      <JFXTextField fx:id="txtValor" focusColor="#2e1d04" labelFloat="true" layoutX="10.0" layoutY="109.0" prefHeight="40.0" prefWidth="136.0" promptText="Valor" unFocusColor="BLACK" />
       <JFXTextField fx:id="txtQtd" focusColor="#2e1d04" labelFloat="true" layoutX="167.0" layoutY="109.0" prefHeight="40.0" prefWidth="136.0" promptText="Quantidade" unFocusColor="BLACK" />
       <JFXTextField fx:id="txtUnMedida" focusColor="#2e1d04" labelFloat="true" layoutX="321.0" layoutY="109.0" prefHeight="40.0" prefWidth="252.0" promptText="Unidade de Medida" unFocusColor="BLACK" />
+      <JFXComboBox fx:id="cbCategoria" layoutX="350.0" layoutY="181.0" prefHeight="25.0" prefWidth="225.0" promptText="Categoria" />
    </children>
 </AnchorPane>

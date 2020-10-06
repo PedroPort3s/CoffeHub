@@ -15,6 +15,12 @@ public class Categoria {
 		this.nome = nome;
 	}
 	
+	
+	
+	public Categoria() {
+		super();
+	}
+
 	public int getCod() {
 		return cod;
 	}
@@ -30,4 +36,9 @@ public class Categoria {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
+	@Override
+	public String toString() {
+		return "Categoria [cod=" + cod + ", nome=" + nome + "]";
+	}	
 }

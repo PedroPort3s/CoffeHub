@@ -1,5 +1,7 @@
 package views.controllers;
 
+import java.sql.SQLException;
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
@@ -60,7 +62,16 @@ public class CadCategoriaController {
     	try
     	{   		
     		Categoria categoria = new Categoria(txtDescricao.getText());
-			new ControlCategoria().Inserir(categoria);
+			if(new ControlCategoria().Inserir(categoria) == 1)
+			{
+				Limpar();
+	    		Alert alert = new Alert(AlertType.INFORMATION);
+
+	            alert.setTitle("Sucesso");
+	            alert.setHeaderText("Categoria inserida com sucesso");
+	            
+	            alert.showAndWait();
+			}
 		}
     	catch (Exception e)
     	{
@@ -84,13 +95,19 @@ public class CadCategoriaController {
 
     @FXML
     void btnLimpar_Action(ActionEvent event) {
-    	txtDescricao.setText("");
+    	Limpar();
     }
 
     @FXML
     void btnVoltar_Action(ActionEvent event) {
+    	Limpar();
     	CadCategoria.close();
     	new PesquisaCategoriaController().getPesquisaCategoria().show();
+    }
+    
+    void Limpar() {
+    	txtCodCategoria.setText("");
+    	txtDescricao.setText("");
     }
 
 }
