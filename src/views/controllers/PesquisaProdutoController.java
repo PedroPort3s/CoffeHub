@@ -33,7 +33,7 @@ public class PesquisaProdutoController {
     @FXML
     private JFXTextField txtDescricao;
 
-	public Stage getCadProduto() {
+	public Stage getPesquisaProduto() {
 		if (PesquisaProduto == null)
 		{
 			try {
@@ -65,7 +65,7 @@ public class PesquisaProdutoController {
 
     @FXML
     void btnVoltar_Action(ActionEvent event) {
-    	PesquisaProduto.close();
+    	PesquisaProduto.hide();
     	new HomeController().getHome().show();
     }
 

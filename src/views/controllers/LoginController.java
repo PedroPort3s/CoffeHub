@@ -23,7 +23,8 @@ import javafx.stage.StageStyle;
 
 public class LoginController implements Initializable {
 
-
+	private static Stage login;
+	
     @FXML
     private JFXTextField txtUsuario;
 
@@ -35,7 +36,26 @@ public class LoginController implements Initializable {
     
     @FXML
     private JFXButton btnAcessar;
-
+    
+	public Stage getlogin() {
+		if (login == null)
+		{
+			try {
+		    	Stage primaryStage = new Stage();
+				AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("/views/Login.fxml"));
+				Scene scene = new Scene(root);
+				primaryStage.setScene(scene);
+				primaryStage.initStyle(StageStyle.TRANSPARENT);
+				login = primaryStage;
+			}
+		  catch(Exception e)
+		  	{
+			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+			  alert.showAndWait();	
+		  	}
+		}
+		return login;
+	}
 
     @FXML
     void btnAcessar_Action(ActionEvent event) throws Exception {
@@ -55,15 +75,11 @@ public class LoginController implements Initializable {
 			retorno = new ControlAcesso().CarregarLogin(cod, txtSenha.getText());
 			if (retorno == 1)
 			{
-				try {
-		    	Stage primaryStage = new Stage();
-				AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("/views/Home.fxml"));
-				Scene scene = new Scene(root);
-				primaryStage.setScene(scene);
-				primaryStage.setTitle("Home");
-				primaryStage.initStyle(StageStyle.TRANSPARENT);
-				primaryStage.show();
-			} 			  
+				try 
+				{
+					/* login.hide(); */
+					new HomeController().getHome().show();
+				} 			  
 		  catch(Exception e)
 		  	{
 			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);

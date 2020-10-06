@@ -8,8 +8,13 @@ public class Categoria {
 
 	public Categoria(int codCategoria, String nomeCategoria) {
 		// TODO Auto-generated constructor stub
-	}
+	}	
 
+	public Categoria(String nome) {
+		super();
+		this.nome = nome;
+	}
+	
 	public int getCod() {
 		return cod;
 	}
