@@ -20,34 +20,42 @@ public class ClienteDAO implements IClienteDAO {
 	public void inserir(Cliente obj) {
 		String sqlPessoa = "INSERT INTO "
 				+EnumPessoa.pessoa+" ("
-					+EnumPessoa.cod+", "
 					+EnumPessoa.documento+", "
 					+EnumPessoa.telefone+", "
 					+EnumPessoa.nome+", "
 					+EnumPessoa.endereco+", "
 					+EnumPessoa.email+") "
-						+ "VALUES (?, ?, ?, ?, ?, ?)";
+						+ "VALUES (?, ?, ?, ?, ?)";
+		
+		String sqlPessoaIns = "SELECT * FROM "+EnumPessoa.pessoa+" ORDER BY cod DESC LIMIT 1";
+		
+		
 		
 		String sqlCliente = "INSERT INTO "
 				+EnumCliente.cliente+" ("
 					+EnumCliente.cod_pessoa+", "
 					+EnumCliente.data_nascimento+") "
 							+ "VALUES (?, ?)";
+		
+		
 		try (Connection connection = ConexaoMySql.getInstance().getConnection();
 				PreparedStatement statementPessoa = connection.prepareStatement(sqlPessoa);
+				PreparedStatement statementPessoaIns = connection.prepareStatement(sqlPessoaIns);
 				PreparedStatement statementCliente = connection.prepareStatement(sqlCliente);) {
 
-			statementPessoa.setString(1, obj.getCod());
-			statementPessoa.setString(2, obj.getDocumento());
-			statementPessoa.setString(3, obj.getTelefone());
-			statementPessoa.setString(4, obj.getNome());
-			statementPessoa.setString(5, obj.getEndereco());
-			statementPessoa.setString(6, obj.getEmail());
-
-			statementCliente.setString(1, obj.getCod());
-			statementCliente.setString(2, obj.getData_nascimentoString());
-
+			
+			statementPessoa.setString(1, obj.getDocumento());
+			statementPessoa.setString(2, obj.getTelefone());
+			statementPessoa.setString(3, obj.getNome());
+			statementPessoa.setString(4, obj.getEndereco());
+			statementPessoa.setString(5, obj.getEmail());
 			statementPessoa.execute();
+
+			ResultSet resultSet = statementPessoaIns.executeQuery();
+			resultSet.next();
+			
+			statementCliente.setInt(1, resultSet.getInt(EnumPessoa.cod.name()));
+			statementCliente.setString(2, obj.getData_nascimentoString());
 			statementCliente.execute();
 
 		} catch (ClassNotFoundException classException) {
@@ -65,7 +73,7 @@ public class ClienteDAO implements IClienteDAO {
 	}
 
 	@Override
-	public void deletar(String id) {
+	public void deletar(Integer id) {
 		String sqlCliente = "delete from " + EnumCliente.cliente + " where " + EnumCliente.cod_pessoa + "= ?";
 		String sqlPessoa = "delete from " + EnumPessoa.pessoa+ " where " + EnumPessoa.cod + "= ?";
 
@@ -73,8 +81,8 @@ public class ClienteDAO implements IClienteDAO {
 				PreparedStatement statementPessoa = connection.prepareStatement(sqlPessoa);
 				PreparedStatement statementCliente = connection.prepareStatement(sqlCliente);) {
 
-			statementCliente.setString(1, id);
-			statementPessoa.setString(1, id);
+			statementCliente.setInt(1, id);
+			statementPessoa.setInt(1, id);
 
 			statementCliente.execute();
 			statementPessoa.execute();
@@ -111,10 +119,10 @@ public class ClienteDAO implements IClienteDAO {
 			statementPessoa.setString(3, obj.getNome());
 			statementPessoa.setString(4, obj.getEndereco());
 			statementPessoa.setString(5, obj.getEmail());
-			statementPessoa.setString(6, obj.getCod());
+			statementPessoa.setInt(6, obj.getCod());
 
 			statementCliente.setString(1, obj.getData_nascimentoString());
-			statementCliente.setString(2, obj.getCod());
+			statementCliente.setInt(2, obj.getCod());
 
 			statementCliente.execute();
 			statementPessoa.execute();
@@ -134,7 +142,7 @@ public class ClienteDAO implements IClienteDAO {
 	}
 
 	@Override
-	public List<Cliente> buscarId(String id) {
+	public List<Cliente> buscarId(Integer id) {
 
 		List<Cliente> lista = new ArrayList<Cliente>();
 		String sql= "SELECT * FROM "+EnumPessoa.pessoa+" p "
@@ -145,12 +153,12 @@ public class ClienteDAO implements IClienteDAO {
 		try (Connection connection = ConexaoMySql.getInstance().getConnection();
 				PreparedStatement statement = connection.prepareStatement(sql);) {
 
-			statement.setString(1, id);
+			statement.setInt(1, id);
 			ResultSet resultSet = statement.executeQuery();
 
 			while (resultSet.next()) {
 				lista.add(new Cliente(resultSet.getDate(EnumCliente.data_nascimento.name()),
-						resultSet.getString(EnumPessoa.cod.name()), resultSet.getString(EnumPessoa.documento.name()),
+						resultSet.getInt(EnumPessoa.cod.name()), resultSet.getString(EnumPessoa.documento.name()),
 						resultSet.getString(EnumPessoa.telefone.name()), resultSet.getString(EnumPessoa.nome.name()),
 						resultSet.getString(EnumPessoa.endereco.name()), resultSet.getString(EnumPessoa.email.name())));
 			}
@@ -183,7 +191,7 @@ public class ClienteDAO implements IClienteDAO {
 
 			while (resultSet.next()) {
 				lista.add(new Cliente(resultSet.getDate(EnumCliente.data_nascimento.name()),
-						resultSet.getString(EnumPessoa.cod.name()), resultSet.getString(EnumPessoa.documento.name()),
+						resultSet.getInt(EnumPessoa.cod.name()), resultSet.getString(EnumPessoa.documento.name()),
 						resultSet.getString(EnumPessoa.telefone.name()), resultSet.getString(EnumPessoa.nome.name()),
 						resultSet.getString(EnumPessoa.endereco.name()), resultSet.getString(EnumPessoa.email.name())));
 			}
@@ -200,5 +208,4 @@ public class ClienteDAO implements IClienteDAO {
 		}
 		return lista;
 	}
-
 }

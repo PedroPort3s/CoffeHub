@@ -21,7 +21,7 @@ public class Cliente extends Pessoa {
 		calcularIdade();
 	}
 
-	public Cliente(Date data_nascimento, String cod, String documento, String telefone, String nome, String endereco,
+	public Cliente(Date data_nascimento, int cod, String documento, String telefone, String nome, String endereco,
 			String email) {
 		super(cod, documento, telefone, nome, endereco, email);
 		this.data_nascimento = data_nascimento;

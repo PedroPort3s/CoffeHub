@@ -21,8 +21,6 @@ USE `coffehub` ;
 -- -----------------------------------------------------
 -- Table `coffehub`.`Categoria`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `coffehub`.`Categoria` ;
-
 CREATE TABLE IF NOT EXISTS `coffehub`.`Categoria` (
   `cod` INT(5) UNSIGNED ZEROFILL NOT NULL,
   `nome` VARCHAR(45) NOT NULL,
@@ -34,12 +32,10 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `coffehub`.`Pessoa`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `coffehub`.`Pessoa` ;
-
 CREATE TABLE IF NOT EXISTS `coffehub`.`Pessoa` (
-  `cod` VARCHAR(45) NOT NULL,
+  `cod` INT NOT NULL AUTO_INCREMENT,
   `documento` VARCHAR(14) NOT NULL,
-  `telefone` VARCHAR(45) NULL,
+  `telefone` VARCHAR(45) NULL DEFAULT NULL,
   `nome` VARCHAR(45) NOT NULL,
   `endereco` VARCHAR(100) NULL DEFAULT NULL,
   `email` VARCHAR(100) NULL,
@@ -53,10 +49,8 @@ CREATE UNIQUE INDEX `documento_UNIQUE` ON `coffehub`.`Pessoa` (`documento` ASC) 
 -- -----------------------------------------------------
 -- Table `coffehub`.`Cliente`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `coffehub`.`Cliente` ;
-
 CREATE TABLE IF NOT EXISTS `coffehub`.`Cliente` (
-  `cod_Pessoa` VARCHAR(45) NOT NULL,
+  `cod_Pessoa` INT NOT NULL,
   `data_nascimento` DATETIME NOT NULL,
   PRIMARY KEY (`cod_Pessoa`),
   CONSTRAINT `fk_Cliente_Pessoa1`
@@ -71,10 +65,8 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `coffehub`.`Fornecedor`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `coffehub`.`Fornecedor` ;
-
 CREATE TABLE IF NOT EXISTS `coffehub`.`Fornecedor` (
-  `cod_Pessoa` VARCHAR(45) NOT NULL,
+  `cod_Pessoa` INT NOT NULL,
   `data_Contrato` DATETIME NOT NULL,
   PRIMARY KEY (`cod_Pessoa`),
   CONSTRAINT `fk_Fornecedor_Pessoa1`
@@ -89,10 +81,8 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `coffehub`.`Funcionario`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `coffehub`.`Funcionario` ;
-
 CREATE TABLE IF NOT EXISTS `coffehub`.`Funcionario` (
-  `cod_Pessoa` VARCHAR(45) NOT NULL,
+  `cod_Pessoa` INT NOT NULL,
   `salario` DECIMAL NOT NULL,
   `data_Contratacao` DATETIME NOT NULL,
   `data_Demissao` DATETIME NULL,
@@ -109,16 +99,14 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `coffehub`.`Compra`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `coffehub`.`Compra` ;
-
 CREATE TABLE IF NOT EXISTS `coffehub`.`Compra` (
   `cod` INT(10) UNSIGNED ZEROFILL NOT NULL,
   `data_origem` DATE NOT NULL,
   `date_recebido` DATE NULL DEFAULT NULL,
   `valor_total` DECIMAL(18,2) NOT NULL,
   `status` VARCHAR(1) NOT NULL,
-  `cod_Fornecedor` VARCHAR(45) NOT NULL,
-  `cod_Funcionario` VARCHAR(45) NOT NULL,
+  `cod_Fornecedor` INT NOT NULL,
+  `cod_Funcionario` INT NOT NULL,
   PRIMARY KEY (`cod`, `cod_Fornecedor`, `cod_Funcionario`),
   CONSTRAINT `fk_Compra_Fornecedor1`
     FOREIGN KEY (`cod_Fornecedor`)
@@ -141,8 +129,6 @@ CREATE INDEX `fk_Compra_Funcionario1_idx` ON `coffehub`.`Compra` (`cod_Funcionar
 -- -----------------------------------------------------
 -- Table `coffehub`.`Acesso`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `coffehub`.`Acesso` ;
-
 CREATE TABLE IF NOT EXISTS `coffehub`.`Acesso` (
   `cod` INT(5) UNSIGNED ZEROFILL NOT NULL,
   `form` VARCHAR(45) NULL DEFAULT NULL,
@@ -155,8 +141,6 @@ DEFAULT CHARACTER SET = utf8;
 -- -----------------------------------------------------
 -- Table `coffehub`.`Produto`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `coffehub`.`Produto` ;
-
 CREATE TABLE IF NOT EXISTS `coffehub`.`Produto` (
   `cod_produto` INT(10) UNSIGNED ZEROFILL NOT NULL AUTO_INCREMENT,
   `nome_produto` VARCHAR(45) NOT NULL,
@@ -178,16 +162,14 @@ CREATE INDEX `fk_Produto_Categoria1_idx` ON `coffehub`.`Produto` (`Categoria_cod
 -- -----------------------------------------------------
 -- Table `coffehub`.`Venda`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `coffehub`.`Venda` ;
-
 CREATE TABLE IF NOT EXISTS `coffehub`.`Venda` (
   `cod` INT(10) UNSIGNED ZEROFILL NOT NULL,
   `valor_total` DECIMAL(18,3) NOT NULL,
   `data_origem` DATE NOT NULL,
   `data_confirmacao` DATE NULL DEFAULT NULL,
   `status` VARCHAR(1) NOT NULL,
-  `cod_Cliente` VARCHAR(45) NOT NULL,
-  `cod_Funcionario` VARCHAR(45) NOT NULL,
+  `cod_Cliente` INT NOT NULL,
+  `cod_Funcionario` INT NOT NULL,
   PRIMARY KEY (`cod`, `cod_Cliente`, `cod_Funcionario`),
   CONSTRAINT `fk_Venda_Cliente1`
     FOREIGN KEY (`cod_Cliente`)
@@ -210,10 +192,8 @@ CREATE INDEX `fk_Venda_Funcionario1_idx` ON `coffehub`.`Venda` (`cod_Funcionario
 -- -----------------------------------------------------
 -- Table `coffehub`.`FuncionarioAcesso`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `coffehub`.`FuncionarioAcesso` ;
-
 CREATE TABLE IF NOT EXISTS `coffehub`.`FuncionarioAcesso` (
-  `cod_Funcionario` VARCHAR(45) NOT NULL,
+  `cod_Funcionario` INT NOT NULL,
   `cod_Acesso` INT(5) UNSIGNED ZEROFILL NOT NULL,
   `usuarioAcessa` VARCHAR(1) NOT NULL,
   PRIMARY KEY (`cod_Funcionario`, `cod_Acesso`),
@@ -238,8 +218,6 @@ CREATE INDEX `fk_Funcionario_has_Acesso_Funcionario1_idx` ON `coffehub`.`Funcion
 -- -----------------------------------------------------
 -- Table `coffehub`.`VendaItem`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `coffehub`.`VendaItem` ;
-
 CREATE TABLE IF NOT EXISTS `coffehub`.`VendaItem` (
   `cod_Venda` INT(10) UNSIGNED ZEROFILL NOT NULL,
   `cod_Produto` INT(10) UNSIGNED ZEROFILL NOT NULL,
@@ -268,8 +246,6 @@ CREATE INDEX `fk_Venda_has_Produto_Venda1_idx` ON `coffehub`.`VendaItem` (`cod_V
 -- -----------------------------------------------------
 -- Table `coffehub`.`CompraProduto`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `coffehub`.`CompraProduto` ;
-
 CREATE TABLE IF NOT EXISTS `coffehub`.`CompraProduto` (
   `cod_Compra` INT(10) UNSIGNED ZEROFILL NOT NULL,
   `cod_Produto` INT(10) UNSIGNED ZEROFILL NOT NULL,

@@ -37,7 +37,7 @@ public class PessoaDAO implements IPessoaDAO {
 
 			PreparedStatement statement = connection.prepareStatement(sql);
 
-			statement.setString(1, obj.getCod());
+			statement.setInt(1, obj.getCod());
 			statement.setString(2, obj.getNome());
 			statement.execute();
 			connection.close();
@@ -93,7 +93,7 @@ public class PessoaDAO implements IPessoaDAO {
 			PreparedStatement statement = connection.prepareStatement(sql);
 
 			statement.setString(1, obj.getNome());
-			statement.setString(2, obj.getCod());
+			statement.setInt(2, obj.getCod());
 
 			statement.execute();
 			statement.close();
