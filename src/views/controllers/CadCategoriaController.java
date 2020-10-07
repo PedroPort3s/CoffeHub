@@ -182,7 +182,7 @@ public class CadCategoriaController implements Initializable{
 	    		Alert alert = new Alert(AlertType.INFORMATION);
 
 	            alert.setTitle("Sucesso");
-	            alert.setHeaderText("Categoria alterada com sucesso com sucesso");
+	            alert.setHeaderText("Categoria alterada com sucesso");
 	            
 	            alert.showAndWait();
     		}

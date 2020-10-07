@@ -27,7 +27,20 @@ public class Produto {
 		this.unidadeMedida = unidadeMedida;
 		this.categoria = categoria;
 	}
+		
 	
+	public Produto(int cod, String descricao, double valor_un, int qtd_atual, String unidadeMedida,
+			Categoria categoria) {
+		super();
+		this.cod = cod;
+		this.descricao = descricao;
+		this.valor_un = valor_un;
+		this.qtd_atual = qtd_atual;
+		this.unidadeMedida = unidadeMedida;
+		this.categoria = categoria;
+	}
+
+
 	public int getCod() {
 		return cod;
 	}

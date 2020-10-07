@@ -8,9 +8,7 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 
-import control.produto.ControlCategoria;
 import control.produto.ControlProduto;
-import entitys.Categoria;
 import entitys.Produto;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -69,18 +68,36 @@ public class PesquisaProdutoController implements Initializable{
     @FXML
     void btnCadProduto_Action(ActionEvent event) {
     	PesquisaProduto.hide();
+    	PesquisaProduto = null;
     	new CadProdutoController().getCadProduto().show();
     }
     
     @FXML
     void btnPesquisar_Action(ActionEvent event) {
-
+    	try 
+    	{
+    		this.ListarProdutos();
+		}
+    	catch (Exception e)
+    	{
+			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+			  alert.showAndWait();
+		}
     }
 
     @FXML
     void btnVoltar_Action(ActionEvent event) {
-    	PesquisaProduto.hide();
-    	new HomeController().getHome().show();
+    	try
+    	{			
+    		PesquisaProduto.hide();
+    		PesquisaProduto = null;
+    		new HomeController().getHome().show();
+		}
+    	catch (Exception e) 
+    	{
+			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+			  alert.showAndWait();
+		}
     }
     
     void ListarProdutos() 
@@ -108,6 +125,36 @@ public class PesquisaProdutoController implements Initializable{
 			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
 			  alert.showAndWait();
     	}
+    }
+    
+    @FXML
+    void lvProdutos_MouseClicked(MouseEvent event)
+    {
+    	int codProduto = lvProdutos.getSelectionModel().getSelectedItem().getCod();
+    	
+    	if (codProduto > 0) 
+    	{
+    		try
+    		{
+    			Produto produto = new ControlProduto().Carregar(codProduto); 
+    			if(produto != null) 
+    			{
+					/* new CadCategoriaController().CarregarCategoria(categoria); */
+					CadProdutoController.ProdutoEstatico= produto; 
+    				PesquisaProduto.hide();
+    		    	PesquisaProduto = null;
+    				new CadProdutoController().getCadProduto().show();
+       			}
+    			else
+    			{
+    				throw new Exception("Não foi possível carregar o produto selecionado");
+    			} 
+			} 
+    		catch (Exception e) {
+  			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+  			  alert.showAndWait();
+			}
+		}
     }
     
 	@Override
