@@ -68,10 +68,21 @@ public class CategoriaDAO implements ICategoriaDAO {
 			retorno = statement.executeUpdate();
 			
 			statement.close();
-		}  catch (SQLException sqlEx) {
-			/* sqlEx.printStackTrace(); */
+		} 
+		catch (SQLException sqlEx)
+		{ 
+			/* int erro = sqlEx.getErrorCode(); */
+			if(sqlEx.getErrorCode() == 1451)
+			{
+				throw new SQLException("Esta categoria esta sendo utilizada por um ou mais produtos, para deletar a mesma, favor deletar os produtos antes.");
+			}
+			else 
+			{
 			throw sqlEx;
-		} catch (Exception ex) {
+			}
+		}
+		catch (Exception ex) 
+		{
 			/* ex.printStackTrace(); */
 			throw ex;
 		}
@@ -144,7 +155,7 @@ public class CategoriaDAO implements ICategoriaDAO {
 				sql.append(" where cod="+pesquisa);
 			}
 			else{	
-				sql.append(" where nome like (%'"+pesquisa+"'%)");
+				sql.append(" where nome like ('%"+pesquisa+"%')");
 			}
 
 			PreparedStatement statement = conexao.prepareStatement(sql.toString());

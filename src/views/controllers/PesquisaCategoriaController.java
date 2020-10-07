@@ -71,7 +71,15 @@ public class PesquisaCategoriaController implements Initializable{
 
     @FXML
     void btnPesquisar_Action(ActionEvent event) {
-
+    	try 
+    	{
+    		this.ListarCategorias();
+		}
+    	catch (Exception e)
+    	{
+			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+			  alert.showAndWait();
+		}
     }
 
     @FXML
@@ -79,6 +87,7 @@ public class PesquisaCategoriaController implements Initializable{
     	try
     	{			
     		PesquisaCategoria.hide();
+    		PesquisaCategoria = null;
     		new HomeController().getHome().show();
 		}
     	catch (Exception e) 
