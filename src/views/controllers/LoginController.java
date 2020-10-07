@@ -18,6 +18,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
@@ -46,6 +47,7 @@ public class LoginController implements Initializable {
 				Scene scene = new Scene(root);
 				primaryStage.setScene(scene);
 				primaryStage.initStyle(StageStyle.TRANSPARENT);
+				scene.setFill(Color.TRANSPARENT);
 				login = primaryStage;
 			}
 		  catch(Exception e)
@@ -77,7 +79,7 @@ public class LoginController implements Initializable {
 			{
 				try 
 				{
-					/* login.hide(); */
+					login.hide();
 					new HomeController().getHome().show();
 				} 			  
 		  catch(Exception e)
