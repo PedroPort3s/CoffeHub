@@ -65,6 +65,7 @@ public class PesquisaCategoriaController implements Initializable{
     @FXML
     void btnCadCategoria_Action(ActionEvent event) {
     	PesquisaCategoria.hide();
+    	PesquisaCategoria = null;
     	new CadCategoriaController().getCadCategoria().show();
     }
 
@@ -128,12 +129,14 @@ public class PesquisaCategoriaController implements Initializable{
     			{
 					/* new CadCategoriaController().CarregarCategoria(categoria); */
     				CadCategoriaController.CategoriaEstatica = categoria;
+    				PesquisaCategoria.hide();
+    		    	PesquisaCategoria = null;
     				new CadCategoriaController().getCadCategoria().show();
        			}
     			else
     			{
     				throw new Exception("Não foi possível carregar a categoria selecionada");
-    			}
+    			} 
 			} 
     		catch (Exception e) {
   			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);

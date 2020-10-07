@@ -41,6 +41,12 @@ public class CadCategoriaController implements Initializable{
     @FXML
     private JFXButton btnLimpar;
     
+    @FXML
+    private JFXButton btnExcluir;
+
+    @FXML
+    private JFXButton btnEditar;
+    
     
 	public Stage getCadCategoria() {
 		if (CadCategoria == null)
@@ -107,12 +113,17 @@ public class CadCategoriaController implements Initializable{
     void btnVoltar_Action(ActionEvent event) {
     	Limpar();
     	CadCategoria.close();
+    	CadCategoria = null;
     	new PesquisaCategoriaController().getPesquisaCategoria().show();
     }
     
     void Limpar() {
     	txtCodCategoria.setText("");
     	txtDescricao.setText("");
+    	CategoriaEstatica = null;
+    	btnEditar.setVisible(false);
+    	btnExcluir.setVisible(false);
+    	btnGravar.setVisible(true);
     }
     
     public void CarregarCategoria(Categoria categoria) throws Exception{
@@ -123,17 +134,12 @@ public class CadCategoriaController implements Initializable{
     			{
     				txtCodCategoria.setText(categoria.getCod() +  "");
     				txtDescricao.setText(categoria.getNome());
+    				btnEditar.setVisible(true);
+    				btnExcluir.setVisible(true);
+    				btnGravar.setVisible(false);
+    			
     			}
-				/*
-				 * Categoria categoria = new ControlCategoria().Carregar(codCategorias);
-				 * if(categoria != null) { getCadCategoria().show();
-				 * 
-				 * txtCodCategoria.setText("" + categoria.getCod() + "");
-				 * txtDescricao.setText("" + categoria.getNome() + "");
-				 * 
-				 * }
-				 */
-    	}
+    		}
     		catch(Exception e)
     		{
     			Alert alert = new Alert(AlertType.WARNING);
@@ -155,6 +161,16 @@ public class CadCategoriaController implements Initializable{
     		}
 	
     	}
+    }
+    
+    @FXML
+    void btnEditar_Action(ActionEvent event) {
+    	
+    }
+
+    @FXML
+    void btnExcluir_Action(ActionEvent event) {
+
     }
     
 	@Override
