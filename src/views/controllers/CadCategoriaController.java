@@ -1,5 +1,8 @@
 package views.controllers;
 
+import java.net.URL;
+import java.util.ResourceBundle;
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
@@ -8,6 +11,7 @@ import entitys.Categoria;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -16,7 +20,9 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class CadCategoriaController {
+public class CadCategoriaController implements Initializable{
+	
+	public static Categoria CategoriaEstatica = new Categoria();
 	
 	private static Stage CadCategoria;
 
@@ -34,6 +40,7 @@ public class CadCategoriaController {
 
     @FXML
     private JFXButton btnLimpar;
+    
     
 	public Stage getCadCategoria() {
 		if (CadCategoria == null)
@@ -108,19 +115,24 @@ public class CadCategoriaController {
     	txtDescricao.setText("");
     }
     
-    public void CarregarCategoria(int codCategorias) throws Exception{
-    	if (codCategorias > 0) 
+    public void CarregarCategoria(Categoria categoria) throws Exception{
+    	if (categoria.getCod() > 0) 
     	{
     		try {
-    		Categoria categoria = new ControlCategoria().Carregar(codCategorias);
-			if(categoria != null)
-			{
-				/* new PesquisaCategoriaController().getPesquisaCategoria().close(); */
-				txtCodCategoria.setText("" + categoria.getCod() + "");
-				txtDescricao.setText("" + categoria.getNome() + "");				
-				
-	    		getCadCategoria().show();
-			}
+    			if(categoria != null) 
+    			{
+    				txtCodCategoria.setText(categoria.getCod() +  "");
+    				txtDescricao.setText(categoria.getNome());
+    			}
+				/*
+				 * Categoria categoria = new ControlCategoria().Carregar(codCategorias);
+				 * if(categoria != null) { getCadCategoria().show();
+				 * 
+				 * txtCodCategoria.setText("" + categoria.getCod() + "");
+				 * txtDescricao.setText("" + categoria.getNome() + "");
+				 * 
+				 * }
+				 */
     	}
     		catch(Exception e)
     		{
@@ -144,5 +156,27 @@ public class CadCategoriaController {
 	
     	}
     }
-
+    
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		/* this.CarregarCategoria(); */
+		if(CategoriaEstatica != null)
+		{
+			try
+			{				
+				this.CarregarCategoria(CategoriaEstatica);
+			}
+			catch (Exception e)
+			{
+    			Alert alert = new Alert(AlertType.WARNING);
+            	
+    			alert.setTitle("Atenção");
+    			alert.setHeaderText(e.getMessage());
+                
+    			alert.showAndWait();
+			}
+		}
+	}
 }
+
+

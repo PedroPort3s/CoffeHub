@@ -123,7 +123,17 @@ public class PesquisaCategoriaController implements Initializable{
     	{
     		try
     		{
-				new CadCategoriaController().CarregarCategoria(codCategoria);
+    			Categoria categoria = new ControlCategoria().Carregar(codCategoria); 
+    			if(categoria != null) 
+    			{
+					/* new CadCategoriaController().CarregarCategoria(categoria); */
+    				CadCategoriaController.CategoriaEstatica = categoria;
+    				new CadCategoriaController().getCadCategoria().show();
+       			}
+    			else
+    			{
+    				throw new Exception("Não foi possível carregar a categoria selecionada");
+    			}
 			} 
     		catch (Exception e) {
   			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
