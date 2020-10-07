@@ -18,11 +18,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class LoginController implements Initializable {
 
-
+	private static Stage login;
+	
     @FXML
     private JFXTextField txtUsuario;
 
@@ -34,7 +37,27 @@ public class LoginController implements Initializable {
     
     @FXML
     private JFXButton btnAcessar;
-
+    
+	public Stage getlogin() {
+		if (login == null)
+		{
+			try {
+		    	Stage primaryStage = new Stage();
+				AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("/views/Login.fxml"));
+				Scene scene = new Scene(root);
+				primaryStage.setScene(scene);
+				primaryStage.initStyle(StageStyle.TRANSPARENT);
+				scene.setFill(Color.TRANSPARENT);
+				login = primaryStage;
+			}
+		  catch(Exception e)
+		  	{
+			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+			  alert.showAndWait();	
+		  	}
+		}
+		return login;
+	}
 
     @FXML
     void btnAcessar_Action(ActionEvent event) throws Exception {
@@ -54,14 +77,11 @@ public class LoginController implements Initializable {
 			retorno = new ControlAcesso().CarregarLogin(cod, txtSenha.getText());
 			if (retorno == 1)
 			{
-				try {
-		    	Stage primaryStage = new Stage();
-				AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("/views/Home.fxml"));
-				Scene scene = new Scene(root);
-				primaryStage.setScene(scene);
-				primaryStage.setTitle("Home");
-				primaryStage.show();
-			} 			  
+				try 
+				{
+					login.hide();
+					new HomeController().getHome().show();
+				} 			  
 		  catch(Exception e)
 		  	{
 			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);

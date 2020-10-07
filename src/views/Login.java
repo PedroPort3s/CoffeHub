@@ -10,6 +10,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import views.controllers.LoginController;
 
 
 public class Login extends Application {
@@ -18,27 +19,9 @@ public class Login extends Application {
 
 	@Override
 	public void start(Stage primaryStage) {
-		try {
-			root = FXMLLoader.load(getClass().getResource("Login.fxml"));
-			Scene scene = new Scene(root);
-			primaryStage.initStyle(StageStyle.TRANSPARENT);
-			primaryStage.setScene(scene);
-			primaryStage.show();
-			scene.setFill(Color.TRANSPARENT);
-			root.setOnMousePressed(new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent event) {
-					xOffset = event.getSceneX();
-					yOffset = event.getSceneY();
-				}
-			});
-			root.setOnMouseDragged(new EventHandler<MouseEvent>() {
-				@Override
-				public void handle(MouseEvent event) {
-					primaryStage.setX(event.getScreenX() - xOffset);
-					primaryStage.setY(event.getScreenY() - yOffset);
-				}
-			});
+		try 
+		{
+			new LoginController().getlogin().show();
 
 		} catch (Exception e) {
 			e.printStackTrace();

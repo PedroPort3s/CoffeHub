@@ -49,13 +49,13 @@ public class ProdutoDAO implements IProdutoDAO {
 			
 			
 		} catch (ClassNotFoundException classEx) {
-			classEx.printStackTrace();
+			/* classEx.printStackTrace(); */
 			throw classEx;
 		} catch (SQLException sqlEx) {
-			sqlEx.printStackTrace();
+			/* sqlEx.printStackTrace(); */
 			throw sqlEx;
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			/* ex.printStackTrace(); */
 			throw ex;
 		}
 		
@@ -96,7 +96,7 @@ public class ProdutoDAO implements IProdutoDAO {
 			sql.append(" nome_produto = '" + prod.getDescricao() + "',");
 			sql.append("valor_un = "+prod.getValor_un()+",");
 			sql.append("qtd_atual = "+prod.getQtd_atual()+",");
-			sql.append("Categoria_cod = "+prod.getCategoria().getCod());
+			sql.append("Categoria_cod = "+prod.getCategoria().getCod() + ",");
 			sql.append("un_medida = '"+prod.getUnidadeMedida()+"'");
 			sql.append(" WHERE cod_produto = "+prod.getCod());
 
@@ -132,7 +132,7 @@ public class ProdutoDAO implements IProdutoDAO {
 			
 			ResultSet resultSet = statement.executeQuery();
 			
-			if(resultSet.first()) {
+			if(resultSet.next()) {
 				produto = this.PreencherProduto(resultSet);
 			}
 			
@@ -291,7 +291,9 @@ public class ProdutoDAO implements IProdutoDAO {
 
 			ResultSet resultSet = statement.executeQuery();
 
+			while(resultSet.next()) {
 			numProduto = resultSet.getInt("maior");
+			}
 			
 			if (numProduto <= 0) throw new Exception ("Não foi possível recuperar o proximo número dos produtos");
 			
@@ -299,13 +301,13 @@ public class ProdutoDAO implements IProdutoDAO {
 			connection.close();
 			
 		} catch (ClassNotFoundException classEx) {
-			classEx.printStackTrace();
+			/* classEx.printStackTrace(); */
 			throw classEx;
 		} catch (SQLException sqlEx) {
-			sqlEx.printStackTrace();
+			/* sqlEx.printStackTrace(); */
 			throw sqlEx;
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			/* ex.printStackTrace(); */
 			throw ex;
 		}
 

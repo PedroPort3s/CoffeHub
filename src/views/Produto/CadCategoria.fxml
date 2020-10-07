@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="186.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.controllers.CadCategoriaController">
+   <children>
+      <JFXTextField fx:id="txtCodCategoria" disable="true" focusColor="#2e1d04" labelFloat="true" layoutX="14.0" layoutY="36.0" prefHeight="40.0" prefWidth="136.0" promptText="Codigo" unFocusColor="BLACK" />
+      <JFXTextField fx:id="txtDescricao" focusColor="#2e1d04" labelFloat="true" layoutX="157.0" layoutY="36.0" prefHeight="40.0" prefWidth="418.0" promptText="Descrição" unFocusColor="BLACK" />
+      <JFXButton fx:id="btnGravar" buttonType="RAISED" layoutX="277.0" layoutY="118.0" onAction="#btnGravar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Gravar" textFill="WHITE" />
+      <JFXButton fx:id="btnVoltar" buttonType="RAISED" layoutX="496.0" layoutY="118.0" onAction="#btnVoltar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Voltar" textFill="WHITE" />
+      <JFXButton fx:id="btnLimpar" buttonType="RAISED" layoutX="388.0" layoutY="118.0" onAction="#btnLimpar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Limpar" textFill="WHITE" />
+      <JFXButton fx:id="btnExcluir" buttonType="RAISED" layoutX="14.0" layoutY="118.0" onAction="#btnExcluir_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Excluir" textFill="WHITE" visible="false" />
+      <JFXButton fx:id="btnEditar" buttonType="RAISED" layoutX="112.0" layoutY="118.0" onAction="#btnEditar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Editar" textFill="WHITE" visible="false" />
+   </children>
+</AnchorPane>

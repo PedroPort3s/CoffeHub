@@ -8,8 +8,8 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 
-import control.produto.ControlProduto;
-import entitys.Produto;
+import control.produto.ControlCategoria;
+import entitys.Categoria;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,12 +23,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class PesquisaProdutoController implements Initializable{
-
-	private static Stage PesquisaProduto;
+public class PesquisaCategoriaController implements Initializable{
 	
+	private static Stage PesquisaCategoria;
+
     @FXML
-    private JFXTextField txtCodProd;
+    private JFXTextField txtDescricao;
 
     @FXML
     private JFXButton btnPesquisar;
@@ -37,24 +37,21 @@ public class PesquisaProdutoController implements Initializable{
     private JFXButton btnVoltar;
 
     @FXML
-    private JFXButton btnCadProduto;
+    private JFXButton btnCadCategoria;
     
     @FXML
-    private JFXTextField txtDescricao;
-    
-    @FXML
-    private JFXListView<Produto> lvProdutos;
+    private JFXListView<Categoria> lvCategorias;
 
-	public Stage getPesquisaProduto() {
-		if (PesquisaProduto == null)
+	public Stage getPesquisaCategoria() {
+		if (PesquisaCategoria == null)
 		{
 			try {
 		    	Stage primaryStage = new Stage();
-				AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("/views/Produto/PesquisaProduto.fxml"));
+				AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("/views/Produto/PesquisaCategoria.fxml"));
 				Scene scene = new Scene(root);
 				primaryStage.setScene(scene);
 				primaryStage.initStyle(StageStyle.TRANSPARENT);
-				PesquisaProduto = primaryStage;
+				PesquisaCategoria = primaryStage;
 			}
 		  catch(Exception e)
 		  	{
@@ -62,21 +59,21 @@ public class PesquisaProdutoController implements Initializable{
 			  alert.showAndWait();	
 		  	}
 		}
-		return PesquisaProduto;
+		return PesquisaCategoria;
 	}
     
     @FXML
-    void btnCadProduto_Action(ActionEvent event) {
-    	PesquisaProduto.hide();
-    	PesquisaProduto = null;
-    	new CadProdutoController().getCadProduto().show();
+    void btnCadCategoria_Action(ActionEvent event) {
+    	PesquisaCategoria.hide();
+    	PesquisaCategoria = null;
+    	new CadCategoriaController().getCadCategoria().show();
     }
-    
+
     @FXML
     void btnPesquisar_Action(ActionEvent event) {
     	try 
     	{
-    		this.ListarProdutos();
+    		this.ListarCategorias();
 		}
     	catch (Exception e)
     	{
@@ -89,8 +86,8 @@ public class PesquisaProdutoController implements Initializable{
     void btnVoltar_Action(ActionEvent event) {
     	try
     	{			
-    		PesquisaProduto.hide();
-    		PesquisaProduto = null;
+    		PesquisaCategoria.hide();
+    		PesquisaCategoria = null;
     		new HomeController().getHome().show();
 		}
     	catch (Exception e) 
@@ -99,18 +96,18 @@ public class PesquisaProdutoController implements Initializable{
 			  alert.showAndWait();
 		}
     }
-    
-    void ListarProdutos() 
+
+    void ListarCategorias() 
     {
-    	List<Produto>lstProdutos;
-    	lvProdutos.getItems().clear();
+    	List<Categoria>	lstCategorias;
+    	lvCategorias.getItems().clear();
     	
     	try 
     	{
-    		lstProdutos = new ControlProduto().Listar();
-			if (lstProdutos != null) 
+			lstCategorias = new ControlCategoria().Listar(txtDescricao.getText());
+			if (lstCategorias != null) 
 			{
-				lstProdutos.forEach(p -> lvProdutos.getItems().add(p));
+				lstCategorias.forEach(f -> lvCategorias.getItems().add(f));
 			}
 		}
     	
@@ -127,27 +124,27 @@ public class PesquisaProdutoController implements Initializable{
     	}
     }
     
+
     @FXML
-    void lvProdutos_MouseClicked(MouseEvent event)
-    {
-    	int codProduto = lvProdutos.getSelectionModel().getSelectedItem().getCod();
+    void lvCategorias_MouseClicked(MouseEvent event) {
+    	int codCategoria = lvCategorias.getSelectionModel().getSelectedItem().getCod();
     	
-    	if (codProduto > 0) 
+    	if (codCategoria > 0) 
     	{
     		try
     		{
-    			Produto produto = new ControlProduto().Carregar(codProduto); 
-    			if(produto != null) 
+    			Categoria categoria = new ControlCategoria().Carregar(codCategoria); 
+    			if(categoria != null) 
     			{
 					/* new CadCategoriaController().CarregarCategoria(categoria); */
-					CadProdutoController.ProdutoEstatico= produto; 
-    				PesquisaProduto.hide();
-    		    	PesquisaProduto = null;
-    				new CadProdutoController().getCadProduto().show();
+    				CadCategoriaController.CategoriaEstatica = categoria;
+    				PesquisaCategoria.hide();
+    		    	PesquisaCategoria = null;
+    				new CadCategoriaController().getCadCategoria().show();
        			}
     			else
     			{
-    				throw new Exception("Não foi possível carregar o produto selecionado");
+    				throw new Exception("Não foi possível carregar a categoria selecionada");
     			} 
 			} 
     		catch (Exception e) {
@@ -155,11 +152,11 @@ public class PesquisaProdutoController implements Initializable{
   			  alert.showAndWait();
 			}
 		}
+    	
     }
     
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
-		this.ListarProdutos();
+		this.ListarCategorias();
 	}
-
 }

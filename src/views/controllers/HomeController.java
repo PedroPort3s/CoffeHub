@@ -14,9 +14,11 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class HomeController {
 
+	private static Stage Home;
     @FXML
     private Button btnOverview;
 
@@ -55,7 +57,32 @@ public class HomeController {
 
     @FXML
     private VBox pnItems;
+    
 
+    @FXML
+    private Button btnCategorias;
+    
+
+	public Stage getHome() {
+		if (Home == null)
+		{
+			try {
+		    	Stage primaryStage = new Stage();
+				AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("/views/Home.fxml"));
+				Scene scene = new Scene(root);
+				primaryStage.setScene(scene);
+				primaryStage.initStyle(StageStyle.TRANSPARENT);
+				Home = primaryStage;
+			}
+		  catch(Exception e)
+		  	{
+			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+			  alert.showAndWait();	
+		  	}
+		}
+		return Home;
+	}
+    
     @FXML
     void btnClientes_Action(ActionEvent event) {
 
@@ -78,17 +105,15 @@ public class HomeController {
 
     @FXML
     void btnProdutos_Action(ActionEvent event) {
-		try {
-    	Stage primaryStage = new Stage();
-		AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("/views/Produto/PesquisaProduto.fxml"));
-		Scene scene = new Scene(root);
-		primaryStage.setScene(scene);
-		primaryStage.setTitle("Produtos");
-		primaryStage.show();
-	} 
-    catch(Exception e) {
-		Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
-    	alert.showAndWait();	
+		try
+		{
+	    	Home.hide();
+			new PesquisaProdutoController().getPesquisaProduto().show();
+		}
+		catch(Exception e)
+		{
+			Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+			alert.showAndWait();	
     	}
     }
    
@@ -114,6 +139,19 @@ public class HomeController {
     @FXML
     void handleClicks(ActionEvent event) {
 
+    }
+    
+    @FXML
+    void btnCategorias_Action(ActionEvent event) {
+    	try {
+    	Home.hide();
+    	new PesquisaCategoriaController().getPesquisaCategoria().show();
+    	}
+		catch(Exception e)
+		{
+			Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+			alert.showAndWait();	
+    	}
     }
 
 }

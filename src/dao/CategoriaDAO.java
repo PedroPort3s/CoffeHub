@@ -41,13 +41,13 @@ public class CategoriaDAO implements ICategoriaDAO {
 			retorno = statement.executeUpdate();
 			
 		} catch (ClassNotFoundException classEx) {
-			classEx.printStackTrace();
+			/* classEx.printStackTrace(); */
 			throw classEx;
 		} catch (SQLException sqlEx) {
-			sqlEx.printStackTrace();
+			/* sqlEx.printStackTrace(); */
 			throw sqlEx;
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			/* ex.printStackTrace(); */
 			throw ex;
 		}
 		
@@ -68,11 +68,22 @@ public class CategoriaDAO implements ICategoriaDAO {
 			retorno = statement.executeUpdate();
 			
 			statement.close();
-		}  catch (SQLException sqlEx) {
-			sqlEx.printStackTrace();
+		} 
+		catch (SQLException sqlEx)
+		{ 
+			/* int erro = sqlEx.getErrorCode(); */
+			if(sqlEx.getErrorCode() == 1451)
+			{
+				throw new SQLException("Esta categoria esta sendo utilizada por um ou mais produtos, para deletar a mesma, favor deletar os produtos antes.");
+			}
+			else 
+			{
 			throw sqlEx;
-		} catch (Exception ex) {
-			ex.printStackTrace();
+			}
+		}
+		catch (Exception ex) 
+		{
+			/* ex.printStackTrace(); */
 			throw ex;
 		}
 		return retorno;
@@ -94,10 +105,10 @@ public class CategoriaDAO implements ICategoriaDAO {
 			statement.close();
 
 		}  catch (SQLException sqlEx) {
-			sqlEx.printStackTrace();
+			/* sqlEx.printStackTrace(); */
 			throw sqlEx;
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			/* ex.printStackTrace(); */
 			throw ex;
 		}
 		return retorno;
@@ -117,7 +128,7 @@ public class CategoriaDAO implements ICategoriaDAO {
 			
 			ResultSet resultSet = statement.executeQuery();
 			
-			if(resultSet.first()) {
+			if(resultSet.next()) {
 				categoria = new Categoria(resultSet.getInt("cod"), resultSet.getString("nome"));	
 			}
 			
@@ -144,7 +155,7 @@ public class CategoriaDAO implements ICategoriaDAO {
 				sql.append(" where cod="+pesquisa);
 			}
 			else{	
-				sql.append(" where nome like (%'"+pesquisa+"'%)");
+				sql.append(" where nome like ('%"+pesquisa+"%')");
 			}
 
 			PreparedStatement statement = conexao.prepareStatement(sql.toString());
@@ -158,10 +169,10 @@ public class CategoriaDAO implements ICategoriaDAO {
 			
 			statement.close();
 		}  catch (SQLException sqlEx) {
-			sqlEx.printStackTrace();
+			/* sqlEx.printStackTrace(); */
 			throw sqlEx;
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			/* ex.printStackTrace(); */
 			throw ex;
 		}
 		return lista;
@@ -178,17 +189,26 @@ public class CategoriaDAO implements ICategoriaDAO {
 			ResultSet resultSet = statement.executeQuery();
 
 			while (resultSet.next()) {
-				lista.add(new Categoria(resultSet.getInt("cod"), resultSet.getString("nome")));
+				/*
+				 * lista.add(new Categoria(resultSet.getInt("cod"),
+				 * resultSet.getString("nome")));
+				 */
+				
+				Categoria categoria = new Categoria();
+				categoria.setCod(resultSet.getInt("cod"));
+				categoria.setNome(resultSet.getString("nome"));
+				
+				lista.add(categoria);
 			}
 			
 			statement.close();
 			
 			
 		}catch (SQLException sqlEx) {
-			sqlEx.printStackTrace();
+			/* sqlEx.printStackTrace(); */
 			throw sqlEx;
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			/* ex.printStackTrace(); */
 			throw ex;
 		}
 
@@ -206,7 +226,9 @@ public class CategoriaDAO implements ICategoriaDAO {
 
 			ResultSet resultSet = statement.executeQuery();
 
-			numeroCategoria = resultSet.getInt("maior");
+			while(resultSet.next()) {
+				numeroCategoria = resultSet.getInt("maior");
+			}
 			
 			if (numeroCategoria <= 0) throw new Exception ("Não foi possível recuperar o proximo número da categoria");
 			
@@ -214,13 +236,13 @@ public class CategoriaDAO implements ICategoriaDAO {
 			
 			
 		} catch (ClassNotFoundException classEx) {
-			classEx.printStackTrace();
+			/* classEx.printStackTrace(); */
 			throw classEx;
 		} catch (SQLException sqlEx) {
-			sqlEx.printStackTrace();
+			/* sqlEx.printStackTrace(); */
 			throw sqlEx;
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			/* ex.printStackTrace(); */
 			throw ex;
 		}
 

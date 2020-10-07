@@ -18,7 +18,28 @@ public class Produto {
 
 	private Categoria categoria;
 
+
+	public Produto(String descricao, double valor_un, int qtd_atual, String unidadeMedida, Categoria categoria) {
+		super();
+		this.descricao = descricao;
+		this.valor_un = valor_un;
+		this.qtd_atual = qtd_atual;
+		this.unidadeMedida = unidadeMedida;
+		this.categoria = categoria;
+	}
+		
 	
+	public Produto(int cod, String descricao, double valor_un, int qtd_atual, String unidadeMedida,
+			Categoria categoria) {
+		super();
+		this.cod = cod;
+		this.descricao = descricao;
+		this.valor_un = valor_un;
+		this.qtd_atual = qtd_atual;
+		this.unidadeMedida = unidadeMedida;
+		this.categoria = categoria;
+	}
+
 
 	public int getCod() {
 		return cod;
@@ -75,5 +96,11 @@ public class Produto {
 	public double quantidadeTotalEstoque() {
 		return 0;
 	}
+
+	@Override
+	public String toString() {
+		return "Produto [cod=" + cod + ", descricao=" + descricao + ", valor_un=" + valor_un + ", qtd_atual="
+				+ qtd_atual + ", unidadeMedida=" + unidadeMedida + ", categoria=" + categoria + "]";
+	}	
 
 }
