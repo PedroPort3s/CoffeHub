@@ -17,6 +17,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -111,6 +112,25 @@ public class PesquisaCategoriaController implements Initializable{
 			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
 			  alert.showAndWait();
     	}
+    }
+    
+
+    @FXML
+    void lvCategorias_MouseClicked(MouseEvent event) {
+    	int codCategoria = lvCategorias.getSelectionModel().getSelectedItem().getCod();
+    	
+    	if (codCategoria > 0) 
+    	{
+    		try
+    		{
+				new CadCategoriaController().CarregarCategoria(codCategoria);
+			} 
+    		catch (Exception e) {
+  			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+  			  alert.showAndWait();
+			}
+		}
+    	
     }
     
 	@Override

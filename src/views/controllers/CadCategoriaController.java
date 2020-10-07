@@ -1,7 +1,5 @@
 package views.controllers;
 
-import java.sql.SQLException;
-
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
 
@@ -108,6 +106,43 @@ public class CadCategoriaController {
     void Limpar() {
     	txtCodCategoria.setText("");
     	txtDescricao.setText("");
+    }
+    
+    public void CarregarCategoria(int codCategorias) throws Exception{
+    	if (codCategorias > 0) 
+    	{
+    		try {
+    		Categoria categoria = new ControlCategoria().Carregar(codCategorias);
+			if(categoria != null)
+			{
+				/* new PesquisaCategoriaController().getPesquisaCategoria().close(); */
+				txtCodCategoria.setText("" + categoria.getCod() + "");
+				txtDescricao.setText("" + categoria.getNome() + "");				
+				
+	    		getCadCategoria().show();
+			}
+    	}
+    		catch(Exception e)
+    		{
+    			Alert alert = new Alert(AlertType.WARNING);
+
+    			alert.setTitle("Atenção");
+            	alert.setHeaderText(e.getMessage());
+            
+            	alert.showAndWait();
+    		}
+        	
+    		catch(Error er)
+    		{
+    			Alert alert = new Alert(AlertType.WARNING);
+        	
+    			alert.setTitle("Atenção");
+    			alert.setHeaderText(er.getMessage());
+                
+    			alert.showAndWait();
+    		}
+	
+    	}
     }
 
 }
