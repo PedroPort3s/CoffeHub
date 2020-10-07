@@ -132,7 +132,7 @@ public class ProdutoDAO implements IProdutoDAO {
 			
 			ResultSet resultSet = statement.executeQuery();
 			
-			if(resultSet.first()) {
+			if(resultSet.next()) {
 				produto = this.PreencherProduto(resultSet);
 			}
 			

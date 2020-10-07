@@ -117,7 +117,7 @@ public class CategoriaDAO implements ICategoriaDAO {
 			
 			ResultSet resultSet = statement.executeQuery();
 			
-			if(resultSet.first()) {
+			if(resultSet.next()) {
 				categoria = new Categoria(resultSet.getInt("cod"), resultSet.getString("nome"));	
 			}
 			

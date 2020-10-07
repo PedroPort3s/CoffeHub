@@ -7,7 +7,9 @@ public class Categoria {
 	private String nome;
 
 	public Categoria(int codCategoria, String nomeCategoria) {
-		// TODO Auto-generated constructor stub
+		super();
+		this.cod = codCategoria;
+		this.nome = nomeCategoria;
 	}	
 
 	public Categoria(String nome) {
@@ -39,6 +41,6 @@ public class Categoria {
 
 	@Override
 	public String toString() {
-		return "Categoria [cod=" + cod + ", nome=" + nome + "]";
+		return cod + " - " + nome ;
 	}	
 }
