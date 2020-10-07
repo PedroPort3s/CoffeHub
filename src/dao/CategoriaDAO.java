@@ -69,10 +69,10 @@ public class CategoriaDAO implements ICategoriaDAO {
 			
 			statement.close();
 		}  catch (SQLException sqlEx) {
-			sqlEx.printStackTrace();
+			/* sqlEx.printStackTrace(); */
 			throw sqlEx;
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			/* ex.printStackTrace(); */
 			throw ex;
 		}
 		return retorno;
@@ -94,10 +94,10 @@ public class CategoriaDAO implements ICategoriaDAO {
 			statement.close();
 
 		}  catch (SQLException sqlEx) {
-			sqlEx.printStackTrace();
+			/* sqlEx.printStackTrace(); */
 			throw sqlEx;
 		} catch (Exception ex) {
-			ex.printStackTrace();
+			/* ex.printStackTrace(); */
 			throw ex;
 		}
 		return retorno;

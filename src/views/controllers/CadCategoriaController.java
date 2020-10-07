@@ -1,6 +1,7 @@
 package views.controllers;
 
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
@@ -165,14 +166,84 @@ public class CadCategoriaController implements Initializable{
     
     @FXML
     void btnEditar_Action(ActionEvent event) {
+    	Alert ConfirmaEditar = new Alert(AlertType.CONFIRMATION);
     	
+    	ConfirmaEditar.setTitle("Edição");
+    	ConfirmaEditar.setHeaderText("Confirma a alteração na categoria selecionada?");  	
+    	
+    	Optional<ButtonType> result = ConfirmaEditar.showAndWait();
+    	 if (result.isPresent() && result.get() == ButtonType.OK) {  
+    	try 
+    	{
+    		Categoria categoriaEditar = new Categoria(Integer.parseInt(txtCodCategoria.getText()), txtDescricao.getText());
+    		if(new ControlCategoria().Editar(categoriaEditar) == 1)
+    		{
+				Limpar();
+	    		Alert alert = new Alert(AlertType.INFORMATION);
+
+	            alert.setTitle("Sucesso");
+	            alert.setHeaderText("Categoria alterada com sucesso com sucesso");
+	            
+	            alert.showAndWait();
+    		}
+    		
+		} 
+		catch(Exception e)
+		{
+			Alert alert = new Alert(AlertType.WARNING);
+
+			alert.setTitle("Atenção");
+        	alert.setHeaderText(e.getMessage());
+        
+        	alert.showAndWait();
+		}
+    	
+		catch(Error er)
+		{
+			Alert alert = new Alert(AlertType.WARNING);
+    	
+			alert.setTitle("Atenção");
+			alert.setHeaderText(er.getMessage());
+            
+			alert.showAndWait();
+		}
     }
+  }
 
     @FXML
     void btnExcluir_Action(ActionEvent event) {
+    	Alert ConfirmaExcluir = new Alert(AlertType.CONFIRMATION);
+    	
+    	ConfirmaExcluir.setTitle("Exclusão");
+    	ConfirmaExcluir.setHeaderText("Deseja realmente excluir a categoria selecionada?");  	
+    	
+    	Optional<ButtonType> result = ConfirmaExcluir.showAndWait();
+    	 if (result.isPresent() && result.get() == ButtonType.OK) {    		     	
+    	try 
+    	{
+			if(new ControlCategoria().Deletar(Integer.parseInt(txtCodCategoria.getText())) == 1)
+			{
+				Limpar();
+	    		Alert alert = new Alert(AlertType.INFORMATION);
 
+	            alert.setTitle("Sucesso");
+	            alert.setHeaderText("Categoria deletada com sucesso");
+	            
+	            alert.showAndWait();
+			}
+		}
+    	catch (Exception e) 
+		{
+			Alert alert = new Alert(AlertType.WARNING);
+    	
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+            
+			alert.showAndWait();
+		}
     }
-    
+  }
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		/* this.CarregarCategoria(); */
