@@ -95,14 +95,20 @@ public class ControlProduto {
 
 	public List<Produto> Listar(String pesquisa) throws ClassNotFoundException, SQLException {
 		List<Produto> lstProd = null;
-		try {
-			
-			if(pesquisa.trim().equals("")) throw new Error("Informe uma ID ou descrição para listar os produtos.");
+		try {		
 			
 			Connection conn = ConexaoMySql.getInstance().getConnection();
 			ProdutoDAO prodDAO = new ProdutoDAO(conn);
 			
-			lstProd = prodDAO.Buscar(pesquisa);
+			
+			if(pesquisa.trim().equals("")) 
+			{
+				lstProd = prodDAO.Buscar();
+			}
+			else
+			{
+				lstProd = prodDAO.Buscar(pesquisa);
+			}
 			
 			conn.close();
 		}

@@ -15,7 +15,7 @@
       <JFXTextField fx:id="txtValor" focusColor="#2e1d04" labelFloat="true" layoutX="10.0" layoutY="109.0" prefHeight="40.0" prefWidth="136.0" promptText="Valor" unFocusColor="BLACK" />
       <JFXTextField fx:id="txtQtd" focusColor="#2e1d04" labelFloat="true" layoutX="167.0" layoutY="109.0" prefHeight="40.0" prefWidth="136.0" promptText="Quantidade" unFocusColor="BLACK" />
       <JFXTextField fx:id="txtUnMedida" focusColor="#2e1d04" labelFloat="true" layoutX="321.0" layoutY="109.0" prefHeight="40.0" prefWidth="252.0" promptText="Unidade de Medida" unFocusColor="BLACK" />
-      <JFXComboBox fx:id="cbCategoria" layoutX="350.0" layoutY="181.0" prefHeight="25.0" prefWidth="225.0" promptText="Categoria" />
+      <JFXComboBox fx:id="cbCategoria" layoutX="350.0" layoutY="186.0" prefHeight="25.0" prefWidth="225.0" promptText="Categoria" />
       <JFXButton fx:id="btnExcluir" buttonType="RAISED" layoutX="14.0" layoutY="305.0" onAction="#btnExcluir_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Excluir" textFill="WHITE" visible="false" />
       <JFXButton fx:id="btnEditar" buttonType="RAISED" layoutX="112.0" layoutY="305.0" onAction="#btnEditar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Editar" textFill="WHITE" visible="false" />
    </children>

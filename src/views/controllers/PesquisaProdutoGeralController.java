@@ -17,15 +17,15 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class PesquisaProdutoController implements Initializable{
+public class PesquisaProdutoGeralController implements Initializable{
 
-	private static Stage PesquisaProduto;
+	private static Stage PesquisaProdutoGeral;
 
     @FXML
     private JFXButton btnPesquisar;
@@ -34,24 +34,21 @@ public class PesquisaProdutoController implements Initializable{
     private JFXButton btnVoltar;
 
     @FXML
-    private JFXButton btnCadProduto;
-    
-    @FXML
     private JFXTextField txtDescricao;
-    
+
     @FXML
     private JFXListView<Produto> lvProdutos;
 
-	public Stage getPesquisaProduto() {
-		if (PesquisaProduto == null)
+	public Stage getPesquisaProdutoGeral() {
+		if (PesquisaProdutoGeral == null)
 		{
 			try {
 		    	Stage primaryStage = new Stage();
-				AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("/views/Produto/PesquisaProduto.fxml"));
+				AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("/views/pesquisa/PesquisaProdutoGeral.fxml"));
 				Scene scene = new Scene(root);
 				primaryStage.setScene(scene);
 				primaryStage.initStyle(StageStyle.TRANSPARENT);
-				PesquisaProduto = primaryStage;
+				PesquisaProdutoGeral = primaryStage;
 			}
 		  catch(Exception e)
 		  	{
@@ -59,44 +56,33 @@ public class PesquisaProdutoController implements Initializable{
 			  alert.showAndWait();	
 		  	}
 		}
-		return PesquisaProduto;
+		return PesquisaProdutoGeral;
 	}
-    
-    @FXML
-    void btnCadProduto_Action(ActionEvent event) {
-    	PesquisaProduto.hide();
-    	PesquisaProduto = null;
-    	new CadProdutoController().getCadProduto().show();
-    }
-    
     @FXML
     void btnPesquisar_Action(ActionEvent event) {
     	try 
     	{
-    		this.ListarProdutos();
+			this.ListarProdutosPesquisa(txtDescricao.getText());
 		}
-    	catch (Exception e)
+    	catch (Exception e) 
     	{
 			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
-			  alert.showAndWait();
+			  alert.showAndWait();	
 		}
     }
 
     @FXML
     void btnVoltar_Action(ActionEvent event) {
-    	try
-    	{			
-    		PesquisaProduto.hide();
-    		PesquisaProduto = null;
-    		new HomeController().getHome().show();
-		}
-    	catch (Exception e) 
-    	{
-			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
-			  alert.showAndWait();
-		}
+		PesquisaProdutoGeral.hide();
+		PesquisaProdutoGeral = null;
+		
     }
-    
+
+    @FXML
+    void lvProdutos_MouseClicked(MouseEvent event) {
+
+    }
+
     void ListarProdutos() 
     {
     	List<Produto>lstProdutos;
@@ -104,7 +90,7 @@ public class PesquisaProdutoController implements Initializable{
     	
     	try 
     	{
-    		lstProdutos = new ControlProduto().Listar(txtDescricao.getText());
+    		lstProdutos = new ControlProduto().Listar();
 			if (lstProdutos != null) 
 			{
 				lstProdutos.forEach(p -> lvProdutos.getItems().add(p));
@@ -124,40 +110,35 @@ public class PesquisaProdutoController implements Initializable{
     	}
     }
     
-    
-    @FXML
-    void lvProdutos_MouseClicked(MouseEvent event)
+    void ListarProdutosPesquisa(String pesquisa) 
     {
-    	int codProduto = lvProdutos.getSelectionModel().getSelectedItem().getCod();
+    	List<Produto>lstProdutos;
+    	lvProdutos.getItems().clear();
     	
-    	if (codProduto > 0) 
+    	try 
     	{
-    		try
-    		{
-    			Produto produto = new ControlProduto().Carregar(codProduto); 
-    			if(produto != null) 
-    			{
-					/* new CadCategoriaController().CarregarCategoria(categoria); */
-					CadProdutoController.ProdutoEstatico= produto; 
-    				PesquisaProduto.hide();
-    		    	PesquisaProduto = null;
-    				new CadProdutoController().getCadProduto().show();
-       			}
-    			else
-    			{
-    				throw new Exception("Não foi possível carregar o produto selecionado");
-    			} 
-			} 
-    		catch (Exception e) {
-  			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
-  			  alert.showAndWait();
+    		lstProdutos = new ControlProduto().Listar(pesquisa);
+			if (lstProdutos != null) 
+			{
+				lstProdutos.forEach(p -> lvProdutos.getItems().add(p));
 			}
 		}
+    	
+    	catch (Exception e) 
+    	{
+			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+			  alert.showAndWait();
+    	}
+    	
+    	catch(Error e) 
+    	{
+			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+			  alert.showAndWait();
+    	}
     }
     
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		this.ListarProdutos();
 	}
-
 }

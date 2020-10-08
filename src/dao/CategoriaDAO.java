@@ -10,7 +10,6 @@ import java.util.List;
 import Helper.Verifica;
 import dao.interfaces.ICategoriaDAO;
 import entitys.Categoria;
-import utils.ConexaoMySql;
 
 public class CategoriaDAO implements ICategoriaDAO {
 	

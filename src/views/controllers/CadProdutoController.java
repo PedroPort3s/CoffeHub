@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -23,6 +25,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -66,6 +69,7 @@ public class CadProdutoController  implements Initializable {
 
     @FXML
     private JFXButton btnEditar;
+    
 
 	public Stage getCadProduto() {
 		if (CadProduto == null)
@@ -182,6 +186,7 @@ public class CadProdutoController  implements Initializable {
     	btnEditar.setVisible(false);
     	btnExcluir.setVisible(false);
     	btnGravar.setVisible(true);
+    	cbCategoria.getSelectionModel().select(null);
     }
     
 
@@ -283,14 +288,15 @@ public class CadProdutoController  implements Initializable {
     		    	txtUnMedida.setText(produto.getUnidadeMedida());
     		    	txtValor.setText(produto.getValor_un() + "");
     		    	
-					/*
-					 * SingleSelectionModel categoriaProduto = produto.getCategoria();
-					 * 
-					 * this.cbCategoria.setSelectionModel(produto.getCategoria());
-					 * 
-					 * cbCategoria.setSelectionModel(produto.getCategoria());
-					 */
-    				
+    		    	Categoria c = produto.getCategoria();    		    		
+    		    	
+    	    		List<Categoria> lstCategorias = new ControlCategoria().Listar("");
+    	    		ObservableList <Categoria> categorias = FXCollections.observableArrayList(lstCategorias);
+    	    		
+    	    		Categoria indice = categorias.stream().filter(x -> x.getCod() == c.getCod()).findFirst().orElse(null);    	    				
+    	    		
+    		    	cbCategoria.getSelectionModel().select(indice.getCod() - 1);
+
     				btnEditar.setVisible(true);
     				btnExcluir.setVisible(true);
     				btnGravar.setVisible(false);
@@ -326,6 +332,7 @@ public class CadProdutoController  implements Initializable {
 		  {
 			  try 
 			  {
+				this.ListarCategoria();
 				this.CarregarProduto(ProdutoEstatico);
 			  } 
 			  catch (Exception e) 
@@ -337,7 +344,6 @@ public class CadProdutoController  implements Initializable {
 	            
 	           	alert.showAndWait();
 			  }			  
-			  this.ListarCategoria();
 		  }		  
 		  else 
 		  {
