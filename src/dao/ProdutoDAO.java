@@ -9,8 +9,6 @@ import java.util.List;
 
 import Helper.Verifica;
 import dao.interfaces.IProdutoDAO;
-import entitys.Categoria;
-import entitys.Pessoa;
 import entitys.Produto;
 import utils.ConexaoMySql;
 
@@ -164,10 +162,10 @@ public class ProdutoDAO implements IProdutoDAO {
 			sql.append(this.Select_ProdutoCategoria());
 			
 			if(Verifica.ehNumeroInt(pesquisa)){
-				sql.append(" where cod="+pesquisa);
+				sql.append(" where cod_produto="+pesquisa);
 			}
 			else{	
-				sql.append(" where nome like (%'"+pesquisa+"'%)");
+				sql.append(" where nome_produto like ('%"+pesquisa+"%')");
 			}
 
 			PreparedStatement statement = conexao.prepareStatement(sql.toString());
@@ -202,10 +200,10 @@ public class ProdutoDAO implements IProdutoDAO {
 			sql.append(this.Select_ProdutoCategoria());
 			
 			if(Verifica.ehNumeroInt(pesquisa)){
-				sql.append(" where cod="+pesquisa);
+				sql.append(" where cod_produto="+pesquisa);
 			}
 			else{	
-				sql.append(" where nome like (%'"+pesquisa+"'%)");
+				sql.append(" where nome_produto like (%'"+pesquisa+"'%)");
 			}
 			
 			if(codCategoria > 0) {
