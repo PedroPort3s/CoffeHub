@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="410.0" prefWidth="603.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.controllers.PesquisaProdutoController">
+   <children>
+      <JFXButton fx:id="btnPesquisar" buttonType="RAISED" layoutX="302.0" layoutY="96.0" onAction="#btnPesquisar_Action" prefHeight="30.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Pesquisar" textFill="WHITE" />
+      <JFXButton fx:id="btnVoltar" buttonType="RAISED" layoutX="496.0" layoutY="96.0" onAction="#btnVoltar_Action" prefHeight="30.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Voltar" textFill="WHITE" />
+      <JFXButton fx:id="btnCadProduto" buttonType="RAISED" layoutX="398.0" layoutY="96.0" onAction="#btnCadProduto_Action" prefHeight="30.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Novo" textFill="WHITE" />
+      <JFXTextField fx:id="txtDescricao" focusColor="#2e1d04" labelFloat="true" layoutX="13.0" layoutY="29.0" prefHeight="40.0" prefWidth="578.0" promptText="Descrição" unFocusColor="BLACK" />
+      <JFXListView fx:id="lvProdutos" layoutX="9.0" layoutY="173.0" onMouseClicked="#lvProdutos_MouseClicked" prefHeight="221.0" prefWidth="578.0" />
+      <JFXComboBox fx:id="cbCategoria" focusColor="#2e1d04" layoutX="14.0" layoutY="99.0" prefHeight="25.0" prefWidth="263.0" promptText="Categoria" />
+   </children>
+</AnchorPane>

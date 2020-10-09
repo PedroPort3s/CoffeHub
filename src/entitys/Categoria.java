@@ -7,7 +7,20 @@ public class Categoria {
 	private String nome;
 
 	public Categoria(int codCategoria, String nomeCategoria) {
-		// TODO Auto-generated constructor stub
+		super();
+		this.cod = codCategoria;
+		this.nome = nomeCategoria;
+	}	
+
+	public Categoria(String nome) {
+		super();
+		this.nome = nome;
+	}
+	
+	
+	
+	public Categoria() {
+		super();
 	}
 
 	public int getCod() {
@@ -25,4 +38,9 @@ public class Categoria {
 	public void setNome(String nome) {
 		this.nome = nome;
 	}
+
+	@Override
+	public String toString() {
+		return cod + " - " + nome ;
+	}	
 }

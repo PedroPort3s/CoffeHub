@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="615.0" prefWidth="887.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <JFXButton fx:id="btnNomeBotao" buttonType="RAISED" layoutX="32.0" layoutY="27.0" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Botao Normal" textFill="WHITE" />
+      <JFXButton fx:id="btnNomeBotaoPequeno" buttonType="RAISED" layoutX="192.0" layoutY="35.0" prefHeight="25.0" prefWidth="108.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Botao Pequeno" textFill="WHITE" />
+      <JFXTextField fx:id="txtNomeTtxt" focusColor="#2e1d04" labelFloat="true" layoutX="18.0" layoutY="110.0" prefHeight="40.0" prefWidth="264.0" promptText="Txt" unFocusColor="BLACK" />
+      <JFXListView fx:id="lvNomeLv" layoutX="18.0" layoutY="219.0" onMouseClicked="#lvProdutos_MouseClicked" prefHeight="221.0" prefWidth="705.0" />
+      <JFXComboBox fx:id="cbNomeCb" focusColor="#2e1d04" layoutX="458.0" layoutY="48.0" prefHeight="25.0" prefWidth="257.0" promptText="ComboBox" />
+      <JFXTextField fx:id="txtNomeTxtReadOnly" disable="true" focusColor="#2e1d04" labelFloat="true" layoutX="371.0" layoutY="121.0" onMouseClicked="#txtCliente_MouseClicked" prefHeight="40.0" prefWidth="357.0" promptText="ReadOnly txt" unFocusColor="BLACK" />
+      <Label layoutX="11.0" layoutY="473.0" prefHeight="66.0" prefWidth="720.0" text="Mudar os Id's, eventos e textos antes de usar, beijos, qualquer duvida chama o Front Boy" textFill="RED" />
+      <Label layoutX="11.0" layoutY="518.0" prefHeight="66.0" prefWidth="720.0" text="Deixar um espaçamento superior nas txt pois a label delas tem um efeito de subir ao clicar nelas" textFill="RED" />
+   </children>
+</AnchorPane>

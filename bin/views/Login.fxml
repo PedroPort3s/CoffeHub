@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXPasswordField?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="576.0" prefWidth="726.0" style="-fx-background-color: transparent;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.controllers.LoginController">
+	<children>
+		<AnchorPane layoutX="23.0" layoutY="34.0" prefHeight="519.0" prefWidth="606.0" style="-fx-background-color: transparent;" AnchorPane.bottomAnchor="47.0" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="23.0" AnchorPane.topAnchor="47.0">
+			<children>
+				<AnchorPane layoutX="327.0" layoutY="47.0" maxWidth="294.0" prefHeight="412.0" prefWidth="292.0" style="-fx-background-color: white; -fx-background-radius: 1em;" AnchorPane.bottomAnchor="47.0" AnchorPane.leftAnchor="327.0" AnchorPane.rightAnchor="35.0" AnchorPane.topAnchor="47.0">
+					<children>
+						<Label layoutX="56.0" layoutY="37.0" prefHeight="25.0" prefWidth="90.0" text="Log In" AnchorPane.leftAnchor="56.0" AnchorPane.rightAnchor="146.0" AnchorPane.topAnchor="37.0">
+							<font>
+								<Font size="18.0" />
+							</font>
+						</Label>
+						<JFXTextField fx:id="txtUsuario" focusColor="#2e1d04" labelFloat="true" layoutX="56.0" layoutY="108.0" prefHeight="40.0" prefWidth="217.0" promptText="Usuario" unFocusColor="BLACK" AnchorPane.leftAnchor="56.0" AnchorPane.rightAnchor="19.0" />
+						<JFXPasswordField fx:id="txtSenha" focusColor="#2e1d04" layoutX="56.0" layoutY="186.0" prefHeight="40.0" prefWidth="217.0" promptText="Senha" unFocusColor="BLACK" AnchorPane.leftAnchor="56.0" AnchorPane.rightAnchor="19.0" />
+						<JFXButton fx:id="btnAcessar" buttonType="RAISED" layoutX="56.0" layoutY="336.0" onAction="#btnAcessar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Acessar" textFill="WHITE" />
+                  <JFXButton fx:id="btnSair" buttonType="RAISED" layoutX="163.0" layoutY="336.0" onAction="#btnSair_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Sair" textFill="WHITE" />
+					</children>
+               <effect>
+                  <DropShadow />
+               </effect>
+				</AnchorPane>
+				<AnchorPane layoutX="80.0" layoutY="33.0" prefHeight="416.0" prefWidth="274.0" style="-fx-background-color: linear-gradient(to right top, #402906,  #52360a, #2e1d04,  #52360a, #2e1d04); -fx-background-radius: 1em;" AnchorPane.bottomAnchor="33.0" AnchorPane.leftAnchor="80.0" AnchorPane.topAnchor="33.0">
+					<children>
+						<VBox alignment="CENTER_LEFT" layoutX="76.0" layoutY="84.0" prefHeight="228.0" prefWidth="236.0" style="-fx-background-radius: 1em;" AnchorPane.bottomAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+							<children>
+								<Label text="CoffeHub" textFill="WHITE">
+									<font>
+										<Font size="28.0" />
+									</font>
+								</Label>
+								<Label text="Gerenciador de cafeteria" textFill="WHITE">
+									<font>
+										<Font size="16.0" />
+									</font>
+								</Label>
+							</children>
+						</VBox>
+					</children>
+               <effect>
+                  <DropShadow />
+               </effect>
+				</AnchorPane>
+			</children>
+		</AnchorPane>
+	</children>
+</AnchorPane>
