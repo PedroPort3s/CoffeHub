@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXTextField;
@@ -66,6 +68,7 @@ public class CadProdutoController  implements Initializable {
 
     @FXML
     private JFXButton btnEditar;
+    
 
 	public Stage getCadProduto() {
 		if (CadProduto == null)
@@ -94,7 +97,7 @@ public class CadProdutoController  implements Initializable {
     	{
     		Categoria categoriaSelecionada = this.cbCategoria.getSelectionModel().getSelectedItem();
     		
-			Produto produto = new Produto(txtDescricao.getText(), Double.parseDouble(txtValor.getText()), Integer.parseInt(txtQtd.getText()),
+			Produto produto = new Produto(txtDescricao.getText(), txtValor.getText(), txtQtd.getText(),
 					txtUnMedida.getText(), categoriaSelecionada);
 			
 			if(new ControlProduto().Inserir(produto) == 1)
@@ -147,7 +150,8 @@ public class CadProdutoController  implements Initializable {
     	try 
     	{    				
     		List<Categoria> lstCategorias = new ControlCategoria().Listar("");
-    		ObservableList <Categoria> categorias = FXCollections.observableArrayList(lstCategorias);
+
+    		ObservableList <Categoria> categorias = FXCollections.observableArrayList(lstCategorias);    		
     		
     		cbCategoria.setItems(categorias);    		
 		}
@@ -182,6 +186,8 @@ public class CadProdutoController  implements Initializable {
     	btnEditar.setVisible(false);
     	btnExcluir.setVisible(false);
     	btnGravar.setVisible(true);
+    	cbCategoria.getSelectionModel().select(null);
+    	ProdutoEstatico = null;
     }
     
 
@@ -283,14 +289,15 @@ public class CadProdutoController  implements Initializable {
     		    	txtUnMedida.setText(produto.getUnidadeMedida());
     		    	txtValor.setText(produto.getValor_un() + "");
     		    	
-					/*
-					 * SingleSelectionModel categoriaProduto = produto.getCategoria();
-					 * 
-					 * this.cbCategoria.setSelectionModel(produto.getCategoria());
-					 * 
-					 * cbCategoria.setSelectionModel(produto.getCategoria());
-					 */
-    				
+    		    	Categoria c = produto.getCategoria();    		    		
+    		    	
+    	    		List<Categoria> lstCategorias = new ControlCategoria().Listar("");
+    	    		ObservableList <Categoria> categorias = FXCollections.observableArrayList(lstCategorias);
+    	    		
+    	    		Categoria indice = categorias.stream().filter(x -> x.getCod() == c.getCod()).findFirst().orElse(null);    	    				
+    	    		
+    		    	cbCategoria.getSelectionModel().select(indice.getCod() - 1);
+
     				btnEditar.setVisible(true);
     				btnExcluir.setVisible(true);
     				btnGravar.setVisible(false);
@@ -320,12 +327,14 @@ public class CadProdutoController  implements Initializable {
     	}
     }
 	
-	  @Override public void initialize(URL arg0, ResourceBundle arg1)
+	  @Override
+	  public void initialize(URL arg0, ResourceBundle arg1)
 	  {
 		  if(ProdutoEstatico != null)
 		  {
 			  try 
 			  {
+				this.ListarCategoria();
 				this.CarregarProduto(ProdutoEstatico);
 			  } 
 			  catch (Exception e) 
@@ -337,10 +346,10 @@ public class CadProdutoController  implements Initializable {
 	            
 	           	alert.showAndWait();
 			  }			  
-			  this.ListarCategoria();
 		  }		  
 		  else 
 		  {
+			  Limpar();
 			  this.ListarCategoria(); 
 		  }	 
 	  }

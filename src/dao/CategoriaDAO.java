@@ -10,7 +10,6 @@ import java.util.List;
 import Helper.Verifica;
 import dao.interfaces.ICategoriaDAO;
 import entitys.Categoria;
-import utils.ConexaoMySql;
 
 public class CategoriaDAO implements ICategoriaDAO {
 	
@@ -222,7 +221,7 @@ public class CategoriaDAO implements ICategoriaDAO {
 
 		try {		
 
-			PreparedStatement statement = conexao.prepareStatement("select max(cod) as 'maior' from categoria");
+			PreparedStatement statement = conexao.prepareStatement("select ifnull(max(cod),0) as 'maior' from categoria");
 
 			ResultSet resultSet = statement.executeQuery();
 
@@ -230,7 +229,7 @@ public class CategoriaDAO implements ICategoriaDAO {
 				numeroCategoria = resultSet.getInt("maior");
 			}
 			
-			if (numeroCategoria <= 0) throw new Exception ("Não foi possível recuperar o proximo número da categoria");
+			if (numeroCategoria < 0) throw new Exception ("Não foi possível recuperar o proximo número da categoria");
 			
 			statement.close();
 			

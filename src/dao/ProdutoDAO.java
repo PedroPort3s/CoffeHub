@@ -9,8 +9,6 @@ import java.util.List;
 
 import Helper.Verifica;
 import dao.interfaces.IProdutoDAO;
-import entitys.Categoria;
-import entitys.Pessoa;
 import entitys.Produto;
 import utils.ConexaoMySql;
 
@@ -164,10 +162,10 @@ public class ProdutoDAO implements IProdutoDAO {
 			sql.append(this.Select_ProdutoCategoria());
 			
 			if(Verifica.ehNumeroInt(pesquisa)){
-				sql.append(" where cod="+pesquisa);
+				sql.append(" where cod_produto="+pesquisa);
 			}
 			else{	
-				sql.append(" where nome like (%'"+pesquisa+"'%)");
+				sql.append(" where nome_produto like ('%"+pesquisa+"%')");
 			}
 
 			PreparedStatement statement = conexao.prepareStatement(sql.toString());
@@ -202,10 +200,10 @@ public class ProdutoDAO implements IProdutoDAO {
 			sql.append(this.Select_ProdutoCategoria());
 			
 			if(Verifica.ehNumeroInt(pesquisa)){
-				sql.append(" where cod="+pesquisa);
+				sql.append(" where cod_produto="+pesquisa);
 			}
 			else{	
-				sql.append(" where nome like (%'"+pesquisa+"'%)");
+				sql.append(" where nome_produto like ('%"+pesquisa+"%')");
 			}
 			
 			if(codCategoria > 0) {
@@ -285,9 +283,9 @@ public class ProdutoDAO implements IProdutoDAO {
 		int numProduto = 0;
 
 		try {
-			Connection connection = ConexaoMySql.getInstance().getConnection();			
+				
 
-			PreparedStatement statement = connection.prepareStatement("select max(cod_produto) as 'maior' from produto");
+			PreparedStatement statement = conexao.prepareStatement("select ifnull(max(cod_produto),0) as 'maior' from produto");
 
 			ResultSet resultSet = statement.executeQuery();
 
@@ -295,10 +293,9 @@ public class ProdutoDAO implements IProdutoDAO {
 			numProduto = resultSet.getInt("maior");
 			}
 			
-			if (numProduto <= 0) throw new Exception ("Não foi possível recuperar o proximo número dos produtos");
+			if (numProduto < 0) throw new Exception ("Não foi possível recuperar o proximo número dos produtos");
 			
 			statement.close();
-			connection.close();
 			
 		} catch (ClassNotFoundException classEx) {
 			/* classEx.printStackTrace(); */
