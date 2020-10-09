@@ -187,6 +187,7 @@ public class CadProdutoController  implements Initializable {
     	btnExcluir.setVisible(false);
     	btnGravar.setVisible(true);
     	cbCategoria.getSelectionModel().select(null);
+    	ProdutoEstatico = null;
     }
     
 
@@ -348,6 +349,7 @@ public class CadProdutoController  implements Initializable {
 		  }		  
 		  else 
 		  {
+			  Limpar();
 			  this.ListarCategoria(); 
 		  }	 
 	  }

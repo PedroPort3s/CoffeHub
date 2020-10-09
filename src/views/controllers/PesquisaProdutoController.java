@@ -2,6 +2,7 @@ package views.controllers;
 
 import java.net.URL;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -168,8 +169,27 @@ public class PesquisaProdutoController implements Initializable{
     {
     	try 
     	{    				
-    		List<Categoria> lstCategorias = new ControlCategoria().Listar("");
-    		lstCategorias.set(0, new Categoria("TODAS"));
+    		
+    		List<Categoria> lstCategorias = new ArrayList<>();    		
+    		lstCategorias.add(new Categoria("TODAS"));
+    		
+    		
+    		List<Categoria> lstCategoriasBanco = new ControlCategoria().Listar(""); 
+    		
+    		if (lstCategoriasBanco != null && lstCategorias.size() > 0) 
+    		{
+    			
+			lstCategoriasBanco.forEach(c -> {
+			 Categoria categoria = new Categoria();
+			
+			 categoria.setCod(c.getCod());
+			 categoria.setNome(c.getNome());
+			 
+			 lstCategorias.add(categoria);
+			});
+			
+			}    		
+    		
     		ObservableList <Categoria> categorias = FXCollections.observableArrayList(lstCategorias);    		
 
     		cbCategoria.setItems(categorias);    
