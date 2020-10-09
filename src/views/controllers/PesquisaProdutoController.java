@@ -1,15 +1,21 @@
 package views.controllers;
 
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXComboBox;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 
+import control.produto.ControlCategoria;
 import control.produto.ControlProduto;
+import entitys.Categoria;
 import entitys.Produto;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -39,6 +45,9 @@ public class PesquisaProdutoController implements Initializable{
     @FXML
     private JFXTextField txtDescricao;
     
+    @FXML
+    private JFXComboBox<Categoria> cbCategoria;
+
     @FXML
     private JFXListView<Produto> lvProdutos;
 
@@ -104,7 +113,7 @@ public class PesquisaProdutoController implements Initializable{
     	
     	try 
     	{
-    		lstProdutos = new ControlProduto().Listar(txtDescricao.getText());
+    		lstProdutos = new ControlProduto().ListarEmCategoria(txtDescricao.getText(), cbCategoria.getSelectionModel().getSelectedItem().getCod());
 			if (lstProdutos != null) 
 			{
 				lstProdutos.forEach(p -> lvProdutos.getItems().add(p));
@@ -155,8 +164,42 @@ public class PesquisaProdutoController implements Initializable{
 		}
     }
     
+    void ListarCategoria() 
+    {
+    	try 
+    	{    				
+    		List<Categoria> lstCategorias = new ControlCategoria().Listar("");
+    		lstCategorias.set(0, new Categoria("TODAS"));
+    		ObservableList <Categoria> categorias = FXCollections.observableArrayList(lstCategorias);    		
+
+    		cbCategoria.setItems(categorias);    
+    		
+    		cbCategoria.getSelectionModel().select(0);
+		}
+    	
+    	catch (ClassNotFoundException e)
+    	{
+    		Alert alert = new Alert(AlertType.WARNING);
+
+            alert.setTitle("Atenção");
+            alert.setHeaderText(e.getMessage());
+            
+            alert.showAndWait();
+		}
+    	catch (SQLException e) {
+    		Alert alert = new Alert(AlertType.WARNING);
+
+            alert.setTitle("Atenção");
+            alert.setHeaderText(e.getMessage());
+            
+            alert.showAndWait();
+		}
+    	
+    }
+        
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
+		this.ListarCategoria();
 		this.ListarProdutos();
 	}
 

@@ -53,7 +53,7 @@ public class ControlProduto {
 		return retorno;
 	}
 	
-	public int Editar(Produto prod) throws ClassNotFoundException, SQLException {
+	public int Editar(Produto prod) throws ClassNotFoundException, SQLException, Exception {
 		int retorno = 0;
 		try {
 			
@@ -69,6 +69,12 @@ public class ControlProduto {
 		catch(SQLException ex){
 			throw ex;
 		}
+		
+		catch(Exception e)
+		{
+			throw e;
+		}
+		
 		
 		return retorno;
 	}
@@ -140,9 +146,8 @@ public class ControlProduto {
 	public List<Produto> ListarEmCategoria(String pesquisa, int codCategoria) throws ClassNotFoundException, SQLException {
 		List<Produto> lstProd = null;
 		try {
-			if(pesquisa.trim().equals("")) throw new Error("Informe uma ID ou descrição para listar os produtos.");
 			
-			if(codCategoria <= 0) throw new Error("Informe uma categoria para listar seus produtos");
+			if(codCategoria < 0) throw new Error("Informe uma categoria para listar seus produtos");
 			
 			Connection conn = ConexaoMySql.getInstance().getConnection();
 			
@@ -159,50 +164,50 @@ public class ControlProduto {
 		return lstProd;
 	}
 	
-private void ValidarProdutoGravar(Produto prod) {
+private void ValidarProdutoGravar(Produto prod) throws Exception {
 		
-		if(prod == null) throw new Error("Informe um produto para a gravação.");
+		if(prod == null) throw new Exception("Informe um produto para a gravação.");
 			
-		if(prod.getDescricao().trim().equals("")) throw new Error("Informe uma descrição para o produto.");
+		if(prod.getDescricao().trim().equals("")) throw new Exception("Informe uma descrição para o produto.");
 		
-		if(prod.getDescricao().trim().length() < 3) throw new Error("Informe uma descrição com pelo menos 3 caracteres.");
+		if(prod.getDescricao().trim().length() < 3) throw new Exception("Informe uma descrição com pelo menos 3 caracteres.");
 		
-		if(prod.getQtd_atual() <= 0) throw new Error("A quantidade não pode ser menor ou igual a zero.");
+		if(prod.getQtd_atual() <= 0) throw new Exception("A quantidade não pode ser menor ou igual a zero.");
 		
-		if(prod.getValor_un() <= 0) throw new Error("O valor unitário não pode ser menor ou igual a zero.");
+		if(prod.getValor_un() <= 0) throw new Exception("O valor unitário não pode ser menor ou igual a zero.");
 		
-		if(prod.getUnidadeMedida().equals("")) throw new Error("Informe uma unidade de medida para o produto.");
+		if(prod.getUnidadeMedida().equals("")) throw new Exception("Informe uma unidade de medida para o produto.");
 		
-		if(prod.getUnidadeMedida().length() > 2) throw new Error("A unidade de medida deve ser de 2 caracteres");
+		if(prod.getUnidadeMedida().length() > 2) throw new Exception("A unidade de medida deve ser de 2 caracteres");
 		
-		if(prod.getCategoria() == null) throw new Error("Informe uma categoria para o produto");
+		if(prod.getCategoria() == null) throw new Exception("Informe uma categoria para o produto");
 		
-		if(prod.getCategoria().getCod() <= 0) throw new Error("Informe um código válido para a categoria.");
+		if(prod.getCategoria().getCod() <= 0) throw new Exception("Informe um código válido para a categoria.");
 		
-		if(prod.getCategoria().getNome().trim().equals("")) throw new Error("Nome inválido para categoria.");		
+		if(prod.getCategoria().getNome().trim().equals("")) throw new Exception("Nome inválido para categoria.");		
 		
 	}
 	
-	private void ValidarProdutoId(Produto prod) {
-		if(prod == null) throw new Error("Informe um produto para a gravação.");
+	private void ValidarProdutoId(Produto prod) throws Exception{
+		if(prod == null) throw new Exception("Informe um produto para a gravação.");
 		
-		if(prod.getCod() <= 0) throw new Error("Informe uma ID válida para o produto");
+		if(prod.getCod() <= 0) throw new Exception("Informe uma ID válida para o produto");
 		
-		if(prod.getDescricao().trim().equals("")) throw new Error("Informe uma descrição para o produto.");
+		if(prod.getDescricao().trim().equals("")) throw new Exception("Informe uma descrição para o produto.");
 		
-		if(prod.getQtd_atual() <= 0) throw new Error("A quantidade não pode ser menor ou igual a zero.");
+		if(prod.getQtd_atual() <= 0) throw new Exception("A quantidade não pode ser menor ou igual a zero.");
 		
-		if(prod.getValor_un() <= 0) throw new Error("O valor unitário não pode ser menor ou igual a zero.");
+		if(prod.getValor_un() <= 0) throw new Exception("O valor unitário não pode ser menor ou igual a zero.");
 		
-		if(prod.getUnidadeMedida().equals("")) throw new Error("Informe uma unidade de medida para o produto.");
+		if(prod.getUnidadeMedida().equals("")) throw new Exception("Informe uma unidade de medida para o produto.");
 		
-		if(prod.getUnidadeMedida().length() > 2) throw new Error("A unidade de medida deve ser de 2 caracteres");
+		if(prod.getUnidadeMedida().length() > 2) throw new Exception("A unidade de medida deve ser de 2 caracteres");
 		
-		if(prod.getCategoria() == null) throw new Error("Informe uma categoria para o produto");
+		if(prod.getCategoria() == null) throw new Exception("Informe uma categoria para o produto");
 		
-		if(prod.getCategoria().getCod() <= 0) throw new Error("Informe um código válido para a categoria.");
+		if(prod.getCategoria().getCod() <= 0) throw new Exception("Informe um código válido para a categoria.");
 		
-		if(prod.getCategoria().getNome().trim().equals("")) throw new Error("Nome inválido para categoria.");		
+		if(prod.getCategoria().getNome().trim().equals("")) throw new Exception("Nome inválido para categoria.");		
 		
 	}
 

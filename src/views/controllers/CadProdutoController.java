@@ -25,7 +25,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
@@ -98,7 +97,7 @@ public class CadProdutoController  implements Initializable {
     	{
     		Categoria categoriaSelecionada = this.cbCategoria.getSelectionModel().getSelectedItem();
     		
-			Produto produto = new Produto(txtDescricao.getText(), Double.parseDouble(txtValor.getText()), Integer.parseInt(txtQtd.getText()),
+			Produto produto = new Produto(txtDescricao.getText(), txtValor.getText(), txtQtd.getText(),
 					txtUnMedida.getText(), categoriaSelecionada);
 			
 			if(new ControlProduto().Inserir(produto) == 1)
@@ -151,7 +150,8 @@ public class CadProdutoController  implements Initializable {
     	try 
     	{    				
     		List<Categoria> lstCategorias = new ControlCategoria().Listar("");
-    		ObservableList <Categoria> categorias = FXCollections.observableArrayList(lstCategorias);
+
+    		ObservableList <Categoria> categorias = FXCollections.observableArrayList(lstCategorias);    		
     		
     		cbCategoria.setItems(categorias);    		
 		}
@@ -326,7 +326,8 @@ public class CadProdutoController  implements Initializable {
     	}
     }
 	
-	  @Override public void initialize(URL arg0, ResourceBundle arg1)
+	  @Override
+	  public void initialize(URL arg0, ResourceBundle arg1)
 	  {
 		  if(ProdutoEstatico != null)
 		  {

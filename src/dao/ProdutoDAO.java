@@ -203,7 +203,7 @@ public class ProdutoDAO implements IProdutoDAO {
 				sql.append(" where cod_produto="+pesquisa);
 			}
 			else{	
-				sql.append(" where nome_produto like (%'"+pesquisa+"'%)");
+				sql.append(" where nome_produto like ('%"+pesquisa+"%')");
 			}
 			
 			if(codCategoria > 0) {

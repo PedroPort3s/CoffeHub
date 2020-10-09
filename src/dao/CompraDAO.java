@@ -8,6 +8,7 @@ import java.util.List;
 
 import dao.interfaces.IPadraoDB;
 import entitys.Compra;
+import entitys.Produto;
 
 public class CompraDAO implements IPadraoDB<Compra>{
 	
@@ -33,6 +34,8 @@ public class CompraDAO implements IPadraoDB<Compra>{
 
 			PreparedStatement statement = conexao.prepareStatement(sql);
 			
+			Produto prod = null;
+			
 			statement.setInt(1, this.ProximoCodCompra());
 			statement.setString(2, prod.getDescricao());
 			statement.setDouble(3, prod.getValor_un());
@@ -43,9 +46,6 @@ public class CompraDAO implements IPadraoDB<Compra>{
 			retorno = statement.executeUpdate();
 			
 			
-		} catch (ClassNotFoundException classEx) {
-			/* classEx.printStackTrace(); */
-			throw classEx;
 		} catch (SQLException sqlEx) {
 			/* sqlEx.printStackTrace(); */
 			throw sqlEx;

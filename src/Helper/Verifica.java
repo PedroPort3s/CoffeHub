@@ -29,4 +29,16 @@ public class Verifica {
 		}
 	}
 	
+	public static boolean ehNumeroDouble(String numeros) {
+		try 
+		{
+			Double.parseDouble(numeros);
+			return true;			
+		} 
+		catch (NumberFormatException e)
+		{
+			return false;
+		}
+	}
+	
 }
