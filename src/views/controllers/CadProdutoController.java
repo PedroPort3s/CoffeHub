@@ -330,6 +330,7 @@ public class CadProdutoController  implements Initializable {
 	  @Override
 	  public void initialize(URL arg0, ResourceBundle arg1)
 	  {
+		  System.out.println("ueee");
 		  if(ProdutoEstatico != null)
 		  {
 			  try 

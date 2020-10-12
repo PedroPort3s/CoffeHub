@@ -85,7 +85,13 @@ public class HomeController {
     
     @FXML
     void btnClientes_Action(ActionEvent event) {
-
+		try {
+			Home.hide();
+			new PesquisaClienteController().getPesquisaCliente().show();
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
+			alert.showAndWait();
+		}
     }
 
     @FXML

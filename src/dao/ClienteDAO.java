@@ -1,6 +1,7 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -55,13 +56,13 @@ public class ClienteDAO implements IClienteDAO {
 			resultSet.next();
 			
 			statementCliente.setInt(1, resultSet.getInt(EnumPessoa.cod.name()));
-			statementCliente.setString(2, obj.getData_nascimentoString());
+			statementCliente.setDate(2, Date.valueOf(obj.getData_nascimento()));
 			statementCliente.execute();
 
 		} catch (ClassNotFoundException classException) {
 			classException.printStackTrace();
 			System.out.println(
-					"esse erro vai acontecer por conta do connector, pesquisem sobre" + " ----  erro no inserir");
+					"esse erro vai acontecer por conta do connector, pesquisem sobre" + " \n----  erro no inserir");
 		} catch (SQLException sqlException) {
 			sqlException.printStackTrace();
 			System.out.println("esse erro foi estritamente no DriverManeger, " + "deem uma olhada, criar o banco talvez"
@@ -121,7 +122,7 @@ public class ClienteDAO implements IClienteDAO {
 			statementPessoa.setString(5, obj.getEmail());
 			statementPessoa.setInt(6, obj.getCod());
 
-			statementCliente.setString(1, obj.getData_nascimentoString());
+			statementCliente.setDate(1, Date.valueOf(obj.getData_nascimento()));
 			statementCliente.setInt(2, obj.getCod());
 
 			statementCliente.execute();
@@ -157,7 +158,7 @@ public class ClienteDAO implements IClienteDAO {
 			ResultSet resultSet = statement.executeQuery();
 
 			while (resultSet.next()) {
-				lista.add(new Cliente(resultSet.getDate(EnumCliente.data_nascimento.name()),
+				lista.add(new Cliente(resultSet.getDate(EnumCliente.data_nascimento.name()).toLocalDate(),
 						resultSet.getInt(EnumPessoa.cod.name()), resultSet.getString(EnumPessoa.documento.name()),
 						resultSet.getString(EnumPessoa.telefone.name()), resultSet.getString(EnumPessoa.nome.name()),
 						resultSet.getString(EnumPessoa.endereco.name()), resultSet.getString(EnumPessoa.email.name())));
@@ -176,6 +177,34 @@ public class ClienteDAO implements IClienteDAO {
 		return lista;
 	}
 
+	public boolean verificaRG(String rg) {
+
+		List<Cliente> lista = new ArrayList<Cliente>();
+		String sql= "SELECT * FROM "+EnumPessoa.pessoa+" p "
+				+ "inner join "+EnumCliente.cliente+" c "
+				+ "on p."+EnumPessoa.cod+"="+EnumCliente.cod_pessoa+" WHERE p."+EnumPessoa.documento+" = ?";
+
+		
+		try (Connection connection = ConexaoMySql.getInstance().getConnection();
+				PreparedStatement statement = connection.prepareStatement(sql);) {
+
+			statement.setString(1, rg);
+			ResultSet resultSet = statement.executeQuery();
+			return resultSet.next();
+		} catch (ClassNotFoundException classException) {
+			classException.printStackTrace();
+			System.out.println("esse erro vai acontecer por conta do connector, pesquisem sobre" + "---erro no buscar");
+		} catch (SQLException sqlException) {
+			sqlException.printStackTrace();
+			System.out.println("esse erro foi estritamente no DriverManeger, " + "deem uma olhada, criar o banco talvez"
+					+ "---erro no buscar");
+		} catch (Exception exception) {
+			exception.printStackTrace();
+			System.out.println("Fudeo marreco" + "---erro no buscar");
+		}
+		return false;
+	}
+	
 	@Override
 	public List<Cliente> listar() {
 		List<Cliente> lista = new ArrayList<Cliente>();
@@ -190,7 +219,7 @@ public class ClienteDAO implements IClienteDAO {
 			ResultSet resultSet = statement.executeQuery();
 
 			while (resultSet.next()) {
-				lista.add(new Cliente(resultSet.getDate(EnumCliente.data_nascimento.name()),
+				lista.add(new Cliente(resultSet.getDate(EnumCliente.data_nascimento.name()).toLocalDate(),
 						resultSet.getInt(EnumPessoa.cod.name()), resultSet.getString(EnumPessoa.documento.name()),
 						resultSet.getString(EnumPessoa.telefone.name()), resultSet.getString(EnumPessoa.nome.name()),
 						resultSet.getString(EnumPessoa.endereco.name()), resultSet.getString(EnumPessoa.email.name())));

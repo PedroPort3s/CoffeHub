@@ -1,8 +1,5 @@
-/Helper/
-/control/
+/views/
+/cliente/
 /dao/
-/dto/
 /entitys/
 /exceptions/
-/utils/
-/views/
