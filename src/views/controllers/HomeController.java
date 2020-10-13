@@ -139,7 +139,16 @@ public class HomeController {
 
     @FXML
     void btnVendas_Action(ActionEvent event) {
-
+		try
+		{
+	    	Home.hide();
+			new PesquisaVendaController().getPesquisaVenda().show();
+		}
+		catch(Exception e)
+		{
+			Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+			alert.showAndWait();	
+    	}
     }
 
     @FXML
