@@ -79,8 +79,29 @@ public class PesquisaProdutoGeralController implements Initializable{
     }
 
     @FXML
-    void lvProdutos_MouseClicked(MouseEvent event) {
+    void lvProdutos_MouseClicked(MouseEvent event)
+    {
+    	try 
+    	{
+        	Produto produto = lvProdutos.getSelectionModel().getSelectedItem();
+			if (produto != null)
+			{
+				CadVendaController.ProdutoEstatico = produto;
+				new CadVendaController().getCadVenda().show();
+				/* new CadVendaController().CarregarProduto(codProduto); */
+				PesquisaProdutoGeral.close();
+				PesquisaProdutoGeral = null;
+			}
+		}
+    	catch (Exception e) 
+    	{
+    		Alert alert = new Alert(AlertType.WARNING);
 
+            alert.setTitle("Atenção");
+            alert.setHeaderText(e.getMessage());
+            
+            alert.showAndWait();
+            }
     }
 
     void ListarProdutos() 

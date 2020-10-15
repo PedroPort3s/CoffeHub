@@ -62,8 +62,9 @@ public class PesquisaVendaController {
 
     @FXML
     void btnVoltar_Action(ActionEvent event) {
-
+    	PesquisaVenda.close();
+    	PesquisaVenda = null;
+    	new HomeController().getHome().show();
     }
-	
 
 }
