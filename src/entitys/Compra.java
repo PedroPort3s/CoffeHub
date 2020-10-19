@@ -78,4 +78,15 @@ public class Compra {
 	public void setItens(List<Compra_Itens> itens) {
 		this.itens = itens;
 	}
+	
+	public double TotalVenda() {
+		double retorno = 0;
+		
+		if(this.itens != null && this.itens.size() > 0) {
+			for(Compra_Itens i : itens) {
+				retorno += i.getValor_unitario();
+			}
+		}
+		return retorno;
+	}
 }
