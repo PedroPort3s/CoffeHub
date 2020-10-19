@@ -1,21 +1,27 @@
 package views.controllers;
 
 import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXTextField;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 public class PesquisaVendaController {
-	
+
 	private static Stage PesquisaVenda;
+	
+    @FXML
+    private JFXButton btnCadVenda;
 	
     @FXML
     private JFXButton btnPesquisar;
@@ -24,10 +30,35 @@ public class PesquisaVendaController {
     private JFXButton btnVoltar;
 
     @FXML
-    private JFXButton btnCadProduto;
-	
-	
-	
+    private JFXTextField txtCliente;
+
+    @FXML
+    private JFXTextField txtFuncionario;
+
+    @FXML
+    private JFXTextField txtCodVenda;
+
+    @FXML
+    private JFXButton btnBuscarFuncionario;
+
+    @FXML
+    private JFXButton btnLimparFuncionario;
+
+    @FXML
+    private JFXButton btnBuscarCliente;
+
+    @FXML
+    private JFXButton btnLimparCliente;
+
+    @FXML
+    private JFXListView<?> lvVendas;
+
+    @FXML
+    private JFXTextField txtCodFuncionario;
+
+    @FXML
+    private JFXTextField txtCodCliente;
+
 	public Stage getPesquisaVenda() {
 		if (PesquisaVenda == null)
 		{
@@ -47,12 +78,26 @@ public class PesquisaVendaController {
 		}
 		return PesquisaVenda;
 	}
-	
+    
     @FXML
-    void btnCadProduto_Action(ActionEvent event) {
-    	PesquisaVenda.hide();
-    	PesquisaVenda = null;
-    	new CadVendaController().getCadVenda().show();
+    void btnBuscarCliente_Action(ActionEvent event) {
+
+    }
+
+    @FXML
+    void btnBuscarFuncionario_Action(ActionEvent event) {
+
+    }
+
+    
+    @FXML
+    void btnLimparCliente_Action(ActionEvent event) {
+
+    }
+
+    @FXML
+    void btnLimparFuncionario_Action(ActionEvent event) {
+
     }
 
     @FXML
@@ -65,6 +110,32 @@ public class PesquisaVendaController {
     	PesquisaVenda.close();
     	PesquisaVenda = null;
     	new HomeController().getHome().show();
+    }
+
+    @FXML
+    void btnCadVenda_Action(ActionEvent event) {
+
+    }
+    
+
+    @FXML
+    void txtCliente_MouseClicked(MouseEvent event) {
+
+    }
+
+    @FXML
+    void txtCodVenda_MouseClicked(MouseEvent event) {
+
+    }
+
+    @FXML
+    void txtFuncionario_MouseClicked(MouseEvent event) {
+
+    }
+    
+    @FXML
+    void lvVendas_MouseClicked(MouseEvent event) {
+
     }
 
 }
