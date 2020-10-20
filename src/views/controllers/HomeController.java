@@ -15,6 +15,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import views.controllers.cliente.PesquisaClienteController;
+import views.controllers.fornecedor.PesquisaFornecedorController;
 
 public class HomeController {
 
@@ -89,6 +91,7 @@ public class HomeController {
 			Home.hide();
 			new PesquisaClienteController().getPesquisaCliente().show();
 		} catch (Exception e) {
+			e.printStackTrace();
 			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
 			alert.showAndWait();
 		}
@@ -101,7 +104,13 @@ public class HomeController {
 
     @FXML
     void btnFornecedores_Action(ActionEvent event) {
-
+    	try {
+			Home.hide();
+			new PesquisaFornecedorController().getPesquisaFornecedor().show();
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
+			alert.showAndWait();
+		}
     }
 
     @FXML

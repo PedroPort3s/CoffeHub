@@ -1,4 +1,4 @@
-package views.controllers;
+package views.controllers.cliente;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXTextField;
@@ -8,6 +8,7 @@ import dao.ClienteDAO;
 import entitys.Cliente;
 import exceptions.CampoVazioException;
 import exceptions.MoreThanOneException;
+import exceptions.TextoInvalidoException;
 
 import java.net.URL;
 import java.time.LocalDate;
@@ -28,7 +29,6 @@ import javafx.stage.StageStyle;
 
 public class CadClienteController implements Initializable {
 
-	
 	private static Stage CadCliente;
 
 	private static ClienteDAO dao = new ClienteDAO();
@@ -99,13 +99,15 @@ public class CadClienteController implements Initializable {
 	void btnEditar_Action(ActionEvent event) {
 		try {
 			conferirCampos();
-			
-			if(!clienteStatic.getDocumento().equals(txtDocumento.getText())) 
-				if(dao.verificaRG(txtDocumento.getText())) throw new MoreThanOneException("Rg existente");
-			
+
+			if (!clienteStatic.getDocumento().equals(txtDocumento.getText()))
+				if (dao.verificaRG(txtDocumento.getText()))
+					throw new MoreThanOneException("Rg existente");
+
 			dao.editar(new Cliente(dataPickerNascimento.getValue(), clienteStatic.getCod(), txtDocumento.getText(),
-					txtTelefone.getText(), txtNome.getText(), txtEndereco.getText(), txtEmail.getText()));
-			
+					txtTelefone.getText(), txtNome.getText(), txtEndereco.getText(),
+					txtEmail.getText()));
+
 			Alert alert = new Alert(AlertType.CONFIRMATION, "Cliente editado com sucesso", ButtonType.OK);
 			alert.setHeaderText("Cliente editado!!");
 			alert.showAndWait();
@@ -121,7 +123,7 @@ public class CadClienteController implements Initializable {
 	void btnExcluir_Action(ActionEvent event) {
 		try {
 			dao.deletar(clienteStatic.getCod());
-			
+
 			Alert alert = new Alert(AlertType.CONFIRMATION, "Cliente excluído com sucesso", ButtonType.OK);
 			alert.setHeaderText("Cliente excluído!!");
 			alert.showAndWait();
@@ -137,12 +139,14 @@ public class CadClienteController implements Initializable {
 	void btnGravar_Action(ActionEvent event) {
 		try {
 			conferirCampos();
-			
-			if(dao.verificaRG(txtDocumento.getText())) throw new MoreThanOneException("Rg existente");
-			
-			dao.inserir(new Cliente(dataPickerNascimento.getValue(), txtDocumento.getText(), txtTelefone.getText(),
-					txtNome.getText(), txtEndereco.getText(), txtEmail.getText()));
-			
+
+			if (dao.verificaRG(txtDocumento.getText()))
+				throw new MoreThanOneException("Rg existente");
+
+			dao.inserir(new Cliente(dataPickerNascimento.getValue(), txtDocumento.getText(),
+					txtTelefone.getText(), txtNome.getText(), txtEndereco.getText(),
+					txtEmail.getText()));
+
 			Alert alert = new Alert(AlertType.CONFIRMATION, "Cliente cadastrado com sucesso", ButtonType.OK);
 			alert.setHeaderText("Cliente cadastrado!!");
 			alert.showAndWait();
@@ -160,10 +164,41 @@ public class CadClienteController implements Initializable {
 
 	private void conferirCampos() {
 		passou(txtNome.getText(), "Insira um Nome");
-		passou(txtDocumento.getText(), "Insira um RG");
-		passou(txtTelefone.getText(), "Insira um Telefone");
-		passou(txtEmail.getText(), "Insira um Email");
+		verificaDocumento(txtDocumento.getText(), "Insira um documento");
+		verificaNumero(txtTelefone.getText(), "Insira um Telefone");
+		verificaEmail(txtEmail.getText(), "Insira um Email");
 		passou(txtEndereco.getText(), "Insira um Endereço");
+	}
+
+	private Boolean verificaEmail(String texto, String msg) {
+		if (texto.equals("") || texto == null)
+			throw new CampoVazioException(msg);
+		if (!texto.matches(".*@.*") && !texto.matches(".*.com.*"))
+			throw new TextoInvalidoException(msg);
+		return true;
+	}
+
+	private Boolean verificaDocumento(String texto, String msg) {
+		if (texto.equals("") || texto == null)
+			throw new CampoVazioException(msg);
+		texto = texto.replaceAll("[^0-9]+", "");
+		if (texto.length() == 11 || texto.length() == 14)
+			return true;
+
+		throw new TextoInvalidoException(msg);
+	}
+
+	private Boolean verificaNumero(@Nullable String texto, String msg) {
+		try {
+			texto = texto.replaceAll("[^0-9]+", "");
+			if(texto.length() > 11 || texto.length() < 8) throw new TextoInvalidoException(msg);
+			if(texto.length() > 9) texto = texto.substring(2, texto.length());
+			Integer.parseInt(texto);
+			
+		} catch (Exception e) {
+			throw new NumberFormatException(msg);
+		}
+		return true;
 	}
 
 	private Boolean passou(@Nullable String texto, String msg) {
@@ -191,8 +226,8 @@ public class CadClienteController implements Initializable {
 		txtCod.setText(clienteStatic.getCod() + "");
 		txtNome.setText(clienteStatic.getNome());
 		txtDocumento.setText(clienteStatic.getDocumento());
-		txtTelefone.setText(clienteStatic.getTelefone());
-		txtEmail.setText(clienteStatic.getEndereco());
+		txtTelefone.setText(clienteStatic.getTelefone() + "");
+		txtEmail.setText(clienteStatic.getEmail());
 		dataPickerNascimento.setValue(clienteStatic.getData_nascimento());
 		txtEndereco.setText(clienteStatic.getEndereco());
 

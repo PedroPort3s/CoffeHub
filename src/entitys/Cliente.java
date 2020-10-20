@@ -8,6 +8,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+import utils.Formatacao;
+
 public class Cliente extends Pessoa {
 
 	private LocalDate data_nascimento;
@@ -61,7 +63,7 @@ public class Cliente extends Pessoa {
 	
 	@Override
 	public String toString() {
-		return "Cliente: cod = " + getCod() + ", data_nascimento = " + data_nascimento + ", nome=" + getNome() + ", documento=" + getDocumento() + ", telefone=" + getTelefone()
+		return "Cliente: cod = " + getCod() + ", data_nascimento = " + data_nascimento + ", nome=" + getNome() + ", documento=" + Formatacao.formatarDocumento(getDocumento()) + ", telefone=" + getTelefone()
 				+ ", endereco=" + getEndereco() + ", email=" + getEmail() + "]";
 	}
 }

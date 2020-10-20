@@ -1,4 +1,4 @@
-package views.controllers;
+package views.controllers.cliente;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
@@ -32,6 +32,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import views.controllers.HomeController;
 
 public class PesquisaClienteController {
 

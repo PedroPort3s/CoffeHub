@@ -5,7 +5,7 @@
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="361.0" prefWidth="583.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.controllers.CadClienteController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="361.0" prefWidth="583.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.controllers.cliente.CadClienteController">
    <children>
       <JFXTextField fx:id="txtNome" focusColor="#2e1d04" labelFloat="true" layoutX="77.0" layoutY="26.0" prefHeight="40.0" prefWidth="294.0" promptText="Nome" unFocusColor="BLACK" />
       <JFXTextField fx:id="txtDocumento" focusColor="#2e1d04" labelFloat="true" layoutX="396.0" layoutY="26.0" prefHeight="40.0" prefWidth="167.0" promptText="RG" unFocusColor="BLACK" />
