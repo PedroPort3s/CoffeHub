@@ -191,8 +191,9 @@ public class CadClienteController implements Initializable {
 	private Boolean verificaNumero(@Nullable String texto, String msg) {
 		try {
 			texto = texto.replaceAll("[^0-9]+", "");
+			System.out.println(texto);
 			if(texto.length() > 11 || texto.length() < 8) throw new TextoInvalidoException(msg);
-			if(texto.length() > 9) texto = texto.substring(2, texto.length());
+			if(texto.length() > 9 && texto.length() <= 11 ) texto = texto.substring(2, texto.length());
 			Integer.parseInt(texto);
 			
 		} catch (Exception e) {

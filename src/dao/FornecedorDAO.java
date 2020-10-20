@@ -35,7 +35,7 @@ public class FornecedorDAO implements IFornecedorDAO {
 				PreparedStatement statementFornecedor = connection.prepareStatement(sqlFornecedor);) {
 			
 			statementPessoa.setString(1, obj.getDocumento().replaceAll("[^0-9]+", ""));
-			statementPessoa.setString(2, obj.getTelefone());
+			statementPessoa.setString(2, obj.getTelefone().replaceAll("[^0-9]+", ""));
 			statementPessoa.setString(3, obj.getNome());
 			statementPessoa.setString(4, obj.getEndereco());
 			statementPessoa.setString(5, obj.getEmail());
@@ -106,7 +106,7 @@ public class FornecedorDAO implements IFornecedorDAO {
 				PreparedStatement statementFornecedor = connection.prepareStatement(sqlFornecedor);) {
 
 			statementPessoa.setString(1, obj.getDocumento().replaceAll("[^0-9]+", ""));
-			statementPessoa.setString(2, obj.getTelefone());
+			statementPessoa.setString(2, obj.getTelefone().replaceAll("[^0-9]+", ""));
 			statementPessoa.setString(3, obj.getNome());
 			statementPessoa.setString(4, obj.getEndereco());
 			statementPessoa.setString(5, obj.getEmail());

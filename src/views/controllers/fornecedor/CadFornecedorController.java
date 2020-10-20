@@ -188,7 +188,8 @@ public class CadFornecedorController implements Initializable {
 		try {
 			texto = texto.replaceAll("[^0-9]+", "");
 			if(texto.length() > 11 || texto.length() < 8) throw new TextoInvalidoException(msg);
-					
+			if(texto.length() > 9 && texto.length() <= 11 ) texto = texto.substring(2, texto.length());
+
 			Integer.parseInt(texto);
 			
 		} catch (Exception e) {
