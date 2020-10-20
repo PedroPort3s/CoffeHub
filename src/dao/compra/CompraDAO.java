@@ -1,4 +1,4 @@
-package dao;
+package dao.compra;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -259,6 +259,29 @@ public class CompraDAO implements IPadraoDB<Compra>{
 			throw ex;
 		}
 		return lista;
+	}
+	
+	public double TotalVendasDia(Date data) throws SQLException {
+		
+		double retorno = 0;
+		
+		try {
+			String sum = "select sum(valor_total) as 'totalVendas' from compra where data_recebido='"+ new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(data) +"' and status='C' ";
+			PreparedStatement statement = conexao.prepareStatement(sum);
+			ResultSet resultSet;
+			resultSet = statement.executeQuery();
+			while(resultSet.next()) {
+				retorno = resultSet.getInt("totalVendas");
+			}
+			
+			if (retorno < 0) throw new Error("Não foi possível recuperar o total das compras no dia "+ data.toString());
+			
+			statement.close();
+		} catch (SQLException e) {
+			throw e;
+		}		
+		
+		return retorno + 1;
 	}
 	
 	public Compra PreencherCompra(ResultSet resultSet) throws SQLException, ClassNotFoundException {
