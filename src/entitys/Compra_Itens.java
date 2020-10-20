@@ -6,7 +6,9 @@ public class Compra_Itens {
 
 	private double qtd_item;
 
-	private double valor_compra;
+	private double valor_unitario;
+	
+	private Produto produto;
 
 	public int getNum_item() {
 		return num_item;
@@ -24,12 +26,12 @@ public class Compra_Itens {
 		this.qtd_item = qtd_item;
 	}
 
-	public double getValor_compra() {
-		return valor_compra;
+	public double getValor_unitario() {
+		return valor_unitario;
 	}
 
-	public void setValor_compra(double valor_compra) {
-		this.valor_compra = valor_compra;
+	public void setValor_unitario(double valor_unitario) {
+		this.valor_unitario = valor_unitario;
 	}
 
 	public Produto getProduto() {
@@ -39,6 +41,5 @@ public class Compra_Itens {
 	public void setProduto(Produto produto) {
 		this.produto = produto;
 	}
-
-	private Produto produto;
+	
 }

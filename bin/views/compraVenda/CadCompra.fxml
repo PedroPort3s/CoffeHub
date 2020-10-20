@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1">
-	<!-- TODO Add Nodes -->
-</AnchorPane>
 
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="645.0" prefWidth="779.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <JFXTextField fx:id="txtCodCompra" disable="true" editable="false" focusColor="#2e1d04" labelFloat="true" layoutX="14.0" layoutY="45.0" onMouseClicked="#txtCodVenda_MouseClicked" prefHeight="40.0" prefWidth="357.0" promptText="Código" unFocusColor="BLACK" />
+      <JFXTextField fx:id="txtDataCompra" disable="true" editable="false" focusColor="#2e1d04" labelFloat="true" layoutX="400.0" layoutY="45.0" onMouseClicked="#txtCodVenda_MouseClicked" prefHeight="40.0" prefWidth="357.0" promptText="Data" unFocusColor="BLACK" />
+   </children>
+</AnchorPane>
