@@ -78,7 +78,7 @@ public class ControlProduto {
 		return retorno;
 	}
 
-	public Produto Carregar(int id) throws ClassNotFoundException, SQLException {
+	public Produto Carregar(int id) throws ClassNotFoundException, SQLException, Exception {
 		Produto prod = null;
 		try {
 			
@@ -87,7 +87,13 @@ public class ControlProduto {
 			Connection conn = ConexaoMySql.getInstance().getConnection();
 			ProdutoDAO prodDAO = new ProdutoDAO(conn);
 			
-			prod = prodDAO.Carregar(id);
+			try
+			{
+				prod = prodDAO.Carregar(id);
+			} 
+			catch (Exception e) {
+				throw e;
+			}
 			
 			conn.close();
 		}

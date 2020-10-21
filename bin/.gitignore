@@ -1,4 +1,3 @@
-/views/
 /Helper/
 /control/
 /dao/
@@ -6,3 +5,4 @@
 /entitys/
 /exceptions/
 /utils/
+/views/

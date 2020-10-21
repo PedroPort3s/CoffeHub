@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="645.0" prefWidth="779.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="779.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.controllers.CadCompraController">
    <children>
       <JFXTextField fx:id="txtCodCompra" disable="true" editable="false" focusColor="#2e1d04" labelFloat="true" layoutX="14.0" layoutY="45.0" onMouseClicked="#txtCodVenda_MouseClicked" prefHeight="40.0" prefWidth="357.0" promptText="Código" unFocusColor="BLACK" />
       <JFXTextField fx:id="txtDataCompra" disable="true" editable="false" focusColor="#2e1d04" labelFloat="true" layoutX="400.0" layoutY="45.0" onMouseClicked="#txtCodVenda_MouseClicked" prefHeight="40.0" prefWidth="357.0" promptText="Data" unFocusColor="BLACK" />
+      <JFXListView fx:id="lvProdutos" layoutX="13.0" layoutY="236.0" onMouseClicked="#lvProdutos_MouseClicked" prefHeight="221.0" prefWidth="754.0" />
+      <JFXTextField fx:id="txtProduto" disable="true" focusColor="#2e1d04" labelFloat="true" layoutX="64.0" layoutY="182.0" prefHeight="40.0" prefWidth="307.0" promptText="Produto" unFocusColor="BLACK" />
+      <JFXButton fx:id="btnAddProduto" buttonType="RAISED" layoutX="462.0" layoutY="202.0" onAction="#btnAddProduto_Action" prefHeight="16.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Adicionar" textFill="WHITE" />
+      <JFXButton fx:id="btnBuscarProduto" buttonType="RAISED" layoutX="377.0" layoutY="203.0" onAction="#btnBuscarProduto_Action" prefHeight="25.0" prefWidth="32.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="+" textFill="WHITE" />
+      <JFXButton fx:id="btnLimparProduto" buttonType="RAISED" layoutX="417.0" layoutY="203.0" onAction="#btnLimparProduto_Action" prefHeight="25.0" prefWidth="32.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="x" textFill="WHITE" />
+      <JFXTextField fx:id="txtCodProduto" disable="true" focusColor="#2e1d04" labelFloat="true" layoutX="14.0" layoutY="183.0" prefHeight="40.0" prefWidth="43.0" promptText="Cód." unFocusColor="BLACK" />
+      <JFXButton fx:id="btnBuscarFornecedor" buttonType="RAISED" layoutX="377.0" layoutY="142.0" onAction="#btnBuscarFornecedor_Action" prefHeight="25.0" prefWidth="32.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="+" textFill="WHITE" />
+      <JFXTextField fx:id="txtFornecedor" disable="true" focusColor="#2e1d04" labelFloat="true" layoutX="64.0" layoutY="121.0" prefHeight="40.0" prefWidth="307.0" promptText="Fornecedor" unFocusColor="BLACK" />
+      <JFXButton fx:id="btnLimparFornecedor" buttonType="RAISED" layoutX="417.0" layoutY="142.0" onAction="#btnLimparFornecedor_Action" prefHeight="25.0" prefWidth="32.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="x" textFill="WHITE" />
+      <JFXTextField fx:id="txtCodFornecedor" disable="true" focusColor="#2e1d04" labelFloat="true" layoutX="14.0" layoutY="122.0" prefHeight="40.0" prefWidth="43.0" promptText="Cód." unFocusColor="BLACK" />
+      <JFXButton fx:id="btnGravar" buttonType="RAISED" layoutX="458.0" layoutY="465.0" onAction="#btnGravar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Gravar" textFill="WHITE" />
+      <JFXButton fx:id="btnVoltar" buttonType="RAISED" layoutX="677.0" layoutY="465.0" onAction="#btnVoltar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Voltar" textFill="WHITE" />
+      <JFXButton fx:id="btnLimpar" buttonType="RAISED" layoutX="569.0" layoutY="465.0" onAction="#btnLimpar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Limpar" textFill="WHITE" />
+      <JFXButton fx:id="btnFinalizar" buttonType="RAISED" layoutX="352.0" layoutY="465.0" onAction="#btnFinalizar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Finalizar" textFill="WHITE" />
    </children>
 </AnchorPane>

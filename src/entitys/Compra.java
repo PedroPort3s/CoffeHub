@@ -102,7 +102,7 @@ public class Compra {
 			if(compra.getItens().size() == 0)
 				throw new Exception("Esta compra não possui itens");
 			else {
-				new ControlCompraItens().ValidarCompraItens(compra.getItens());
+				Compra_Item.ValidarCompraItens(compra.getItens());
 			}
 		}
 		
