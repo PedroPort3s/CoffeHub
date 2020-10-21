@@ -137,9 +137,6 @@ public class CadFornecedorController implements Initializable {
 		try {
 			conferirCampos();
 
-			if (dao.verificaRG(txtDocumento.getText()))
-				throw new MoreThanOneException("Rg existente");
-
 			dao.inserir(new Fornecedor(dataPickerContrato.getValue(), txtDocumento.getText(), txtTelefone.getText(),
 					txtNome.getText(), txtEndereco.getText(), txtEmail.getText()));
 
@@ -178,8 +175,11 @@ public class CadFornecedorController implements Initializable {
 		if (texto.equals("") || texto == null)
 			throw new CampoVazioException(msg);
 		texto = texto.replaceAll("[^0-9]+", "");
-		if (texto.length() == 11 || texto.length() == 14)
+		if (texto.length() == 11 || texto.length() == 14) {
+			if (dao.verificaRG(texto))
+				throw new MoreThanOneException("Rg existente");
 			return true;
+		}
 
 		throw new TextoInvalidoException(msg);
 	}
