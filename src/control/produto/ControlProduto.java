@@ -188,7 +188,7 @@ private void ValidarProdutoGravar(Produto prod) throws Exception {
 		
 	}
 	
-	private void ValidarProdutoId(Produto prod) throws Exception{
+	public void ValidarProdutoId(Produto prod) throws Exception{
 		if(prod == null) throw new Exception("Informe um produto para a gravação.");
 		
 		if(prod.getCod() <= 0) throw new Exception("Informe uma ID válida para o produto");
