@@ -3,6 +3,7 @@ package control.compra_venda;
 import java.util.List;
 
 import control.produto.ControlProduto;
+import entitys.Compra;
 import entitys.Compra_Itens;
 
 public class ControlCompraItens {
@@ -42,5 +43,9 @@ public class ControlCompraItens {
 			throw new Exception("Quantidade invalida");
 		if(item.getValor_unitario() <=0)
 			throw new Exception("Valor invalido");
+	}
+	
+	public void AdicionarItem(Compra compra, Compra_Itens item) {
+		
 	}
 }
