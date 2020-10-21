@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import dao.interfaces.IPadraoDB;
+import entitys.Venda;
 
 public class VendaDAO implements IPadraoDB<Venda> {
 

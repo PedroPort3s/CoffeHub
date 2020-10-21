@@ -2,12 +2,14 @@ package dao.compra;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import dao.interfaces.ICompraVenda;
 import entitys.Compra_Itens;
+import utils.ConexaoMySql;
 
 public class Compra_ItensDAO implements ICompraVenda<Compra_Itens>{
 	
@@ -79,26 +81,101 @@ public class Compra_ItensDAO implements ICompraVenda<Compra_Itens>{
 	}
 
 	@Override
-	public int AlterarQtd(int cod, Compra_Itens item) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int AlterarQtd(int cod, Compra_Itens item) throws SQLException {
+		int retorno = 0;
+		try {			
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append("UPDATE compraproduto SET");
+			sql.append(" qtdVenda = " + item.getQtd_item());
+			sql.append(" WHERE cod_compra= " + cod);
+			sql.append(" and num_item=" + item.getNum_item());
+
+			PreparedStatement statement = conexao.prepareStatement(sql.toString());
+
+			retorno = statement.executeUpdate();
+			statement.close();
+
+		}  catch (SQLException sqlEx) {
+			sqlEx.printStackTrace();
+			throw sqlEx;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw ex;
+		}
+		return retorno;
 	}
 
 	@Override
-	public int AlterarValor(int cod, Compra_Itens item) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int AlterarValor(int cod, Compra_Itens item) throws SQLException {
+		int retorno = 0;
+		try {			
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append("UPDATE compraproduto SET");
+			sql.append(" valor_venda=" + item.getValor_unitario());
+			sql.append(" WHERE cod_compra= " + cod);
+			sql.append(" and num_item=" + item.getNum_item());
+
+			PreparedStatement statement = conexao.prepareStatement(sql.toString());
+
+			retorno = statement.executeUpdate();
+			statement.close();
+
+		}  catch (SQLException sqlEx) {
+			sqlEx.printStackTrace();
+			throw sqlEx;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw ex;
+		}
+		return retorno;
 	}
 
 	@Override
-	public double TotalItens(int cod) {
-		// TODO Auto-generated method stub
-		return 0;
+	public double TotalItens(int cod) throws SQLException {
+		double retorno = 0;
+		
+		try {
+			String soma = "select sum(valor_venda) * qtdVenda as 'TotalItens' from compraproduto where cod_Compra =" + cod;
+			PreparedStatement statement = conexao.prepareStatement(soma);
+			ResultSet resultSet;
+			resultSet = statement.executeQuery();
+			
+			while(resultSet.next()) {
+				retorno = resultSet.getInt("TotalItens");
+			}
+			
+			if (retorno < 0) throw new Error("Não foi possível recuperar o total dos itens na compra "+ cod);
+			
+			statement.close();
+		} catch (SQLException e) {
+			throw e;
+		}		
+		
+		return retorno;
 	}
 
 	@Override
-	public int ProximoSequencial(int cod) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int ProximoSequencial(int cod) throws SQLException {
+		int retorno = 0;
+		
+		try {
+			String max = "select ifnull(max(num_item),0) as 'maior' from compraproduto where cod_Compra=" + cod;
+			PreparedStatement statement = conexao.prepareStatement(max);
+			ResultSet resultSet;
+			resultSet = statement.executeQuery();
+			while(resultSet.next()) {
+				retorno = resultSet.getInt("maior");
+			}
+			
+			if (retorno < 0) throw new Error("Não foi possível recuperar o proximo número dos produtos");
+			
+			statement.close();
+		} catch (SQLException e) {
+			throw e;
+		}		
+		
+		return retorno + 1;
 	}
 }

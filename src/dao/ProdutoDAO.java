@@ -84,10 +84,9 @@ public class ProdutoDAO implements IProdutoDAO {
 	}
 
 	@Override
-	public int Editar(Produto prod) throws ClassNotFoundException, SQLException {
+	public int Editar(Produto prod) throws SQLException {
 		int retorno = 0;
 		try {
-			Connection connection = ConexaoMySql.getInstance().getConnection();
 
 			StringBuilder sql = new StringBuilder();
 			sql.append("UPDATE produto SET");
@@ -98,14 +97,11 @@ public class ProdutoDAO implements IProdutoDAO {
 			sql.append("un_medida = '"+prod.getUnidadeMedida()+"'");
 			sql.append(" WHERE cod_produto = "+prod.getCod());
 
-			PreparedStatement statement = connection.prepareStatement(sql.toString());
+			PreparedStatement statement = conexao.prepareStatement(sql.toString());
 
 			retorno = statement.executeUpdate();
 			statement.close();
-
-		} catch (ClassNotFoundException classEx) {
-			classEx.printStackTrace();
-			throw classEx;
+		
 		} catch (SQLException sqlEx) {
 			sqlEx.printStackTrace();
 			throw sqlEx;
@@ -282,8 +278,7 @@ public class ProdutoDAO implements IProdutoDAO {
 		
 		int numProduto = 0;
 
-		try {
-				
+		try {	
 
 			PreparedStatement statement = conexao.prepareStatement("select ifnull(max(cod_produto),0) as 'maior' from produto");
 

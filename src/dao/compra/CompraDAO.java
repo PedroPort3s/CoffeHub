@@ -85,10 +85,9 @@ public class CompraDAO implements IPadraoDB<Compra>{
 	}
 
 	@Override
-	public int Editar(Compra compra) throws ClassNotFoundException, SQLException {
+	public int Editar(Compra compra) throws SQLException {
 		int retorno = 0;
-		try {
-			Connection connection = ConexaoMySql.getInstance().getConnection();						
+		try {			
 			
 			StringBuilder sql = new StringBuilder();
 			sql.append("UPDATE compra SET");
@@ -97,15 +96,12 @@ public class CompraDAO implements IPadraoDB<Compra>{
 			sql.append(" cod_Funcionario = "+ compra.getFuncionario().getCod());
 			sql.append(" WHERE cod = "+ compra.getCod());
 
-			PreparedStatement statement = connection.prepareStatement(sql.toString());
+			PreparedStatement statement = conexao.prepareStatement(sql.toString());
 
 			retorno = statement.executeUpdate();
 			statement.close();
 
-		} catch (ClassNotFoundException classEx) {
-			classEx.printStackTrace();
-			throw classEx;
-		} catch (SQLException sqlEx) {
+		}  catch (SQLException sqlEx) {
 			sqlEx.printStackTrace();
 			throw sqlEx;
 		} catch (Exception ex) {
@@ -282,7 +278,7 @@ public class CompraDAO implements IPadraoDB<Compra>{
 			throw e;
 		}		
 		
-		return retorno + 1;
+		return retorno;
 	}
 	
 	public Compra PreencherCompra(ResultSet resultSet) throws SQLException, ClassNotFoundException {
