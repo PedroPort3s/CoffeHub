@@ -158,7 +158,7 @@ public class Compra_ItensDAO implements ICompraVenda<Compra_Itens>{
 
 	@Override
 	public int ProximoSequencial(int cod) throws SQLException {
-		int retorno = 0;
+	 int retorno = 0;
 		
 		try {
 			String max = "select ifnull(max(num_item),0) as 'maior' from compraproduto where cod_Compra=" + cod;

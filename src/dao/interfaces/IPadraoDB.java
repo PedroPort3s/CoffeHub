@@ -1,7 +1,10 @@
 package dao.interfaces;
 
 import java.sql.SQLException;
+import java.util.Date;
 import java.util.List;
+
+import entitys.Compra;
 
 public interface IPadraoDB<T> {
 	
@@ -15,5 +18,5 @@ public interface IPadraoDB<T> {
 	
 	public List<T> Buscar(String pesquisa)throws ClassNotFoundException, SQLException;
 	
-	public List<T> Buscar() throws ClassNotFoundException, SQLException;
+	public List<T> Buscar() throws ClassNotFoundException, SQLException;	
 }

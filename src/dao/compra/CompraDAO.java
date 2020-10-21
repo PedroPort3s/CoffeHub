@@ -145,7 +145,6 @@ public class CompraDAO implements IPadraoDB<Compra>{
 		return compra;
 	}
 
-	@Override
 	public List<Compra> Buscar(String status) throws ClassNotFoundException, SQLException {
 		List<Compra> lista = new ArrayList<Compra>();
 		
@@ -189,6 +188,78 @@ public class CompraDAO implements IPadraoDB<Compra>{
 			StringBuilder sql = new StringBuilder();
 			
 			sql.append(this.Select_Compra());
+
+			PreparedStatement statement = conexao.prepareStatement(sql.toString());
+			
+			ResultSet resultSet = statement.executeQuery();
+
+			while(resultSet.next()) {
+				Compra compra = this.PreencherCompra(resultSet);
+				lista.add(compra);
+			}
+			
+			statement.close();
+			
+		} catch (ClassNotFoundException classEx) {
+			classEx.printStackTrace();
+			throw classEx;
+		} catch (SQLException sqlEx) {
+			sqlEx.printStackTrace();
+			throw sqlEx;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw ex;
+		}
+		return lista;
+	}
+	
+	public List<Compra> Buscar(Date DataInicio, Date DataFim, String status) throws ClassNotFoundException, SQLException {
+		List<Compra> lista = new ArrayList<Compra>();
+		
+		try {
+
+			StringBuilder sql = new StringBuilder();
+			
+			sql.append(this.Select_Compra());
+			sql.append(" where c.status='"+ status +"'");
+			sql.append(" and c.data_origem <= '"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(DataInicio)+"'");
+			sql.append(" and c.data_origem >= '"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(DataFim)+"'");
+
+			PreparedStatement statement = conexao.prepareStatement(sql.toString());
+			
+			ResultSet resultSet = statement.executeQuery();
+
+			while(resultSet.next()) {
+				Compra compra = this.PreencherCompra(resultSet);
+				lista.add(compra);
+			}
+			
+			statement.close();
+			
+		} catch (ClassNotFoundException classEx) {
+			classEx.printStackTrace();
+			throw classEx;
+		} catch (SQLException sqlEx) {
+			sqlEx.printStackTrace();
+			throw sqlEx;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw ex;
+		}
+		return lista;
+	}
+	
+	public List<Compra> Buscar(Date DataInicio, Date DataFim) throws ClassNotFoundException, SQLException {
+		List<Compra> lista = new ArrayList<Compra>();
+		
+		try {
+
+			StringBuilder sql = new StringBuilder();
+			
+			sql.append(this.Select_Compra());
+			
+			sql.append(" where c.data_origem <= '"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(DataInicio)+"'");
+			sql.append(" and c.data_origem >= '"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(DataFim)+"'");
 
 			PreparedStatement statement = conexao.prepareStatement(sql.toString());
 			
@@ -315,5 +386,5 @@ public class CompraDAO implements IPadraoDB<Compra>{
 		}		
 		
 		return retorno + 1;
-	}
+	}	
 }

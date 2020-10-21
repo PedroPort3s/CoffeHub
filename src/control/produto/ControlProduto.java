@@ -69,7 +69,6 @@ public class ControlProduto {
 		catch(SQLException ex){
 			throw ex;
 		}
-		
 		catch(Exception e)
 		{
 			throw e;
