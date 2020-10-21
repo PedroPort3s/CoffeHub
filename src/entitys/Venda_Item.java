@@ -1,6 +1,6 @@
 package entitys;
 
-public class Venda_Itens {
+public class Venda_Item {
 
 	private int num_item;
 

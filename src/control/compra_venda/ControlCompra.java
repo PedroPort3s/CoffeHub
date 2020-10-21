@@ -8,6 +8,7 @@ import java.util.List;
 import Helper.db;
 import dao.ProdutoDAO;
 import dao.compra.CompraDAO;
+import dao.compra.Compra_ItemDAO;
 import entitys.Compra;
 import entitys.Produto;
 import utils.ConexaoMySql;
@@ -23,7 +24,7 @@ public class ControlCompra {
 		
 		try {
 			
-			this.ValidarCompraGravar(compra);
+			Compra.ValidarCompraGravar(compra);
 			
 			conexao = ConexaoMySql.getInstance().getConnection();
 			conexao.setAutoCommit(false);
@@ -54,7 +55,7 @@ public class ControlCompra {
 	
 		try  {
 			
-			this.ValidarCompraCod(compra);
+			Compra.ValidarCompraCod(compra);
 			
 			if(!compra.getStatus().equals("A")) {
 				throw new Exception("Não é possível excluir uma venda que não está aberta.");
@@ -65,10 +66,18 @@ public class ControlCompra {
 			
 			CompraDAO compraDAO = new CompraDAO(conexao);
 			
-			// primeiro deletar os itens
-			retorno = compraDAO.Deletar(compra.getCod());
+			retorno = new Compra_ItemDAO(conexao).RemoverItensCompra(compra.getCod());
 			
-			if(retorno != 1) throw new Exception("Erro ao deletar a compra.");
+			if(retorno == compra.getItens().size()) {
+				
+				retorno = compraDAO.Deletar(compra.getCod());
+				
+				if(retorno != 1) throw new Exception("Erro ao deletar a compra.");
+				
+			}
+			else {
+				throw new Exception("Erro ao deletar os itens. Não foi possível excluir a compra");
+			}
 			
 			conexao.commit();
 			conexao.close();
@@ -91,7 +100,7 @@ public class ControlCompra {
 		int retorno = 0;
 		try {
 			
-			this.ValidarCompraCod(compra);
+			Compra.ValidarCompraCod(compra);
 			
 			conexao = ConexaoMySql.getInstance().getConnection();
 			conexao.setAutoCommit(false);
@@ -204,48 +213,5 @@ public class ControlCompra {
 		return lstCompra;
 	}
 	
-	// Método de validar com num_item
-	private void ValidarCompraCod(Compra compra) throws Exception{
-		if (compra.getCod() <= 0 )
-			throw new Exception("Informe o código da compra");
-		if(compra.getData_origem() == null)
-			throw new Exception("Data de origem invalida");
-		if(compra.getStatus().equals(""))
-			throw new Exception("Status inválido");
-		if(compra.getFornecedor() != null)
-		{
-			if(compra.getFornecedor().getCod() <= 0)
-				throw new Exception("Fornecedor inválido.");
-		}
-		if(compra.getFuncionario() != null)
-		{
-			if(compra.getFuncionario().getCod() <= 0)
-				throw new Exception("Funcionario inválido.");
-		}
-		if(compra.getItens().size() == 0)
-			throw new Exception("Esta compra não possui itens");
-		else {
-			new ControlCompraItens().ValidarCompraItens(compra.getItens());
-		}
-	}
 	
-	// Método de validar sem num_item
-	private void ValidarCompraGravar(Compra compra) throws Exception{
-		if(compra.getData_origem() == null)
-			throw new Exception("Informe uma data de origem valida");
-		if(compra.getStatus().equals(""))
-			throw new Exception("Informe um status valido");
-		if(compra.getFornecedor() != null)
-		{
-			if(compra.getFornecedor().getCod() <= 0)
-				throw new Exception("Informe um fornecedor valido.");
-		}
-		if(compra.getFuncionario() != null)
-		{
-			if(compra.getFuncionario().getCod() <= 0)
-				throw new Exception("Informe um funcionario valido.");
-		}
-		if(compra.getItens().size() == 0)
-			throw new Exception("Informe pelo menos 1 item para prosseguir com esta compra");
-	}
 }

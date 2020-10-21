@@ -3,9 +3,9 @@ package dao.venda;
 import java.sql.SQLException;
 
 import dao.interfaces.ICompraVenda;
-import entitys.Venda_Itens;
+import entitys.Venda_Item;
 
-public class Venda_ItemDAO implements ICompraVenda<Venda_Itens> {
+public class Venda_ItemDAO implements ICompraVenda<Venda_Item> {
 
 	@Override
 	public String Select() {
@@ -14,25 +14,25 @@ public class Venda_ItemDAO implements ICompraVenda<Venda_Itens> {
 	}
 
 	@Override
-	public int AdicionarItem(int cod, Venda_Itens item) throws SQLException {
+	public int AdicionarItem(int cod, Venda_Item item) throws SQLException {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int RemoverItem(int cod, Venda_Itens item) throws SQLException {
+	public int RemoverItem(int cod, Venda_Item item) throws SQLException {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int AlterarQtd(int cod, Venda_Itens item) throws SQLException {
+	public int AlterarQtd(int cod, Venda_Item item) throws SQLException {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public int AlterarValor(int cod, Venda_Itens item) throws SQLException {
+	public int AlterarValor(int cod, Venda_Item item) throws SQLException {
 		// TODO Auto-generated method stub
 		return 0;
 	}

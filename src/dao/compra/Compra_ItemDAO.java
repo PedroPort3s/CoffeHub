@@ -5,17 +5,21 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import dao.ProdutoDAO;
 import dao.interfaces.ICompraVenda;
-import entitys.Compra_Itens;
+import entitys.Compra;
+import entitys.Compra_Item;
 import utils.ConexaoMySql;
 
-public class Compra_ItensDAO implements ICompraVenda<Compra_Itens>{
+public class Compra_ItemDAO implements ICompraVenda<Compra_Item>{
 	
 	private Connection conexao = null;
 	
-	public Compra_ItensDAO(Connection conn) {
+	public Compra_ItemDAO(Connection conn) {
 		this.conexao = conn;
 	}
 
@@ -27,7 +31,7 @@ public class Compra_ItensDAO implements ICompraVenda<Compra_Itens>{
 	}
 
 	@Override
-	public int AdicionarItem(int cod, Compra_Itens item) throws SQLException {
+	public int AdicionarItem(int cod, Compra_Item item) throws SQLException {
 		int retorno = 0;
 		
 		try {
@@ -53,7 +57,7 @@ public class Compra_ItensDAO implements ICompraVenda<Compra_Itens>{
 	}
 
 	@Override
-	public int RemoverItem(int cod, Compra_Itens item) throws SQLException {
+	public int RemoverItem(int cod, Compra_Item item) throws SQLException {
 		
 		int retorno = 0;
 		
@@ -79,9 +83,34 @@ public class Compra_ItensDAO implements ICompraVenda<Compra_Itens>{
 		}
 		return retorno;
 	}
+	
+	public int RemoverItensCompra(int cod) throws SQLException {
+		
+		int retorno = 0;
+		
+		try {
+			
+			StringBuilder sql = new StringBuilder();
+			sql.append("DELETE FROM compraproduto WHERE cod_compra= " + cod);
+			
+			PreparedStatement statement = conexao.prepareStatement(sql.toString());
+			
+			retorno = statement.executeUpdate();
+			
+			statement.close();
+			
+		}  catch (SQLException sqlEx) {
+			sqlEx.printStackTrace();
+			throw sqlEx;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw ex;
+		}
+		return retorno;
+	}
 
 	@Override
-	public int AlterarQtd(int cod, Compra_Itens item) throws SQLException {
+	public int AlterarQtd(int cod, Compra_Item item) throws SQLException {
 		int retorno = 0;
 		try {			
 			
@@ -107,7 +136,7 @@ public class Compra_ItensDAO implements ICompraVenda<Compra_Itens>{
 	}
 
 	@Override
-	public int AlterarValor(int cod, Compra_Itens item) throws SQLException {
+	public int AlterarValor(int cod, Compra_Item item) throws SQLException {
 		int retorno = 0;
 		try {			
 			
@@ -177,5 +206,47 @@ public class Compra_ItensDAO implements ICompraVenda<Compra_Itens>{
 		}		
 		
 		return retorno + 1;
+	}
+
+	@Override
+	public List<Compra_Item> CarregarItens(int cod) throws Exception {
+		List<Compra_Item> lista = new ArrayList<Compra_Item>();
+		
+		try {
+
+			StringBuilder sql = new StringBuilder();
+			
+			sql.append(this.Select());
+			sql.append(" where cod_Compra = "+ cod);
+
+			PreparedStatement statement = conexao.prepareStatement(sql.toString());
+			
+			ResultSet resultSet = statement.executeQuery();
+
+			while(resultSet.next()) {
+				Compra_Item compraItem = this.PreencherItem(resultSet);
+				lista.add(compraItem);
+			}
+			
+			statement.close();
+			
+		} catch (SQLException sqlEx) {
+			sqlEx.printStackTrace();
+			throw sqlEx;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw ex;
+		}
+		return lista;
+	}
+
+	@Override
+	public Compra_Item PreencherItem(ResultSet rs) throws Exception {
+		Compra_Item item = new Compra_Item();
+		item.setNum_item(rs.getInt("num_item"));
+		item.setProduto(new ProdutoDAO(conexao).Carregar(rs.getInt("cod_Produto")));
+		item.setQtd_item(rs.getDouble("qtdVenda"));
+		item.setValor_unitario(rs.getDouble("valor_venda"));
+		return item;
 	}
 }

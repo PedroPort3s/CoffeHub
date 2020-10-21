@@ -112,7 +112,7 @@ public class CompraDAO implements IPadraoDB<Compra>{
 	}
 
 	@Override
-	public Compra Carregar(int id) throws ClassNotFoundException, SQLException {
+	public Compra Carregar(int id) throws Exception {
 		Compra compra = null;
 		
 		try {
@@ -145,7 +145,7 @@ public class CompraDAO implements IPadraoDB<Compra>{
 		return compra;
 	}
 
-	public List<Compra> Buscar(String status) throws ClassNotFoundException, SQLException {
+	public List<Compra> Buscar(String status) throws Exception {
 		List<Compra> lista = new ArrayList<Compra>();
 		
 		try {
@@ -180,7 +180,7 @@ public class CompraDAO implements IPadraoDB<Compra>{
 	}
 
 	@Override
-	public List<Compra> Buscar() throws ClassNotFoundException, SQLException {
+	public List<Compra> Buscar() throws Exception {
 		List<Compra> lista = new ArrayList<Compra>();
 		
 		try {
@@ -213,7 +213,7 @@ public class CompraDAO implements IPadraoDB<Compra>{
 		return lista;
 	}
 	
-	public List<Compra> Buscar(Date DataInicio, Date DataFim, String status) throws ClassNotFoundException, SQLException {
+	public List<Compra> Buscar(Date DataInicio, Date DataFim, String status) throws Exception {
 		List<Compra> lista = new ArrayList<Compra>();
 		
 		try {
@@ -249,7 +249,7 @@ public class CompraDAO implements IPadraoDB<Compra>{
 		return lista;
 	}
 	
-	public List<Compra> Buscar(Date DataInicio, Date DataFim) throws ClassNotFoundException, SQLException {
+	public List<Compra> Buscar(Date DataInicio, Date DataFim) throws Exception {
 		List<Compra> lista = new ArrayList<Compra>();
 		
 		try {
@@ -285,7 +285,7 @@ public class CompraDAO implements IPadraoDB<Compra>{
 		return lista;
 	}
 	
-	public List<Compra> Buscar(Date DataInicio, Date DataFim, int codigo, String tipoPesquisa) throws ClassNotFoundException, SQLException {
+	public List<Compra> Buscar(Date DataInicio, Date DataFim, int codigo, String tipoPesquisa) throws Exception {
 		List<Compra> lista = new ArrayList<Compra>();
 		
 		try {
@@ -352,7 +352,7 @@ public class CompraDAO implements IPadraoDB<Compra>{
 		return retorno;
 	}
 	
-	public Compra PreencherCompra(ResultSet resultSet) throws SQLException, ClassNotFoundException {
+	public Compra PreencherCompra(ResultSet resultSet) throws Exception {
 		Compra compra = new Compra();
 		//c.valor_total, , c.cod_Fornecedor, c.cod_Funcionario
 		
@@ -360,7 +360,7 @@ public class CompraDAO implements IPadraoDB<Compra>{
 		compra.setData_origem(resultSet.getDate("c.data_origem"));
 		compra.setData_recebido(resultSet.getDate("c.data_recebido"));
 		compra.setStatus(resultSet.getString("c.status"));
-		// carregar itens
+		compra.setItens(new Compra_ItemDAO(conexao).CarregarItens(compra.getCod()));
 		// carregar funcionario
 		// carregar fornecedor c.cod_Fornecedor, c.cod_Funcionario
 		return compra;

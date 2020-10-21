@@ -3,6 +3,8 @@ package entitys;
 import java.util.Date;
 import java.util.List;
 
+import control.compra_venda.ControlCompraItens;
+
 public class Compra {
 
 	private int cod;
@@ -17,7 +19,7 @@ public class Compra {
 
 	private Funcionario funcionario;
 
-	private List<Compra_Itens> itens;
+	private List<Compra_Item> itens;
 
 	public double TotalCompra(){
 		return 0;
@@ -71,19 +73,64 @@ public class Compra {
 		this.funcionario = funcionario;
 	}
 
-	public List<Compra_Itens> getItens() {
+	public List<Compra_Item> getItens() {
 		return itens;
 	}
 
-	public void setItens(List<Compra_Itens> itens) {
+	public void setItens(List<Compra_Item> itens) {
 		this.itens = itens;
 	}
+	
+	// Método de validar com codigo
+		public static void ValidarCompraCod(Compra compra) throws Exception{
+			if (compra.getCod() <= 0 )
+				throw new Exception("Informe o código da compra");
+			if(compra.getData_origem() == null)
+				throw new Exception("Data de origem invalida");
+			if(compra.getStatus().equals(""))
+				throw new Exception("Status inválido");
+			if(compra.getFornecedor() != null)
+			{
+				if(compra.getFornecedor().getCod() <= 0)
+					throw new Exception("Fornecedor inválido.");
+			}
+			if(compra.getFuncionario() != null)
+			{
+				if(compra.getFuncionario().getCod() <= 0)
+					throw new Exception("Funcionario inválido.");
+			}
+			if(compra.getItens().size() == 0)
+				throw new Exception("Esta compra não possui itens");
+			else {
+				new ControlCompraItens().ValidarCompraItens(compra.getItens());
+			}
+		}
+		
+		// Método de validar sem codigo
+		public static void ValidarCompraGravar(Compra compra) throws Exception{
+			if(compra.getData_origem() == null)
+				throw new Exception("Informe uma data de origem valida");
+			if(compra.getStatus().equals(""))
+				throw new Exception("Informe um status valido");
+			if(compra.getFornecedor() != null)
+			{
+				if(compra.getFornecedor().getCod() <= 0)
+					throw new Exception("Informe um fornecedor valido.");
+			}
+			if(compra.getFuncionario() != null)
+			{
+				if(compra.getFuncionario().getCod() <= 0)
+					throw new Exception("Informe um funcionario valido.");
+			}
+			if(compra.getItens().size() == 0)
+				throw new Exception("Informe pelo menos 1 item para prosseguir com esta compra");
+		}
 	
 	public double TotalVenda() {
 		double retorno = 0;
 		
 		if(this.itens != null && this.itens.size() > 0) {
-			for(Compra_Itens i : itens) {
+			for(Compra_Item i : itens) {
 				retorno += i.getValor_unitario();
 			}
 		}

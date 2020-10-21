@@ -113,7 +113,7 @@ public class ProdutoDAO implements IProdutoDAO {
 	}
 
 	@Override
-	public Produto Carregar(int id) throws ClassNotFoundException, SQLException {
+	public Produto Carregar(int id) throws Exception {
 		Produto produto = null;
 		
 		try {
@@ -132,10 +132,7 @@ public class ProdutoDAO implements IProdutoDAO {
 			
 			statement.close();
 			
-		} catch (ClassNotFoundException classEx) {
-			classEx.printStackTrace();
-			throw classEx;
-		} catch (SQLException sqlEx) {
+		}  catch (SQLException sqlEx) {
 			sqlEx.printStackTrace();
 			throw sqlEx;
 		} catch (Exception ex) {

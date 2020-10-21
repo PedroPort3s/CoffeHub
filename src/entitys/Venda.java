@@ -17,7 +17,7 @@ public class Venda {
 
 	private Cliente cliente;
 
-	private List<Venda_Itens> itens;
+	private List<Venda_Item> itens;
 
 	public int getCod() {
 		return cod;
@@ -67,11 +67,11 @@ public class Venda {
 		this.cliente = cliente;
 	}
 
-	public List<Venda_Itens> getItens() {
+	public List<Venda_Item> getItens() {
 		return itens;
 	}
 
-	public void setItens(List<Venda_Itens> itens) {
+	public void setItens(List<Venda_Item> itens) {
 		this.itens = itens;
 	}	
 
