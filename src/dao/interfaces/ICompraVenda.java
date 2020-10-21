@@ -1,8 +1,13 @@
 package dao.interfaces;
 
-public interface ICompraVenda {
-	public int AdicionarItem(int cod, int codProduto);
-	public int RemoverItem(int cod, int codProduto);
-	public int AlterarQtd(int cod, int codProduto, double quantidade);
-	public int AlterarValor(int cod, int codProduto, double valor);
+import java.sql.SQLException;
+
+public interface ICompraVenda<T> {
+	public String Select();
+	public int AdicionarItem(int cod, T item) throws SQLException;
+	public int RemoverItem(int cod, T item) throws SQLException;
+	public int AlterarQtd(int cod, T item);
+	public int AlterarValor(int cod, T item);
+	public double TotalItens(int cod);
+	public int ProximoSequencial(int cod);
 }

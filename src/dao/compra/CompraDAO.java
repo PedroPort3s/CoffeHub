@@ -270,6 +270,7 @@ public class CompraDAO implements IPadraoDB<Compra>{
 			PreparedStatement statement = conexao.prepareStatement(sum);
 			ResultSet resultSet;
 			resultSet = statement.executeQuery();
+			
 			while(resultSet.next()) {
 				retorno = resultSet.getInt("totalVendas");
 			}
