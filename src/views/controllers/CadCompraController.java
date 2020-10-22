@@ -4,6 +4,8 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 
+import entitys.Cliente;
+import entitys.Funcionario;
 import entitys.Produto;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -19,7 +21,11 @@ import javafx.stage.StageStyle;
 
 public class CadCompraController {
 	
-	private static Stage CadCompra; 
+	private static Stage CadCompra;
+	
+	public static Produto ProdutoEstatico = new Produto();
+	
+	public static Funcionario FuncionarioEstatico = new Funcionario();
 
     @FXML
     private JFXTextField txtCodCompra;
@@ -102,7 +108,9 @@ public class CadCompraController {
 
     @FXML
     void btnBuscarProduto_Action(ActionEvent event) {
-
+    	CadCompra.close();
+    	CadCompra = null;
+    	new PesquisaProdutoGeralController("COMPRA").getPesquisaProdutoGeral().show();
     }
 
     @FXML
@@ -143,8 +151,9 @@ public class CadCompraController {
     }
 
     @FXML
-    void txtCodVenda_MouseClicked(MouseEvent event) {
+    void txtFornecedor_MouseClicked(MouseEvent event) {
 
     }
 
+    
 }

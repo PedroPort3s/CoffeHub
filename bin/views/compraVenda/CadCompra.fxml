@@ -7,8 +7,8 @@
 
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="508.0" prefWidth="779.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.controllers.CadCompraController">
    <children>
-      <JFXTextField fx:id="txtCodCompra" disable="true" editable="false" focusColor="#2e1d04" labelFloat="true" layoutX="14.0" layoutY="45.0" onMouseClicked="#txtCodVenda_MouseClicked" prefHeight="40.0" prefWidth="357.0" promptText="Código" unFocusColor="BLACK" />
-      <JFXTextField fx:id="txtDataCompra" disable="true" editable="false" focusColor="#2e1d04" labelFloat="true" layoutX="400.0" layoutY="45.0" onMouseClicked="#txtCodVenda_MouseClicked" prefHeight="40.0" prefWidth="357.0" promptText="Data" unFocusColor="BLACK" />
+      <JFXTextField fx:id="txtCodCompra" disable="true" editable="false" focusColor="#2e1d04" labelFloat="true" layoutX="14.0" layoutY="45.0" prefHeight="40.0" prefWidth="357.0" promptText="Código" unFocusColor="BLACK" />
+      <JFXTextField fx:id="txtDataCompra" disable="true" editable="false" focusColor="#2e1d04" labelFloat="true" layoutX="400.0" layoutY="45.0" prefHeight="40.0" prefWidth="357.0" promptText="Data" unFocusColor="BLACK" />
       <JFXListView fx:id="lvProdutos" layoutX="13.0" layoutY="218.0" onMouseClicked="#lvProdutos_MouseClicked" prefHeight="221.0" prefWidth="754.0" />
       <JFXTextField fx:id="txtProduto" disable="true" focusColor="#2e1d04" labelFloat="true" layoutX="64.0" layoutY="165.0" prefHeight="40.0" prefWidth="307.0" promptText="Produto" unFocusColor="BLACK" />
       <JFXButton fx:id="btnAddProduto" buttonType="RAISED" layoutX="462.0" layoutY="185.0" onAction="#btnAddProduto_Action" prefHeight="16.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Adicionar" textFill="WHITE" />

@@ -147,5 +147,10 @@ public class PesquisaCompraController {
     void txtFuncionario_MouseClicked(MouseEvent event) {
 
     }
+    
+    @FXML
+    void txtFornecedor_MouseClicked(MouseEvent event) {
+
+    }
 
 }

@@ -1,6 +1,7 @@
 package views.controllers;
 
 import java.net.URL;
+import java.sql.Connection;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -26,6 +27,13 @@ import javafx.stage.StageStyle;
 public class PesquisaProdutoGeralController implements Initializable{
 
 	private static Stage PesquisaProdutoGeral;
+	
+	private String compraVenda;
+	
+	public PesquisaProdutoGeralController(String pCompraVenda) {
+		compraVenda = pCompraVenda;
+	}
+	
 
     @FXML
     private JFXButton btnPesquisar;
