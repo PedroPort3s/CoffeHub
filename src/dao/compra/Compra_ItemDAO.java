@@ -84,7 +84,8 @@ public class Compra_ItemDAO implements ICompraVenda<Compra_Item>{
 		return retorno;
 	}
 	
-	public int RemoverItensCompra(int cod) throws SQLException {
+	@Override
+	public int RemoverItens(int cod) throws SQLException {
 		
 		int retorno = 0;
 		
