@@ -1,6 +1,8 @@
 package entitys;
 
+import java.text.DateFormat;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import utils.Formatacao;
 
@@ -14,8 +16,10 @@ public class Fornecedor extends Pessoa {
 
 	@Override
 	public String toString() {
-		return "Fornecedor [cod=" + getCod() + ", nome=" + getNome() + ", documento=" + Formatacao.formatarDocumento(getDocumento()) + ", telefone=" + getTelefone()
-				+ ", endereco=" + getEndereco() + ", email=" + getEmail() + "]";	
+		DateTimeFormatter formatar = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
+		return "Fornecedor [cod = " + getCod() + ", nome = " + getNome() + ", documento = " + Formatacao.formatarDocumento(getDocumento()) + ", telefone = " + Formatacao.formatarTelefone(getTelefone())
+				+ ", endereco = " + getEndereco() + ", email = " + getEmail() + "" + data_contrato.format(formatar) + "]";	
 		}
 	
 	public Fornecedor(LocalDate data_contrato, String documento, String telefone, String nome, String endereco,

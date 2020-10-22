@@ -25,6 +25,7 @@ import javafx.scene.control.DatePicker;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import utils.Formatacao;
 
 public class CadFornecedorController implements Initializable {
 
@@ -98,8 +99,8 @@ public class CadFornecedorController implements Initializable {
 		try {
 			conferirCampos();
 
-			if (!fornecedorStatic.getDocumento().equals(txtDocumento.getText()))
-				if (dao.verificaRG(txtDocumento.getText()))
+			if (!fornecedorStatic.getDocumento().equals(txtDocumento.getText().replaceAll("[^0-9]+", "")))				
+				if (dao.verificaRG(txtDocumento.getText().replaceAll("[^0-9]+", "")))
 					throw new MoreThanOneException("Rg existente");
 
 			dao.editar(new Fornecedor(dataPickerContrato.getValue(), fornecedorStatic.getCod(), txtDocumento.getText(),
@@ -137,6 +138,9 @@ public class CadFornecedorController implements Initializable {
 		try {
 			conferirCampos();
 
+			if (dao.verificaRG(txtDocumento.getText().replaceAll("[^0-9]+", "")))
+				throw new MoreThanOneException("Rg existente");
+			
 			dao.inserir(new Fornecedor(dataPickerContrato.getValue(), txtDocumento.getText(), txtTelefone.getText(),
 					txtNome.getText(), txtEndereco.getText(), txtEmail.getText()));
 
@@ -175,11 +179,7 @@ public class CadFornecedorController implements Initializable {
 		if (texto.equals("") || texto == null)
 			throw new CampoVazioException(msg);
 		texto = texto.replaceAll("[^0-9]+", "");
-		if (texto.length() == 11 || texto.length() == 14) {
-			if (dao.verificaRG(texto))
-				throw new MoreThanOneException("Rg existente");
-			return true;
-		}
+		if (texto.length() == 11 || texto.length() == 14) return true;
 
 		throw new TextoInvalidoException(msg);
 	}

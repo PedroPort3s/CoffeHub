@@ -9,3 +9,5 @@ add un_medida varchar(2) not null;
 
 alter table compra 
 change column date_recebido data_recebido date;
+
+alter table funcionario add column cod_acesso int;

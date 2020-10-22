@@ -1,52 +1,67 @@
 package utils;
 
+import java.text.ParseException;
+
+import javax.swing.text.MaskFormatter;
+
 public class Formatacao {
 
 	public static void main(String[] args) {
-		System.out.println(formatarDocumento("09574303969"));
+		try {
+			MaskFormatter mask = new MaskFormatter("###.###.###-##");
+			mask.setValueContainsLiteralCharacters(false);
+			System.out.println("CNPJ : " + mask.valueToString("09574303969"));
+		} catch (ParseException ex) {
+			System.out.println("deu ruim");
+		}
 	}
-	
+
 	public static String formatarDocumento(String cpf_RG) {
 		String cpfRGFormatado = "";
-
-		if (cpf_RG.length() == 11) {
-			for (int i = 0; i < cpf_RG.length(); i++) {
-				cpfRGFormatado += cpf_RG.charAt(i);
-				switch (i) {
-				case 2:
-				case 5:
-					cpfRGFormatado += ".";
-					break;
-				case 8:
-					cpfRGFormatado += "-";
-					break;
-				default:
-					break;
-				}
+		try {
+			if (cpf_RG.length() == 11) {
+				MaskFormatter mask = new MaskFormatter("###.###.###-##");
+				mask.setValueContainsLiteralCharacters(false);
+				cpfRGFormatado = mask.valueToString(cpf_RG);
+			} else if (cpf_RG.length() == 14) {
+				MaskFormatter mask = new MaskFormatter("##.###.###/####-##");
+				mask.setValueContainsLiteralCharacters(false);
+				cpfRGFormatado = mask.valueToString(cpf_RG);
+			} else {
+				throw new RuntimeException("Erro na hora de formatar o documento");
 			}
-		} else if (cpf_RG.length() == 14) {
-			for (int i = 0; i < cpf_RG.length(); i++) {
-				cpfRGFormatado += cpf_RG.charAt(i);
-				switch (i) {
-				case 1:
-				case 4:
-					cpfRGFormatado += ".";
-					break;
-				case 7:
-					cpfRGFormatado += "/";
-					break;
-				case 11:
-					cpfRGFormatado += "-";
-					break;
-				default:
-					break;
-				}
-			}
-		} else {
-			throw new RuntimeException();
+			return cpfRGFormatado;
+		} catch (Exception e) {
+			throw new RuntimeException("Erro na hora de formatar o documento");
 		}
-
-		return cpfRGFormatado;
 	}
 
+	public static String formatarTelefone(String telefone) {
+		String telefoneFormatado = "";
+		try {
+			if (telefone.length() == 8) {
+				MaskFormatter mask = new MaskFormatter("####-####");
+				mask.setValueContainsLiteralCharacters(false);
+				telefoneFormatado = mask.valueToString(telefone);
+			} else if (telefone.length() == 9) {
+				MaskFormatter mask = new MaskFormatter("# ####-####");
+				mask.setValueContainsLiteralCharacters(false);
+				telefoneFormatado = mask.valueToString(telefone);
+			} else if (telefone.length() == 10) {
+				MaskFormatter mask = new MaskFormatter("(##) ####-####");
+				mask.setValueContainsLiteralCharacters(false);
+				telefoneFormatado = mask.valueToString(telefone);
+			} else if (telefone.length() == 11) {
+				MaskFormatter mask = new MaskFormatter("(##) # ####-####");
+				mask.setValueContainsLiteralCharacters(false);
+				telefoneFormatado = mask.valueToString(telefone);
+			} else {
+				throw new RuntimeException("Erro na hora de formatar o telefone");
+			}
+			
+			return telefoneFormatado;
+		} catch (Exception e) {
+			throw new RuntimeException("Erro na hora de formatar o telefone");
+		}
+	}
 }

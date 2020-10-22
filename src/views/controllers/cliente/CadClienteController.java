@@ -26,6 +26,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import utils.Formatacao;
 
 public class CadClienteController implements Initializable {
 
@@ -100,13 +101,12 @@ public class CadClienteController implements Initializable {
 		try {
 			conferirCampos();
 
-			if (!clienteStatic.getDocumento().equals(txtDocumento.getText()))
-				if (dao.verificaRG(txtDocumento.getText()))
+			if (!clienteStatic.getDocumento().equals(txtDocumento.getText().replaceAll("[^0-9]+", "")))
+				if (dao.verificaRG(txtDocumento.getText().replaceAll("[^0-9]+", "")))
 					throw new MoreThanOneException("Rg existente");
 
 			dao.editar(new Cliente(dataPickerNascimento.getValue(), clienteStatic.getCod(), txtDocumento.getText(),
-					txtTelefone.getText(), txtNome.getText(), txtEndereco.getText(),
-					txtEmail.getText()));
+					txtTelefone.getText(), txtNome.getText(), txtEndereco.getText(), txtEmail.getText()));
 
 			Alert alert = new Alert(AlertType.CONFIRMATION, "Cliente editado com sucesso", ButtonType.OK);
 			alert.setHeaderText("Cliente editado!!");
@@ -140,12 +140,11 @@ public class CadClienteController implements Initializable {
 		try {
 			conferirCampos();
 
-			if (dao.verificaRG(txtDocumento.getText()))
+			if (dao.verificaRG(txtDocumento.getText().replaceAll("[^0-9]+", "")))
 				throw new MoreThanOneException("Rg existente");
 
-			dao.inserir(new Cliente(dataPickerNascimento.getValue(), txtDocumento.getText(),
-					txtTelefone.getText(), txtNome.getText(), txtEndereco.getText(),
-					txtEmail.getText()));
+			dao.inserir(new Cliente(dataPickerNascimento.getValue(), txtDocumento.getText(), txtTelefone.getText(),
+					txtNome.getText(), txtEndereco.getText(), txtEmail.getText()));
 
 			Alert alert = new Alert(AlertType.CONFIRMATION, "Cliente cadastrado com sucesso", ButtonType.OK);
 			alert.setHeaderText("Cliente cadastrado!!");
@@ -182,11 +181,8 @@ public class CadClienteController implements Initializable {
 		if (texto.equals("") || texto == null)
 			throw new CampoVazioException(msg);
 		texto = texto.replaceAll("[^0-9]+", "");
-		if (texto.length() == 11 || texto.length() == 14) {
-			if (dao.verificaRG(texto))
-				throw new MoreThanOneException("Rg existente");
+		if (texto.length() == 11 || texto.length() == 14)
 			return true;
-		}
 
 		throw new TextoInvalidoException(msg);
 	}
@@ -194,11 +190,12 @@ public class CadClienteController implements Initializable {
 	private Boolean verificaNumero(@Nullable String texto, String msg) {
 		try {
 			texto = texto.replaceAll("[^0-9]+", "");
-			System.out.println(texto);
-			if(texto.length() > 11 || texto.length() < 8) throw new TextoInvalidoException(msg);
-			if(texto.length() > 9 && texto.length() <= 11 ) texto = texto.substring(2, texto.length());
+			if (texto.length() > 11 || texto.length() < 8)
+				throw new TextoInvalidoException(msg);
+			if (texto.length() > 9 && texto.length() <= 11)
+				texto = texto.substring(2, texto.length());
 			Integer.parseInt(texto);
-			
+
 		} catch (Exception e) {
 			throw new NumberFormatException(msg);
 		}
@@ -229,8 +226,8 @@ public class CadClienteController implements Initializable {
 	private void paraEditarCliente() {
 		txtCod.setText(clienteStatic.getCod() + "");
 		txtNome.setText(clienteStatic.getNome());
-		txtDocumento.setText(clienteStatic.getDocumento());
-		txtTelefone.setText(clienteStatic.getTelefone() + "");
+		txtDocumento.setText(Formatacao.formatarDocumento(clienteStatic.getDocumento()));
+		txtTelefone.setText(Formatacao.formatarTelefone(clienteStatic.getTelefone() + ""));
 		txtEmail.setText(clienteStatic.getEmail());
 		dataPickerNascimento.setValue(clienteStatic.getData_nascimento());
 		txtEndereco.setText(clienteStatic.getEndereco());

@@ -1,5 +1,7 @@
 package entitys;
 
+import java.text.ParseException;
+
 import utils.Formatacao;
 
 public abstract class Pessoa {

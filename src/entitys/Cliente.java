@@ -1,5 +1,6 @@
 package entitys;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
@@ -55,15 +56,13 @@ public class Cliente extends Pessoa {
 		this.data_nascimento = data_nascimento;
 	}
 
-	public String toStringResumido() {
-		return "Cliente [cod=" + getCod() + " data_nascimento=" + getData_nascimentoString() + ", idade=" + idade
-		+ ", documento=" + getDocumento() + ", telefone=" + getTelefone() + ", nome=" + getNome().substring(0, 10)
-		+ ", endereco=" + getEndereco().substring(0, 10) + ", email=" + getEmail() + "]";
-	}
-	
 	@Override
 	public String toString() {
-		return "Cliente: cod = " + getCod() + ", data_nascimento = " + data_nascimento + ", nome=" + getNome() + ", documento=" + Formatacao.formatarDocumento(getDocumento()) + ", telefone=" + getTelefone()
-				+ ", endereco=" + getEndereco() + ", email=" + getEmail() + "]";
+		DateTimeFormatter formatar = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
+		return "Cliente: cod = " + getCod() + ", idade = " + idade + ", nome=" + getNome()
+				+ ", documento=" + Formatacao.formatarDocumento(getDocumento()) + ", telefone="
+				+ Formatacao.formatarTelefone(getTelefone()) + ", endereco=" + getEndereco() + ", email=" + getEmail()
+				+ "]";
 	}
 }
