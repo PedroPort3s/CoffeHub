@@ -32,7 +32,7 @@ public class ControlCompra {
 			
 			retorno = compraDAO.Inserir(compra);
 			
-			if(retorno != 1) throw new Exception("Erro ao gravar a compra.");
+			if(retorno <= 0) throw new Exception("Erro ao gravar a compra.");
 			
 			conexao.commit();
 			conexao.close();

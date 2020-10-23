@@ -18,6 +18,11 @@ public class ControlCompraItens {
 	
 	public ControlCompraItens(Connection conn) {
 		this.conexao = conn;
+	}	
+	
+	
+	public ControlCompraItens() {
+		super();
 	}
 	
 	public int AdicionarItem(Compra compra, Compra_Item item) throws Exception {

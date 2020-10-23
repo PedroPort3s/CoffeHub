@@ -122,8 +122,10 @@ public class Compra {
 				if(compra.getFuncionario().getCod() <= 0)
 					throw new Exception("Informe um funcionario valido.");
 			}
-			if(compra.getItens().size() == 0)
-				throw new Exception("Informe pelo menos 1 item para prosseguir com esta compra");
+			/*
+			 * if(compra.getItens() == null || compra.getItens().size() == 0) throw new
+			 * Exception("Informe pelo menos 1 item para prosseguir com esta compra");
+			 */
 		}
 	
 	public double TotalVenda() {

@@ -2,6 +2,7 @@ package views.controllers;
 
 import java.util.Optional;
 
+import entitys.Funcionario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -19,6 +20,9 @@ import javafx.stage.StageStyle;
 public class HomeController {
 
 	private static Stage Home;
+	
+	public static Funcionario FuncionarioEstatico = new Funcionario();	
+	
     @FXML
     private Button btnOverview;
 

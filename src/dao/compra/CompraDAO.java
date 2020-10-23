@@ -38,17 +38,19 @@ public class CompraDAO implements IPadraoDB<Compra>{
 			String sql = "INSERT INTO compra(cod, data_origem, data_recebido, valor_total, status, cod_Fornecedor, cod_Funcionario) VALUES (?,?,?,?,?,?,?)";
 
 			PreparedStatement statement = conexao.prepareStatement(sql);
+			retorno = this.ProximoCodCompra();
 			
-			statement.setInt(1, this.ProximoCodCompra());
+			statement.setInt(1, retorno);
 			statement.setString(2, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()));
-			statement.setString(3, new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(compra.getData_recebido()));
-			statement.setDouble(4, compra.TotalCompra());
+			statement.setString(3, null);
+			statement.setDouble(4, 0);
 			statement.setString(5, "A");
 			statement.setInt(6, compra.getFornecedor().getCod());
 			statement.setInt(7, compra.getFuncionario().getCod());
 			
-			retorno = statement.executeUpdate();
-			
+			if(statement.executeUpdate() != 1) {
+				throw new Exception("Não foi possivel gravar a compra");
+			}
 			
 		} catch (SQLException sqlEx) {
 			/* sqlEx.printStackTrace(); */
