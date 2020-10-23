@@ -28,11 +28,14 @@ public class PesquisaProdutoGeralController implements Initializable{
 
 	private static Stage PesquisaProdutoGeral;
 	
-	private String compraVenda;
+	public static String compraVenda;
 	
-	public PesquisaProdutoGeralController(String pCompraVenda) {
-		compraVenda = pCompraVenda;
-	}
+	
+	
+	/*
+	 * public PesquisaProdutoGeralController(String pCompraVenda) { compraVenda =
+	 * pCompraVenda; }
+	 */
 	
 
     @FXML
@@ -83,7 +86,7 @@ public class PesquisaProdutoGeralController implements Initializable{
     void btnVoltar_Action(ActionEvent event) {
 		PesquisaProdutoGeral.hide();
 		PesquisaProdutoGeral = null;
-		
+		compraVenda = "";
     }
 
     @FXML
@@ -94,11 +97,24 @@ public class PesquisaProdutoGeralController implements Initializable{
         	Produto produto = lvProdutos.getSelectionModel().getSelectedItem();
 			if (produto != null)
 			{
-				CadVendaController.ProdutoEstatico = produto;
-				new CadVendaController().getCadVenda().show();
-				/* new CadVendaController().CarregarProduto(codProduto); */
-				PesquisaProdutoGeral.close();
-				PesquisaProdutoGeral = null;
+				if(compraVenda == "COMPRA")
+				{
+					CadCompraController.ProdutoEstatico = produto;
+					new CadCompraController().getCadCompra().show();
+					PesquisaProdutoGeral.close();
+					PesquisaProdutoGeral = null;		
+					compraVenda = "";
+				}
+				
+				else if(compraVenda == "VENDA")
+				{
+					CadVendaController.ProdutoEstatico = produto;
+					new CadVendaController().getCadVenda().show();
+					PesquisaProdutoGeral.close();
+					PesquisaProdutoGeral = null;
+					compraVenda = "";
+				}
+				
 			}
 		}
     	catch (Exception e) 

@@ -66,7 +66,7 @@ public class ControlCompra {
 			
 			CompraDAO compraDAO = new CompraDAO(conexao);
 			
-			retorno = new Compra_ItemDAO(conexao).RemoverItensCompra(compra.getCod());
+			retorno = new Compra_ItemDAO(conexao).RemoverItens(compra.getCod());
 			
 			if(retorno == compra.getItens().size()) {
 				

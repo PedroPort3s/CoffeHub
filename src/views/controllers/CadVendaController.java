@@ -178,7 +178,8 @@ public class CadVendaController implements Initializable{
     void btnBuscarProduto_Action(ActionEvent event) {
     	CadVenda.close();
     	CadVenda = null;
-    	new PesquisaProdutoGeralController("VENDA").getPesquisaProdutoGeral().show();
+    	PesquisaProdutoGeralController.compraVenda = "VENDA";
+    	new PesquisaProdutoGeralController().getPesquisaProdutoGeral().show();
     }
     
     void CarregarProduto(Produto produto) throws Exception{
