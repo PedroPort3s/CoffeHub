@@ -16,7 +16,9 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import views.controllers.cliente.PesquisaClienteController;
+import views.controllers.cliente.PesquisaClienteGeralController;
 import views.controllers.fornecedor.PesquisaFornecedorController;
+import views.controllers.fornecedor.PesquisaFornecedorGeralController;
 
 public class HomeController {
 
