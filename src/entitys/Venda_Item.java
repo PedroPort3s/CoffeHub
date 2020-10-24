@@ -1,5 +1,9 @@
 package entitys;
 
+import java.util.List;
+
+import control.produto.ControlProduto;
+
 public class Venda_Item {
 
 	private int num_item;
@@ -7,6 +11,8 @@ public class Venda_Item {
 	private Double qtd_item;
 
 	private Double valor_venda;
+
+	private Produto produto;
 
 	public int getNum_item() {
 		return num_item;
@@ -39,6 +45,40 @@ public class Venda_Item {
 	public void setProduto(Produto produto) {
 		this.produto = produto;
 	}
-
-	private Produto produto;
+	
+	public static void ValidarVendaItens(List<Venda_Item> itens) throws Exception{
+		if (itens != null) {
+			for(Venda_Item item: itens) {
+				ValidarVendaItemNumItem(item);	
+			}
+		}
+	}
+	
+	public static void ValidarVendaItemNumItem(Venda_Item item) throws Exception{
+		if(item == null)
+			throw new Exception("Item invalido");
+		if(item.getNum_item() <= 0)
+			throw new Exception("Item invalido");
+		if(item.getProduto() != null)
+			new ControlProduto().ValidarProdutoId(item.getProduto());
+		else 
+			throw new Exception("Produto não informado");
+		if(item.getQtd_item() <= 0)
+			throw new Exception("Quantidade invalida");
+		if(item.getValor_venda() <=0)
+			throw new Exception("Valor invalido");
+	}
+	
+	public static void ValidarVendaItem(Venda_Item item) throws Exception{
+		if(item == null)
+			throw new Exception("Item invalido");
+		if(item.getProduto() != null)
+			new ControlProduto().ValidarProdutoId(item.getProduto());
+		else 
+			throw new Exception("Produto não informado");
+		if(item.getQtd_item() <= 0)
+			throw new Exception("Quantidade invalida");
+		if(item.getValor_venda() <=0)
+			throw new Exception("Valor invalido");
+	}
 }

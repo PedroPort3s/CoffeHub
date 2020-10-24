@@ -142,6 +142,10 @@ public class ControlCompra {
 			
 			compra = compraDAO.Carregar(id);
 			
+			if(compra != null) {
+				compra.setItens(new Compra_ItemDAO(conexao).CarregarItens(compra.getCod()));
+			}
+			
 			conexao.close();
 		}
 		catch(SQLException ex){
@@ -211,6 +215,29 @@ public class ControlCompra {
 		}
 		
 		return lstCompra;
+	}
+	
+	public double TotalVendasDia(Date data) throws Exception {
+		double retorno = 0;
+		try {
+			
+			conexao = ConexaoMySql.getInstance().getConnection();
+			
+			CompraDAO compraDAO = new CompraDAO(conexao);
+			
+			if(data == null) throw new Exception("Informe uma data para obter o total de compras naquele dia.");
+			
+			retorno = compraDAO.TotalVendasDia(data);
+			
+			conexao.close();
+		}
+		catch(SQLException ex){
+			throw ex;
+		} catch (Exception e) {
+			throw e;
+		}
+		
+		return retorno;
 	}
 	
 	

@@ -224,8 +224,8 @@ public class CompraDAO implements IPadraoDB<Compra>{
 			
 			sql.append(this.Select_Compra());
 			sql.append(" where c.status='"+ status +"'");
-			sql.append(" and c.data_origem <= '"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(DataInicio)+"'");
-			sql.append(" and c.data_origem >= '"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(DataFim)+"'");
+			sql.append(" and c.data_origem <= '"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(DataFim)+"'");
+			sql.append(" and c.data_origem >= '"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(DataInicio)+"'");
 
 			PreparedStatement statement = conexao.prepareStatement(sql.toString());
 			
@@ -260,8 +260,8 @@ public class CompraDAO implements IPadraoDB<Compra>{
 			
 			sql.append(this.Select_Compra());
 			
-			sql.append(" where c.data_origem <= '"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(DataInicio)+"'");
-			sql.append(" and c.data_origem >= '"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(DataFim)+"'");
+			sql.append(" where c.data_origem <= '"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(DataFim)+"'");
+			sql.append(" and c.data_origem >= '"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(DataInicio)+"'");
 
 			PreparedStatement statement = conexao.prepareStatement(sql.toString());
 			
@@ -303,8 +303,8 @@ public class CompraDAO implements IPadraoDB<Compra>{
 				sql.append(" where c.cod_Fornecedor = "+codigo);
 			}
 			
-			sql.append(" and c.data_origem <= '"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(DataInicio)+"'");
-			sql.append(" and c.data_origem >= '"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(DataFim)+"'");
+			sql.append(" and c.data_origem <= '"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(DataFim)+"'");
+			sql.append(" and c.data_origem >= '"+new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(DataInicio)+"'");
 
 			PreparedStatement statement = conexao.prepareStatement(sql.toString());
 			
