@@ -99,11 +99,8 @@ public class Compra {
 				if(compra.getFuncionario().getCod() <= 0)
 					throw new Exception("Funcionario inválido.");
 			}
-			if(compra.getItens().size() == 0)
-				throw new Exception("Esta compra não possui itens");
-			else {
-				Compra_Item.ValidarCompraItens(compra.getItens());
-			}
+			if(compra.getItens() != null && compra.getItens().size() > 0)
+				Compra_Item.ValidarCompraItens(compra.getItens());		
 		}
 		
 		// Método de validar sem codigo

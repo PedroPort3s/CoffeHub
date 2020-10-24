@@ -35,7 +35,7 @@ public class CadCompraController implements Initializable {
 
 	private static Stage CadCompra;
 
-	private Compra compraPrivate;
+	private static Compra compraPrivate;
 
 	public static Produto ProdutoEstatico = new Produto();
 
@@ -166,8 +166,8 @@ public class CadCompraController implements Initializable {
 					RecarregarCompra(compraPrivate);
 				}
 			}
-		} catch (Exception e) {
-			compraPrivate = null;
+		}
+		catch (Exception e) {			
 			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
 			alert.showAndWait();
 		}
@@ -328,12 +328,19 @@ public class CadCompraController implements Initializable {
 
 				txtCodCompra.setText(compra.getCod() + "");
 				txtDataCompra.setText(compra.getData_origem() + "");
-				txtCodFornecedor.setText(compra.getFornecedor().getCod() + "");
-				txtFornecedor.setText(compra.getFornecedor().getNome() + "");
+				
+				Fornecedor fornecedorCompra = new Fornecedor();
+				fornecedorCompra.setCod(1);
+				fornecedorCompra.setNome("Pedrinho");
+				
+				txtCodFornecedor.setText(fornecedorCompra.getCod() + "");
+				txtFornecedor.setText(fornecedorCompra.getNome() + "");
+				
+				
 				txtStatusCompra.setText(compra.getStatus());
 				lblTotalCompra.setVisible(true);
 				lblTotalCompra.setText("Total: " + compra.TotalCompra());
-				;
+				
 
 				// Lista de produto para o list view
 				compra.getItens().forEach(p -> lvProdutos.getItems().add(p.getProduto()));
@@ -353,6 +360,10 @@ public class CadCompraController implements Initializable {
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
 		try {
+			if (compraPrivate != null) {
+				RecarregarCompra(compraPrivate);
+			}
+			
 			if (ProdutoEstatico != null && ProdutoEstatico.getCod() > 0) {
 				this.CarregarProduto(ProdutoEstatico);
 			}
