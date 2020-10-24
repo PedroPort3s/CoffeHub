@@ -13,7 +13,6 @@ import entitys.Compra;
 import entitys.Produto;
 import utils.ConexaoMySql;
 
-
 public class ControlCompra {
 	
 	private Connection conexao = null;
@@ -45,6 +44,41 @@ public class ControlCompra {
 			throw e;
 		}
 		
+		
+		return retorno;
+	}
+	
+public int Finalizar(Compra compra) throws Exception {
+		
+		int retorno = 0;
+	
+		try  {
+			
+			Compra.ValidarCompraCod(compra);
+			conexao = ConexaoMySql.getInstance().getConnection();
+			conexao.setAutoCommit(false);
+			
+			CompraDAO compraDAO = new CompraDAO(conexao);
+			
+			if(!compraDAO.Carregar(compra.getCod()).getStatus().equals("A")) 
+				throw new Exception("Não é possível finalizar uma venda que não está aberta.");
+			
+			retorno = compraDAO.Finalizar(compra);
+				
+			if(retorno != 1) throw new Exception("Erro ao finalizar a compra.");
+				
+			conexao.commit();
+			conexao.close();
+		}
+		catch(SQLException ex){
+			if(conexao != null) conexao.rollback();
+			
+			throw ex;
+		}
+		catch(Exception e) {
+			if(conexao != null) conexao.rollback();
+			throw e;
+		}
 		
 		return retorno;
 	}

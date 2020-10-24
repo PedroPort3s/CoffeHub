@@ -11,11 +11,12 @@ import java.util.List;
 
 import Helper.db;
 import dao.compra.Compra_ItemDAO;
+import dao.interfaces.ICompraVenda;
 import dao.interfaces.IPadraoDB;
 import entitys.Compra;
 import entitys.Venda;
 
-public class VendaDAO implements IPadraoDB<Venda> {
+public class VendaDAO implements ICompraVenda<Venda> {
 	
 	private Connection conexao = null;
 	
@@ -367,4 +368,35 @@ public class VendaDAO implements IPadraoDB<Venda> {
 		// carregar fornecedor c.cod_Fornecedor, c.cod_Funcionario
 		return venda;
 	}
+
+	@Override
+	public int Finalizar(Venda venda) throws Exception {
+		
+			int retorno = 0;
+			try {			
+				
+				StringBuilder sql = new StringBuilder();
+				sql.append("UPDATE venda SET");
+				sql.append(" valor_total = " + venda.TotalVenda() + ",");
+				sql.append(" data_confirmacao = '"+ new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) +"',");
+				sql.append(" status = 'F'");
+				sql.append(" WHERE cod = "+ venda.getCod());
+
+				PreparedStatement statement = conexao.prepareStatement(sql.toString());
+
+				retorno = statement.executeUpdate();
+				
+				if(retorno != 1) throw new Exception("Não foi possível finalizar a venda.");
+				
+				statement.close();
+
+			}  catch (SQLException sqlEx) {
+				sqlEx.printStackTrace();
+				throw sqlEx;
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				throw ex;
+			}
+			return retorno;
+	}	
 }

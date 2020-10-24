@@ -10,12 +10,12 @@ import java.util.Date;
 import java.util.List;
 
 import dao.ProdutoDAO;
-import dao.interfaces.ICompraVenda;
+import dao.interfaces.ICompraVendaItem;
 import entitys.Compra;
 import entitys.Compra_Item;
 import utils.ConexaoMySql;
 
-public class Compra_ItemDAO implements ICompraVenda<Compra_Item>{
+public class Compra_ItemDAO implements ICompraVendaItem<Compra_Item>{
 	
 	private Connection conexao = null;
 	

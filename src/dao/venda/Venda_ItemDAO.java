@@ -9,10 +9,10 @@ import java.util.List;
 
 import Helper.db;
 import dao.ProdutoDAO;
-import dao.interfaces.ICompraVenda;
+import dao.interfaces.ICompraVendaItem;
 import entitys.Venda_Item;
 
-public class Venda_ItemDAO implements ICompraVenda<Venda_Item> {
+public class Venda_ItemDAO implements ICompraVendaItem<Venda_Item> {
 	
 	private Connection conexao = null;
 	

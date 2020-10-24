@@ -10,12 +10,13 @@ import java.util.Date;
 import java.util.List;
 
 import Helper.Verifica;
+import dao.interfaces.ICompraVenda;
 import dao.interfaces.IPadraoDB;
 import entitys.Compra;
 import entitys.Produto;
 import utils.ConexaoMySql;
 
-public class CompraDAO implements IPadraoDB<Compra>{
+public class CompraDAO implements ICompraVenda<Compra>{
 	
 	private Connection conexao = null;
 	
@@ -388,5 +389,34 @@ public class CompraDAO implements IPadraoDB<Compra>{
 		}		
 		
 		return retorno + 1;
+	}
+
+	@Override
+	public int Finalizar(Compra compra) throws Exception {
+		
+			int retorno = 0;
+			try {			
+				
+				StringBuilder sql = new StringBuilder();
+				sql.append("UPDATE compra SET");
+				sql.append(" valor_total = " + compra.TotalCompra() + ",");
+				sql.append(" data_recebido = '"+ new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(new Date()) +"',");
+				sql.append(" status = 'F'");
+				sql.append(" WHERE cod = "+ compra.getCod());
+
+				PreparedStatement statement = conexao.prepareStatement(sql.toString());
+
+				retorno = statement.executeUpdate();
+				
+				statement.close();
+
+			}  catch (SQLException sqlEx) {
+				sqlEx.printStackTrace();
+				throw sqlEx;
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				throw ex;
+			}
+			return retorno;
 	}	
 }
