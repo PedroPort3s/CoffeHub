@@ -12,6 +12,8 @@ public class Funcionario extends Pessoa {
 	private Date data_demissao;
 	private double salario;
 	private String senha_funcionario;
+	private int cod_acesso;
+
 	
 	public Funcionario() {
 		super();

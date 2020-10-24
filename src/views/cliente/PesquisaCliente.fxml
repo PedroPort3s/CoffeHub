@@ -5,7 +5,7 @@
 <?import com.jfoenix.controls.JFXTextField?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="410.0" prefWidth="603.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.controllers.PesquisaClienteController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="410.0" prefWidth="603.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.controllers.cliente.PesquisaClienteController">
    <children>
       <JFXTextField fx:id="txtCodPesquisa" focusColor="#2e1d04" labelFloat="true" layoutX="9.0" layoutY="29.0" prefHeight="40.0" prefWidth="57.0" promptText="Código" unFocusColor="BLACK" />
       <JFXTextField fx:id="txtNomePesquisa" focusColor="#2e1d04" labelFloat="true" layoutX="79.0" layoutY="29.0" prefHeight="40.0" prefWidth="502.0" promptText="Nome" unFocusColor="BLACK" />

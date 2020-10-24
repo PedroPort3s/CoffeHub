@@ -1,4 +1,4 @@
-package views.controllers;
+package views.controllers.cliente;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
@@ -32,8 +32,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import views.controllers.HomeController;
 
-public class PesquisaClienteController {
+public class PesquisaClienteGeralController {
 
 	private static Stage pesquisaCliente;
 	
@@ -52,9 +53,6 @@ public class PesquisaClienteController {
     private JFXButton btnVoltar;
 
     @FXML
-    private JFXButton btnCadCliente;
-
-    @FXML
     private JFXTextField txtNomePesquisa;
 
     @FXML
@@ -65,21 +63,15 @@ public class PesquisaClienteController {
     
 	@FXML
 	void btnVoltar_Action(ActionEvent event) {
-		try {
-	    	fechar();
-			new HomeController().getHome().show();
-		} catch (Exception e) {
-			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
-			alert.showAndWait();
-		}
+		//TODO voltar para a tela que está aberta
 	}
 	
-    public Stage getPesquisaCliente() {
+    public Stage getPesquisaClienteGeral() {
 		if (pesquisaCliente == null) {
 			try {
 				Stage primaryStage = new Stage();
 				AnchorPane root = (AnchorPane) FXMLLoader
-						.load(getClass().getResource("/views/cliente/PesquisaCliente.fxml"));
+						.load(getClass().getResource("/views/pesquisa/PesquisaClienteGeral.fxml"));
 				Scene scene = new Scene(root);
 				primaryStage.setScene(scene);
 				primaryStage.initStyle(StageStyle.TRANSPARENT);
@@ -95,14 +87,7 @@ public class PesquisaClienteController {
 	}
     
     private void fechar() {
-    	pesquisaCliente.close();
-    	pesquisaCliente = null;
-    }
-
-    @FXML
-    void btnCadCliente_Action(ActionEvent event) {
-    	fechar();
-		new CadClienteController().getCadCliente().show();
+    	//TODO qual vai ser a ação ao fechar
     }
 
     @FXML
@@ -112,18 +97,7 @@ public class PesquisaClienteController {
 
     @FXML
     void lvCliente_MouseClicked(MouseEvent event) {
-		try {
-			Cliente cliente = lvClientes.getSelectionModel().getSelectedItem();
-			if (cliente != null) {
-					CadClienteController.clienteStatic = cliente;
-					fechar();
-					new CadClienteController().getCadCliente().show();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
-			alert.showAndWait();
-		}
+    	//TODO colocar a ação quando clicado no cliente
     }
 
     private void listarClientes() {
@@ -176,7 +150,6 @@ public class PesquisaClienteController {
     void initialize() {
         assert btnPesquisar != null : "fx:id=\"btnPesquisar\" was not injected: check your FXML file 'PesquisaCliente.fxml'.";
         assert btnVoltar != null : "fx:id=\"btnVoltar\" was not injected: check your FXML file 'PesquisaCliente.fxml'.";
-        assert btnCadCliente != null : "fx:id=\"btnCadCliente\" was not injected: check your FXML file 'PesquisaCliente.fxml'.";
         assert txtNomePesquisa != null : "fx:id=\"txtNomePesquisa\" was not injected: check your FXML file 'PesquisaCliente.fxml'.";
         assert lvClientes != null : "fx:id=\"lvClientes\" was not injected: check your FXML file 'PesquisaCliente.fxml'.";
         assert txtCodPesquisa != null : "fx:id=\"txtCodPesquisa\" was not injected: check your FXML file 'PesquisaCliente.fxml'.";

@@ -1,5 +1,9 @@
 package entitys;
 
+import java.text.ParseException;
+
+import utils.Formatacao;
+
 public abstract class Pessoa {
 
 	private int cod;
@@ -87,7 +91,7 @@ public abstract class Pessoa {
 
 	@Override
 	public String toString() {
-		return "Pessoa [cod=" + cod + ", documento=" + documento + ", telefone=" + telefone + ", nome=" + nome
+		return "Pessoa [cod=" + cod + ", documento=" + Formatacao.formatarDocumento(documento) + ", telefone=" + telefone + ", nome=" + nome
 				+ ", endereco=" + endereco + ", email=" + email + "]";
 	}
 }
