@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="410.0" prefWidth="603.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.controllers.fornecedor.PesquisaFornecedorController">
+   <children>
+      <JFXTextField fx:id="txtCodPesquisa" focusColor="#2e1d04" labelFloat="true" layoutX="9.0" layoutY="29.0" prefHeight="40.0" prefWidth="57.0" promptText="Código" unFocusColor="BLACK" />
+      <JFXTextField fx:id="txtNomePesquisa" focusColor="#2e1d04" labelFloat="true" layoutX="79.0" layoutY="29.0" prefHeight="40.0" prefWidth="502.0" promptText="Nome" unFocusColor="BLACK" />
+      <JFXButton fx:id="btnPesquisar" buttonType="RAISED" layoutX="302.0" layoutY="96.0" onAction="#btnPesquisar_Action" prefHeight="30.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Pesquisar" textFill="WHITE" />
+      <JFXButton fx:id="btnCadFornecedor" buttonType="RAISED" layoutX="398.0" layoutY="96.0" onAction="#btnCadFornecedor_Action" prefHeight="30.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Cadastrar" textFill="WHITE" />
+      <JFXButton fx:id="btnVoltar" buttonType="RAISED" layoutX="496.0" layoutY="96.0" onAction="#btnVoltar_Action" prefHeight="30.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Voltar" textFill="WHITE" />
+      <JFXListView fx:id="lvFornecedores" layoutX="9.0" layoutY="173.0" onMouseClicked="#lvFornecedor_MouseClicked" prefHeight="221.0" prefWidth="578.0" />
+   </children>
+</AnchorPane>
