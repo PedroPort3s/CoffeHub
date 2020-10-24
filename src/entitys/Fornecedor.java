@@ -1,30 +1,44 @@
 package entitys;
 
-import java.util.Date;
+import java.text.DateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+
+import utils.Formatacao;
 
 public class Fornecedor extends Pessoa {
 
-	private Date data_contrato;
+	private LocalDate data_contrato;
 
-	private Date data_nascimento;
-
-	public Date getData_contrato() {
-		return data_contrato;
+	public Fornecedor() {
+		super();
 	}
 
-	public void setData_contrato(Date data_contrato) {
+	@Override
+	public String toString() {
+		DateTimeFormatter formatar = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		
+		return "Fornecedor [cod = " + getCod() + ", nome = " + getNome() + ", documento = " + Formatacao.formatarDocumento(getDocumento()) + ", telefone = " + Formatacao.formatarTelefone(getTelefone())
+				+ ", endereco = " + getEndereco() + ", email = " + getEmail() + "" + data_contrato.format(formatar) + "]";	
+		}
+	
+	public Fornecedor(LocalDate data_contrato, String documento, String telefone, String nome, String endereco,
+			String email) {
+		super(documento, telefone, nome, endereco, email);
 		this.data_contrato = data_contrato;
 	}
 
-	public Date getData_nascimento() {
-		return data_nascimento;
+	public Fornecedor(LocalDate data_contrato, int cod, String documento, String telefone, String nome, String endereco,
+			String email) {
+		super(cod, documento, telefone, nome, endereco, email);
+		this.data_contrato = data_contrato;
 	}
 
-	public void setData_nascimento(Date data_nascimento) {
-		this.data_nascimento = data_nascimento;
+	public LocalDate getData_contrato() {
+		return data_contrato;
 	}
 
-	public int calcularIdade() {
-		return 0;
+	public void setData_contrato(LocalDate data_contrato) {
+		this.data_contrato = data_contrato;
 	}
 }

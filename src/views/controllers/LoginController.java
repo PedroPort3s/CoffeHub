@@ -53,6 +53,7 @@ public class LoginController implements Initializable {
 		  catch(Exception e)
 		  	{
 			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+			  System.out.println("asdasdasd");
 			  alert.showAndWait();	
 		  	}
 		}

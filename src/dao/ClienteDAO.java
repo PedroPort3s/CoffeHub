@@ -45,8 +45,8 @@ public class ClienteDAO implements IClienteDAO {
 				PreparedStatement statementCliente = connection.prepareStatement(sqlCliente);) {
 
 			
-			statementPessoa.setString(1, obj.getDocumento());
-			statementPessoa.setString(2, obj.getTelefone());
+			statementPessoa.setString(1, obj.getDocumento().replaceAll("[^0-9]+", ""));
+			statementPessoa.setString(2, obj.getTelefone().replaceAll("[^0-9]+", ""));
 			statementPessoa.setString(3, obj.getNome());
 			statementPessoa.setString(4, obj.getEndereco());
 			statementPessoa.setString(5, obj.getEmail());
@@ -115,8 +115,8 @@ public class ClienteDAO implements IClienteDAO {
 				PreparedStatement statementPessoa = connection.prepareStatement(sqlPessoa);
 				PreparedStatement statementCliente = connection.prepareStatement(sqlCliente);) {
 
-			statementPessoa.setString(1, obj.getDocumento());
-			statementPessoa.setString(2, obj.getTelefone());
+			statementPessoa.setString(1, obj.getDocumento().replaceAll("[^0-9]+", ""));
+			statementPessoa.setString(2, obj.getTelefone().replaceAll("[^0-9]+", ""));
 			statementPessoa.setString(3, obj.getNome());
 			statementPessoa.setString(4, obj.getEndereco());
 			statementPessoa.setString(5, obj.getEmail());
@@ -179,12 +179,8 @@ public class ClienteDAO implements IClienteDAO {
 
 	public boolean verificaRG(String rg) {
 
-		List<Cliente> lista = new ArrayList<Cliente>();
-		String sql= "SELECT * FROM "+EnumPessoa.pessoa+" p "
-				+ "inner join "+EnumCliente.cliente+" c "
-				+ "on p."+EnumPessoa.cod+"="+EnumCliente.cod_pessoa+" WHERE p."+EnumPessoa.documento+" = ?";
+		String sql= "SELECT * FROM "+EnumPessoa.pessoa+" WHERE "+EnumPessoa.documento+" = ?";
 
-		
 		try (Connection connection = ConexaoMySql.getInstance().getConnection();
 				PreparedStatement statement = connection.prepareStatement(sql);) {
 

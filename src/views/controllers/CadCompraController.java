@@ -135,7 +135,7 @@ public class CadCompraController implements Initializable {
 
 						Fornecedor fornecedor = new Fornecedor();
 						fornecedor.setCod(1);
-						fornecedor.setData_contrato(date);
+						/* fornecedor.setData_contrato(date); */
 						fornecedor.setDocumento("123456789101");
 						fornecedor.setEmail("a@a.com");
 						fornecedor.setEndereco("CUPELUDO");
