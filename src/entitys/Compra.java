@@ -135,4 +135,12 @@ public class Compra {
 		}
 		return retorno;
 	}
+
+	@Override
+	public String toString() {
+		return "Compra: " + cod + " - data: " + data_origem + " - recebimento: " + data_recebido + " - status: "
+				+ status + " - fornecedor: " + fornecedor + " - funcionario:" + funcionario;
+	}
+	
+	
 }

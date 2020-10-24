@@ -1,13 +1,24 @@
 package views.controllers;
 
+import java.net.URL;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
+import java.util.ResourceBundle;
+
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 
+import control.compra_venda.ControlCompra;
+import control.produto.ControlProduto;
+import entitys.Compra;
+import entitys.Produto;
 import entitys.Venda;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -17,7 +28,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
-public class PesquisaCompraController {
+public class PesquisaCompraController implements Initializable{
 	
 	private static Stage PesquisaCompra;
 
@@ -52,14 +63,22 @@ public class PesquisaCompraController {
     private JFXButton btnLimparCliente;
 
     @FXML
-    private JFXListView<Venda> lvVendas;
+    private JFXListView<Compra> lvCompras;
 
     @FXML
     private JFXTextField txtCodFuncionario;
 
     @FXML
     private JFXTextField txtCodFornecedor;
+    
+    @FXML
+    private JFXTextField txtStatus;
 
+    @FXML
+    private JFXTextField txtDataIni;
+
+    @FXML
+    private JFXTextField txtDataFinal;
     
 	public Stage getPesquisaCompra() {
 		if (PesquisaCompra == null)
@@ -110,7 +129,15 @@ public class PesquisaCompraController {
 
     @FXML
     void btnPesquisar_Action(ActionEvent event) {
-
+    	try
+    	{
+			this.ListarCompras();
+		} 
+    	catch (Exception e)
+    	{
+			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+			  alert.showAndWait();
+		}
     }
 
     @FXML
@@ -129,7 +156,7 @@ public class PesquisaCompraController {
     }
 
     @FXML
-    void lvVendas_MouseClicked(MouseEvent event) {
+    void lvCompras_MouseClicked(MouseEvent event) {
 
     }
 
@@ -152,5 +179,48 @@ public class PesquisaCompraController {
     void txtFornecedor_MouseClicked(MouseEvent event) {
 
     }
+    
+    void ListarCompras() throws Exception {
+    	List<Compra>lstCompras;
+    	lvCompras.getItems().clear();
+    	
+    	try 
+    	{
+			/*
+			 * if (txtDataIni.getText().equals("") && txtDataFinal.getText().equals(""))
+			 */			
+    			String dataInit = txtDataIni.getText();
+    			Date dataIni = new SimpleDateFormat("dd/MM/yyyy").parse(dataInit);   
+    			
+    			String dataFim = txtDataFinal.getText();
+    			Date dataFinal = new SimpleDateFormat("dd/MM/yyyy").parse(dataFim); 
+    			lstCompras = new ControlCompra().Listar(dataIni, dataFinal, txtStatus.getText());
+    			
+    			if(lstCompras != null) 
+    				lstCompras.forEach(c -> lvCompras.getItems().add(c));    		
+   			
+			/*
+			 * else { throw new Exception("Informe datas válidas para a pesquisa"); }
+			 */
+    	}
+    	
+    	catch (Exception e) 
+    	{
+			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+			  alert.showAndWait();
+    	}    	
+    }
+    
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+		try 
+		{
+			this.ListarCompras();
+		}
+		catch (Exception e) {
+			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+			  alert.showAndWait();
+		}
+	}
 
 }
