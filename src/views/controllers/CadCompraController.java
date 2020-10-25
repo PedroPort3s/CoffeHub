@@ -3,6 +3,7 @@ package views.controllers;
 import java.net.URL;
 
 import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
@@ -12,6 +13,7 @@ import com.jfoenix.controls.JFXTextField;
 import control.compra_venda.ControlCompra;
 import control.compra_venda.ControlCompraItens;
 import control.produto.ControlProduto;
+import dao.FornecedorDAO;
 import entitys.Compra;
 import entitys.Compra_Item;
 import entitys.Fornecedor;
@@ -30,13 +32,16 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import views.controllers.fornecedor.PesquisaFornecedorGeralController;
 
 public class CadCompraController implements Initializable {
 
 	private static Stage CadCompra;
 
 	private static Compra compraPrivate;
-
+	
+	public static Compra compraCarregada;
+	
 	public static Produto ProdutoEstatico = new Produto();
 
 	public static Funcionario FuncionarioEstatico = new Funcionario();
@@ -83,9 +88,6 @@ public class CadCompraController implements Initializable {
 	private JFXTextField txtCodFornecedor;
 
 	@FXML
-	private JFXButton btnGravar;
-
-	@FXML
 	private JFXButton btnVoltar;
 
 	@FXML
@@ -93,6 +95,12 @@ public class CadCompraController implements Initializable {
 
 	@FXML
 	private JFXButton btnFinalizar;
+	
+    @FXML
+    private JFXButton btnEditar;
+
+    @FXML
+    private JFXButton btnRemoverItem;
 
 	@FXML
 	private Label lblTotalCompra;
@@ -175,7 +183,9 @@ public class CadCompraController implements Initializable {
 
 	@FXML
 	void btnBuscarFornecedor_Action(ActionEvent event) {
-
+		CadCompra.close();
+		CadCompra = null;
+		new PesquisaFornecedorGeralController().getPesquisaFornecedorGeral().show();
 	}
 
 	@FXML
@@ -192,62 +202,10 @@ public class CadCompraController implements Initializable {
 	}
 
 	@FXML
-	void btnGravar_Action(ActionEvent event) {
-		try {
-			/*
-			 * Compra compra = new Compra();
-			 * 
-			 * Date date = new Date();
-			 * 
-			 * SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss") ;
-			 * String currentDateTime = format.format(date);
-			 * 
-			 * 
-			 * 
-			 * compra.setData_origem(date);
-			 * 
-			 * Fornecedor fornecedor = new Fornecedor(); fornecedor.setCod(1);
-			 * fornecedor.setData_contrato(date); fornecedor.setDocumento("123456789101");
-			 * fornecedor.setEmail("a@a.com"); fornecedor.setEndereco("CUPELUDO");
-			 * fornecedor.setNome("Guina"); fornecedor.setTelefone("44444444444");
-			 * compra.setFornecedor(fornecedor);
-			 * 
-			 * Funcionario funcionario = new Funcionario(); funcionario.setCod(1);
-			 * funcionario.setData_contratacao(date);
-			 * funcionario.setDocumento("123456789101"); funcionario.setEmail("a@a.com");
-			 * funcionario.setEndereco("CUPELUDO"); funcionario.setNome("Guina");
-			 * funcionario.setTelefone("44444444444"); compra.setFuncionario(funcionario );
-			 * 
-			 * compra.setStatus("A");
-			 * 
-			 * if(new ControlCompra().Inserir(compra) == 1) { Alert alert = new
-			 * Alert(AlertType.INFORMATION);
-			 * 
-			 * alert.setTitle("Sucesso");
-			 * alert.setHeaderText("Compra inserida com sucesso");
-			 * 
-			 * alert.showAndWait(); }
-			 */
-		} catch (Exception e) {
-			Alert alert = new Alert(AlertType.WARNING);
-
-			alert.setTitle("Atenção");
-			alert.setHeaderText(e.getMessage());
-
-			alert.showAndWait();
-		} catch (Error e) {
-			Alert alert = new Alert(AlertType.WARNING);
-
-			alert.setTitle("Atenção");
-			alert.setHeaderText(e.getMessage());
-
-			alert.showAndWait();
-		}
-	}
-
-	@FXML
 	void btnLimparFornecedor_Action(ActionEvent event) {
-
+		txtCodFornecedor.setText("");
+		txtFornecedor.setText("");
+		FornecedorEstatico = null;
 	}
 
 	@FXML
@@ -272,6 +230,9 @@ public class CadCompraController implements Initializable {
 
 		lblTotalCompra.setVisible(false);
 		lblTotalCompra.setText("");
+		
+		btnEditar.setVisible(false);
+		btnRemoverItem.setVisible(false);
 
 	}
 
@@ -287,6 +248,17 @@ public class CadCompraController implements Initializable {
 		new PesquisaCompraController().getPesquisaCompra().show();
 	}
 
+
+    @FXML
+    void btnEditar_Action(ActionEvent event) {
+
+    }
+
+    @FXML
+    void btnRemoverItem_Action(ActionEvent event) {
+
+    }
+    
 	@FXML
 	void lvProdutos_MouseClicked(MouseEvent event) {
 
@@ -317,6 +289,62 @@ public class CadCompraController implements Initializable {
 		}
 	}
 
+	void CarregarFornecedor(Fornecedor fornecedor) throws Exception{
+		try
+		{
+			if(fornecedor != null) {
+				txtCodFornecedor.setText(fornecedor.getCod() + "");
+				txtFornecedor.setText(fornecedor.getNome());
+			}
+			else {
+				throw new Exception("Não foi possivel carregar o fornecedor selecionado");
+			}
+		}
+
+		catch (Exception e) {
+			Alert alert = new Alert(AlertType.WARNING);
+
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+
+			alert.showAndWait();
+		}
+	}
+	
+	void CarregarCompra(Compra compra) throws Exception{
+		try
+		{
+			if(compra != null) {
+				txtCodCompra.setText(compra.getCod() + "");
+				txtStatusCompra.setText(compra.getStatus());
+				txtDataCompra.setText(compra.getData_origem() + "");
+				
+				/*
+				 * List<Fornecedor> fornecedorCompra = newFornecedorDAO().buscarId(compra.getCod());
+				 *  Fornecedor fornecedorCarregado = fornecedorCompra.get(0);				 
+				 * txtCodFornecedor.setText(fornecedorCarregado.getCod() + "");
+				 * txtFornecedor.setText(fornecedorCarregado.getNome());
+				 */
+				compra.getItens().forEach(p -> lvProdutos.getItems().add(p.getProduto()));
+				
+				btnEditar.setVisible(true);
+				btnRemoverItem.setVisible(true);
+			}
+			else {
+				throw new Exception("Não foi possivel carregar a compra selecionada");
+			}
+		}
+
+		catch (Exception e) {
+			Alert alert = new Alert(AlertType.WARNING);
+
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+
+			alert.showAndWait();
+		}
+	}
+	
 	void RecarregarCompra(Compra compra) {
 		try {
 			if (compra.getCod() > 0) {
@@ -344,6 +372,9 @@ public class CadCompraController implements Initializable {
 
 				// Lista de produto para o list view
 				compra.getItens().forEach(p -> lvProdutos.getItems().add(p.getProduto()));
+				
+				btnEditar.setVisible(true);
+				btnRemoverItem.setVisible(true);
 
 			}
 		} catch (Exception e) {
@@ -366,6 +397,12 @@ public class CadCompraController implements Initializable {
 			
 			if (ProdutoEstatico != null && ProdutoEstatico.getCod() > 0) {
 				this.CarregarProduto(ProdutoEstatico);
+			}
+			if(FornecedorEstatico != null) {
+				this.CarregarFornecedor(FornecedorEstatico);
+			}
+			if(compraCarregada != null) {
+				this.CarregarCompra(compraCarregada);
 			}
 
 		} catch (Exception e) {
