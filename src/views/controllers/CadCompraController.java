@@ -3,6 +3,8 @@ package views.controllers;
 import java.net.URL;
 
 import java.util.Date;
+import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
@@ -99,7 +101,7 @@ public class CadCompraController implements Initializable {
     private JFXButton btnEditar;
 
     @FXML
-    private JFXButton btnRemoverItem;
+    private JFXButton btnAlterarQtd;
 
 	@FXML
 	private Label lblTotalCompra;
@@ -273,7 +275,7 @@ public class CadCompraController implements Initializable {
 		lblTotalCompra.setText("");
 		
 		btnEditar.setVisible(false);
-		btnRemoverItem.setVisible(false);
+		btnAlterarQtd.setVisible(false);
 		
 		compraCarregada = null;
 		
@@ -354,7 +356,7 @@ public class CadCompraController implements Initializable {
     }
     
     @FXML
-    void btnRemoverItem_Action(ActionEvent event) {
+    void btnAlterarQtd_Action(ActionEvent event) {
     	try 
     	{
 			
@@ -372,7 +374,44 @@ public class CadCompraController implements Initializable {
     
 	@FXML
 	void lvProdutos_MouseClicked(MouseEvent event) {
+		try 
+		{
+	    	Alert ConfirmaRemover = new Alert(AlertType.CONFIRMATION);
+	    	
+	    	ConfirmaRemover.setTitle("Remover Item");
+	    	ConfirmaRemover.setHeaderText("Deseja realmente remover o item selecionado?");  	
+	    	
+	    	Optional<ButtonType> result = ConfirmaRemover.showAndWait();
+	    	 if (result.isPresent() && result.get() == ButtonType.OK) {
+	    		 Compra compra = new ControlCompra().Carregar(Integer.parseInt(txtCodCompra.getText()));
+	    		 
+	    		 List<Compra_Item> itens = compra.getItens();	    		 
+	    		 Compra_Item ci = itens.get(lvProdutos.getSelectionModel().getSelectedIndex());
+	    		 
+	    		 if (compra != null && ci != null) {
+					if(new ControlCompraItens().RemoverItem(compra, ci) == 1) {
+						this.RecarregarCompra(compra);
+					}
+					else {
+						Alert alert = new Alert(AlertType.WARNING);
 
+						alert.setTitle("Atenção");
+						alert.setHeaderText("Não foi possivel remover o item selecionado");
+
+						alert.showAndWait();
+					}
+				}
+	    	 }
+		}
+		catch (Exception e)
+		{
+			Alert alert = new Alert(AlertType.WARNING);
+
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+
+			alert.showAndWait();
+		}
 	}
 
 	@FXML
@@ -438,7 +477,7 @@ public class CadCompraController implements Initializable {
 				compra.getItens().forEach(p -> lvProdutos.getItems().add(p.getProduto()));
 				
 				btnEditar.setVisible(true);
-				btnRemoverItem.setVisible(true);
+				btnAlterarQtd.setVisible(true);
 			}
 			else {
 				throw new Exception("Não foi possivel carregar a compra selecionada");
@@ -467,13 +506,9 @@ public class CadCompraController implements Initializable {
 				txtCodCompra.setText(compra.getCod() + "");
 				txtDataCompra.setText(compra.getData_origem() + "");
 				
-				Fornecedor fornecedorCompra = new Fornecedor();
-				fornecedorCompra.setCod(1);
-				fornecedorCompra.setNome("Pedrinho");
-				
+				Fornecedor fornecedorCompra = new FornecedorDAO().buscarId(compra.getFornecedor().getCod());
 				txtCodFornecedor.setText(fornecedorCompra.getCod() + "");
-				txtFornecedor.setText(fornecedorCompra.getNome() + "");
-				
+				txtFornecedor.setText(fornecedorCompra.getNome());
 				
 				txtStatusCompra.setText(compra.getStatus());
 				lblTotalCompra.setVisible(true);
@@ -484,7 +519,7 @@ public class CadCompraController implements Initializable {
 				compra.getItens().forEach(p -> lvProdutos.getItems().add(p.getProduto()));
 				
 				btnEditar.setVisible(true);
-				btnRemoverItem.setVisible(true);
+				btnAlterarQtd.setVisible(true);
 
 			}
 		} catch (Exception e) {

@@ -4,9 +4,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
-import Helper.db;
-import control.produto.ControlProduto;
-import dao.compra.CompraDAO;
 import dao.compra.Compra_ItemDAO;
 import entitys.Compra;
 import entitys.Compra_Item;

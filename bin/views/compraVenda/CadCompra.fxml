@@ -31,6 +31,6 @@
          </font>
       </Label>
       <JFXButton fx:id="btnEditar" buttonType="RAISED" layoutX="19.0" layoutY="453.0" onAction="#btnEditar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Editar" textFill="WHITE" visible="false" />
-      <JFXButton fx:id="btnRemoverItem" buttonType="RAISED" layoutX="121.0" layoutY="453.0" onAction="#btnRemoverItem_Action" prefHeight="40.0" prefWidth="109.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Remover Item" textFill="WHITE" visible="false" />
+      <JFXButton fx:id="btnAlterarQtd" buttonType="RAISED" layoutX="121.0" layoutY="453.0" onAction="#btnAlterarQtd_Action" prefHeight="40.0" prefWidth="109.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Alterar Qtd." textFill="WHITE" visible="false" />
    </children>
 </AnchorPane>
