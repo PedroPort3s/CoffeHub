@@ -158,8 +158,8 @@ public class FornecedorDAO implements IFornecedorDAO {
 	}
 	
 	@Override
-	public List<Fornecedor> buscarId(Integer id) {
-		List<Fornecedor> lista = new ArrayList<Fornecedor>();
+	public Fornecedor buscarId(Integer id) {
+		Fornecedor fornececdor = new Fornecedor();
 		String sql = "SELECT * FROM " + EnumPessoa.pessoa + " p " + "inner join " + EnumFornecedor.fornecedor + " f "
 				+ "on p." + EnumPessoa.cod + "= f." + EnumFornecedor.cod_pessoa + " WHERE p." + EnumPessoa.cod + " = ?";
 
@@ -169,11 +169,11 @@ public class FornecedorDAO implements IFornecedorDAO {
 			statement.setInt(1, id);
 			ResultSet resultSet = statement.executeQuery();
 
-			while (resultSet.next()) {
-				lista.add(new Fornecedor(resultSet.getDate(EnumCliente.data_nascimento.name()).toLocalDate(),
+			if(resultSet.next()) {
+				fornececdor = new Fornecedor(resultSet.getDate(EnumCliente.data_nascimento.name()).toLocalDate(),
 						resultSet.getInt(EnumPessoa.cod.name()), resultSet.getString(EnumPessoa.documento.name()),
 						resultSet.getString(EnumPessoa.telefone.name()), resultSet.getString(EnumPessoa.nome.name()),
-						resultSet.getString(EnumPessoa.endereco.name()), resultSet.getString(EnumPessoa.email.name())));
+						resultSet.getString(EnumPessoa.endereco.name()), resultSet.getString(EnumPessoa.email.name()));
 			}
 		} catch (ClassNotFoundException classException) {
 			classException.printStackTrace();
@@ -186,7 +186,7 @@ public class FornecedorDAO implements IFornecedorDAO {
 			exception.printStackTrace();
 			System.out.println("Fudeo marreco" + "---erro no buscar");
 		}
-		return lista;
+		return fornececdor;
 	}
 
 	@Override

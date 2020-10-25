@@ -12,7 +12,7 @@ public abstract interface IPadraoDAO<T, Y> {
 	
 	public void editar(T obj);
 	
-	public List<T> buscarId(Y id);
+	public T buscarId(Y id);
 	
 	public List<T> listar();
 	
