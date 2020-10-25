@@ -1,29 +1,51 @@
 package entitys;
 
-import java.util.Date;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.concurrent.TimeUnit;
+import java.time.LocalDate;
+import java.util.Observer;
+
+import com.sun.istack.internal.Nullable;
+
+import utils.Formatacao;
 
 
 public class Funcionario extends Pessoa {
 
-	private Date data_contratacao;
-	private Date data_demissao;
+	private LocalDate data_contratacao;
+	private LocalDate data_demissao;
 	private double salario;
 	private String senha_funcionario;
 	private int cod_acesso;
 
-	
 	public Funcionario() {
 		super();
 	}
-		
-	public Funcionario(Date data_contratacao, Date data_demissao, double salario) {
-		super();
+
+	public Funcionario(LocalDate data_contratacao, @Nullable LocalDate data_demissao, double salario, String senha_funcionario,
+			int cod_acesso, String documento, String telefone, String nome, String endereco, String email) {
+		super(documento, telefone, nome, endereco, email);
 		this.data_contratacao = data_contratacao;
 		this.data_demissao = data_demissao;
 		this.salario = salario;
+		this.senha_funcionario = senha_funcionario;
+		this.cod_acesso = cod_acesso;
+	}
+
+	public Funcionario(LocalDate data_contratacao, @Nullable LocalDate data_demissao, double salario, String senha_funcionario,
+			int cod_acesso, int cod, String documento, String telefone, String nome, String endereco, String email) {
+		super(cod, documento, telefone, nome, endereco, email);
+		this.data_contratacao = data_contratacao;
+		this.data_demissao = data_demissao;
+		this.salario = salario;
+		this.senha_funcionario = senha_funcionario;
+		this.cod_acesso = cod_acesso;
+	}
+
+	public int getCod_acesso() {
+		return cod_acesso;
+	}
+
+	public void setCod_acesso(int cod_acesso) {
+		this.cod_acesso = cod_acesso;
 	}
 
 	public String getSenha_funcionario() {
@@ -34,19 +56,19 @@ public class Funcionario extends Pessoa {
 		this.senha_funcionario = senha_funcionario;
 	}
 
-	public Date getData_contratacao() {
+	public LocalDate getData_contratacao() {
 		return data_contratacao;
 	}
 
-	public void setData_contratacao(Date data_contratacao) {
+	public void setData_contratacao(LocalDate data_contratacao) {
 		this.data_contratacao = data_contratacao;
 	}
 
-	public Date getData_demissao() {
+	public LocalDate getData_demissao() {
 		return data_demissao;
 	}
 
-	public void setData_demissao(Date data_demissao) {
+	public void setData_demissao(LocalDate data_demissao) {
 		this.data_demissao = data_demissao;
 	}
 
@@ -58,16 +80,9 @@ public class Funcionario extends Pessoa {
 		this.salario = salario;
 	}
 
-	public int calcularIdade() {
-		return 0;
-	}
-
-	
 	@Override
 	public String toString() {
-		return "Funcionario [data_contratacao=" + data_contratacao + ", data_demissao=" + data_demissao + ", salario="
-				+ salario + "]";
+		return "Funcionario [cod=" + getCod() + ", documento=" + Formatacao.formatarDocumento(getDocumento()) + ", telefone=" + Formatacao.formatarTelefone(getTelefone()) + ", nome=" + getNome()
+				+ "data_contratacao=" + data_contratacao + "data_demissao=" + data_demissao + ", endereco=" + getEndereco() + ", salario=" + salario +", email=" + getEmail() + "]";
 	}
-
-
 }

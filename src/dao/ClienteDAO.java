@@ -143,9 +143,9 @@ public class ClienteDAO implements IClienteDAO {
 	}
 
 	@Override
-	public List<Cliente> buscarId(Integer id) {
+	public Cliente buscarId(Integer id) {
 
-		List<Cliente> lista = new ArrayList<Cliente>();
+		Cliente cliente = new Cliente();
 		String sql= "SELECT * FROM "+EnumPessoa.pessoa+" p "
 				+ "inner join "+EnumCliente.cliente+" c "
 				+ "on p."+EnumPessoa.cod+"="+EnumCliente.cod_pessoa+" WHERE p."+EnumPessoa.cod+" = ?";
@@ -157,11 +157,11 @@ public class ClienteDAO implements IClienteDAO {
 			statement.setInt(1, id);
 			ResultSet resultSet = statement.executeQuery();
 
-			while (resultSet.next()) {
-				lista.add(new Cliente(resultSet.getDate(EnumCliente.data_nascimento.name()).toLocalDate(),
+			if(resultSet.next()) {
+				cliente = new Cliente(resultSet.getDate(EnumCliente.data_nascimento.name()).toLocalDate(),
 						resultSet.getInt(EnumPessoa.cod.name()), resultSet.getString(EnumPessoa.documento.name()),
 						resultSet.getString(EnumPessoa.telefone.name()), resultSet.getString(EnumPessoa.nome.name()),
-						resultSet.getString(EnumPessoa.endereco.name()), resultSet.getString(EnumPessoa.email.name())));
+						resultSet.getString(EnumPessoa.endereco.name()), resultSet.getString(EnumPessoa.email.name()));
 			}
 		} catch (ClassNotFoundException classException) {
 			classException.printStackTrace();
@@ -174,7 +174,7 @@ public class ClienteDAO implements IClienteDAO {
 			exception.printStackTrace();
 			System.out.println("Fudeo marreco" + "---erro no buscar");
 		}
-		return lista;
+		return cliente;
 	}
 
 	public boolean verificaRG(String rg) {
