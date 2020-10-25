@@ -153,7 +153,7 @@ public class CadCompraController implements Initializable {
 
 						Funcionario funcionario = new Funcionario();
 						funcionario.setCod(1);
-						funcionario.setData_contratacao(date);
+						/* funcionario.setData_contratacao(date); */
 						funcionario.setDocumento("123456789101");
 						funcionario.setEmail("a@a.com");
 						funcionario.setEndereco("CUPELUDO");
@@ -319,12 +319,10 @@ public class CadCompraController implements Initializable {
 				txtStatusCompra.setText(compra.getStatus());
 				txtDataCompra.setText(compra.getData_origem() + "");
 				
-				/*
-				 * List<Fornecedor> fornecedorCompra = newFornecedorDAO().buscarId(compra.getCod());
-				 *  Fornecedor fornecedorCarregado = fornecedorCompra.get(0);				 
-				 * txtCodFornecedor.setText(fornecedorCarregado.getCod() + "");
-				 * txtFornecedor.setText(fornecedorCarregado.getNome());
-				 */
+				Fornecedor fornecedorCompra = new FornecedorDAO().buscarId(compra.getFornecedor().getCod());
+				txtCodFornecedor.setText(fornecedorCompra.getCod() + "");
+				txtFornecedor.setText(fornecedorCompra.getNome());
+				
 				compra.getItens().forEach(p -> lvProdutos.getItems().add(p.getProduto()));
 				
 				btnEditar.setVisible(true);

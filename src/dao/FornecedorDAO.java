@@ -170,7 +170,7 @@ public class FornecedorDAO implements IFornecedorDAO {
 			ResultSet resultSet = statement.executeQuery();
 
 			if(resultSet.next()) {
-				fornececdor = new Fornecedor(resultSet.getDate(EnumCliente.data_nascimento.name()).toLocalDate(),
+				fornececdor = new Fornecedor(resultSet.getDate(EnumFornecedor.data_contrato.name()).toLocalDate(),
 						resultSet.getInt(EnumPessoa.cod.name()), resultSet.getString(EnumPessoa.documento.name()),
 						resultSet.getString(EnumPessoa.telefone.name()), resultSet.getString(EnumPessoa.nome.name()),
 						resultSet.getString(EnumPessoa.endereco.name()), resultSet.getString(EnumPessoa.email.name()));
