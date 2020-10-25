@@ -12,7 +12,6 @@ import com.jfoenix.controls.JFXTextField;
 
 import dao.FornecedorDAO;
 import entitys.Fornecedor;
-import entitys.Produto;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -25,8 +24,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import views.controllers.CadCompraController;
-import views.controllers.CadVendaController;
-import views.controllers.HomeController;
+
 
 public class PesquisaFornecedorGeralController {
 
@@ -95,6 +93,7 @@ public class PesquisaFornecedorGeralController {
     		Fornecedor fornecedor = lvFornecedores.getSelectionModel().getSelectedItem();
     		if (fornecedor != null)
     		{
+    			CadCompraController.FornecedorEstatico = null;
 				CadCompraController.FornecedorEstatico = fornecedor;
 				new CadCompraController().getCadCompra().show();
 				pesquisaFornecedor.close();

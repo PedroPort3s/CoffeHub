@@ -9,12 +9,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import Helper.Verifica;
 import dao.interfaces.ICompraVenda;
-import dao.interfaces.IPadraoDB;
 import entitys.Compra;
-import entitys.Produto;
-import utils.ConexaoMySql;
+
 
 public class CompraDAO implements ICompraVenda<Compra>{
 	

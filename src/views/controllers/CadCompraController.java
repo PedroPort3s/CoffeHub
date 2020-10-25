@@ -3,7 +3,6 @@ package views.controllers;
 import java.net.URL;
 
 import java.util.Date;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
@@ -141,15 +140,8 @@ public class CadCompraController implements Initializable {
 						compraPrivate = new Compra();
 						compraPrivate.setData_origem(date);
 
-						Fornecedor fornecedor = new Fornecedor();
-						fornecedor.setCod(1);
-						/* fornecedor.setData_contrato(date); */
-						fornecedor.setDocumento("123456789101");
-						fornecedor.setEmail("a@a.com");
-						fornecedor.setEndereco("CUPELUDO");
-						fornecedor.setNome("Guina");
-						fornecedor.setTelefone("44444444444");
-						compraPrivate.setFornecedor(fornecedor);
+						Fornecedor fornecedorCompra = new FornecedorDAO().buscarId(Integer.parseInt(txtCodFornecedor.getText()));						
+						compraPrivate.setFornecedor(fornecedorCompra);
 
 						Funcionario funcionario = new Funcionario();
 						funcionario.setCod(1);
@@ -168,9 +160,14 @@ public class CadCompraController implements Initializable {
 						RecarregarCompra(compraPrivate);
 					}
 
-					if (new ControlCompraItens().AdicionarItem(compraPrivate, item) != 1) {
+					if (new ControlCompraItens().AdicionarItem(compraPrivate, item) != 1) 
 						throw new Exception("Não foi possivel inserir o item na compra");
+					else {
+						txtCodProduto.setText("");
+						txtProduto.setText("");
 					}
+						
+					
 					RecarregarCompra(compraPrivate);
 				}
 			}
@@ -195,10 +192,54 @@ public class CadCompraController implements Initializable {
 		PesquisaProdutoGeralController.compraVenda = "COMPRA";
 		new PesquisaProdutoGeralController().getPesquisaProdutoGeral().show();
 	}
+	
+	void Finalizar() {
+		try 
+		{
+			if (txtCodCompra.getText().equals("") == false) {
+				Compra compraFinalizar = new ControlCompra().Carregar(Integer.parseInt(txtCodCompra.getText()));
+				if (compraFinalizar != null) {
+					if(new ControlCompra().Finalizar(compraFinalizar) == 1) {
+						 	Limpar();
+							Alert alert = new Alert(AlertType.INFORMATION);
+
+							alert.setTitle("Atenção");
+							alert.setHeaderText("Compra Finalizada com sucesso");
+
+							alert.showAndWait();
+					}
+					else {
+						throw new Exception("Não foi possivel finalizar a compra");
+					}
+				}
+			}			
+		}
+		catch (Exception e) 
+		{
+			Alert alert = new Alert(AlertType.WARNING);
+
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+
+			alert.showAndWait();
+		}
+	}
 
 	@FXML
 	void btnFinalizar_Action(ActionEvent event) {
+		try 
+		{
+			this.Finalizar();
+		}
+		catch (Exception e) 
+		{
+			Alert alert = new Alert(AlertType.WARNING);
 
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+
+			alert.showAndWait();
+		}
 	}
 
 	@FXML
@@ -233,7 +274,10 @@ public class CadCompraController implements Initializable {
 		
 		btnEditar.setVisible(false);
 		btnRemoverItem.setVisible(false);
-
+		
+		compraCarregada = null;
+		
+		lvProdutos.getItems().clear();
 	}
 
 	@FXML
@@ -243,6 +287,7 @@ public class CadCompraController implements Initializable {
 
 	@FXML
 	void btnVoltar_Action(ActionEvent event) {
+		Limpar();
 		CadCompra.close();
 		CadCompra = null;
 		new PesquisaCompraController().getPesquisaCompra().show();
@@ -251,12 +296,78 @@ public class CadCompraController implements Initializable {
 
     @FXML
     void btnEditar_Action(ActionEvent event) {
+    	try 
+    	{
+    		if(compraCarregada != null) {
+    			EditarCompra(compraCarregada);
+    		}
+		}
+    	catch (Exception e) 
+    	{
+			Alert alert = new Alert(AlertType.WARNING);
 
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+
+			alert.showAndWait();
+    	}
+    }
+    
+    void EditarCompra(Compra compra) {
+    	try
+    	{
+			if(new ControlCompra().Editar(compra) == 1) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+
+				alert.setTitle("Atenção");
+				alert.setHeaderText("Compra editada com sucesso");
+
+				alert.showAndWait();
+			}
+			
+		} 
+    	catch (Exception e)
+    	{
+			Alert alert = new Alert(AlertType.WARNING);
+
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+
+			alert.showAndWait();
+    	}
     }
 
+    void RemoverItem() {
+    	try 
+    	{
+			
+		}
+    	catch (Exception e) 
+    	{
+			Alert alert = new Alert(AlertType.WARNING);
+
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+
+			alert.showAndWait();
+    	}
+    }
+    
     @FXML
     void btnRemoverItem_Action(ActionEvent event) {
+    	try 
+    	{
+			
+		}
+    	catch (Exception e) 
+    	{
+			Alert alert = new Alert(AlertType.WARNING);
 
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+
+			alert.showAndWait();
+    	}
     }
     
 	@FXML
@@ -322,6 +433,7 @@ public class CadCompraController implements Initializable {
 				Fornecedor fornecedorCompra = new FornecedorDAO().buscarId(compra.getFornecedor().getCod());
 				txtCodFornecedor.setText(fornecedorCompra.getCod() + "");
 				txtFornecedor.setText(fornecedorCompra.getNome());
+				
 				
 				compra.getItens().forEach(p -> lvProdutos.getItems().add(p.getProduto()));
 				

@@ -6,11 +6,9 @@ import java.util.Date;
 import java.util.List;
 
 import Helper.db;
-import dao.ProdutoDAO;
 import dao.compra.CompraDAO;
 import dao.compra.Compra_ItemDAO;
 import entitys.Compra;
-import entitys.Produto;
 import utils.ConexaoMySql;
 
 public class ControlCompra {

@@ -84,9 +84,18 @@ public class PesquisaProdutoGeralController implements Initializable{
 
     @FXML
     void btnVoltar_Action(ActionEvent event) {
-		PesquisaProdutoGeral.hide();
-		PesquisaProdutoGeral = null;
-		compraVenda = "";
+    	if(compraVenda == "COMPRA") {    		
+    		PesquisaProdutoGeral.hide();
+    		PesquisaProdutoGeral = null;
+    		new CadCompraController().getCadCompra().show();
+    		compraVenda = "";
+    	}
+    	else if(compraVenda == "VENDA") {
+    		PesquisaProdutoGeral.hide();
+    		PesquisaProdutoGeral = null;
+    		new CadVendaController().getCadVenda().show();
+    		compraVenda = "";    		
+    	}
     }
 
     @FXML
