@@ -9,14 +9,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import dao.interfaces.IFuncionarioDAO;
+import entitys.Funcionario;
 import utils.ConexaoMySql;
-import utils.enuns.EnumCliente;
 import utils.enuns.EnumFuncionario;
 import utils.enuns.EnumPessoa;
-import dao.interfaces.IFuncionarioDAO;
-import entitys.Cliente;
-import entitys.Funcionario;
-import entitys.Pessoa;
 
 public class FuncionarioDAO implements IFuncionarioDAO {
 
@@ -134,7 +131,6 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 
 			statementPessoa.setString(1, obj.getDocumento().replaceAll("[^0-9]+", ""));
 			statementPessoa.setString(2, obj.getTelefone().replaceAll("[^0-9]+", ""));
-			System.out.println(obj.getNome());
 			statementPessoa.setString(3, obj.getNome());
 			statementPessoa.setString(4, obj.getEndereco());
 			statementPessoa.setString(5, obj.getEmail());
@@ -168,7 +164,7 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 
 	public void editarDemissao(int cod) {
 		String sqlFuncionario = "UPDATE " + EnumFuncionario.funcionario + " SET " + EnumFuncionario.data_demissao
-				+ "=?, " + " WHERE " + EnumFuncionario.cod_pessoa + "= ?";
+				+ "=? " + " WHERE " + EnumFuncionario.cod_pessoa + "= ?";
 
 		try (Connection connection = ConexaoMySql.getInstance().getConnection();
 				PreparedStatement statementFuncionario = connection.prepareStatement(sqlFuncionario);) {

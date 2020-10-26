@@ -219,16 +219,25 @@ public class CadFuncionarioController implements Initializable {
 		passou(txtEndereco.getText(), "Insira um Endereço");
 		verificaSalario(txtSalario.getText(), "Insira um salário adequado");
 		verificaSenha(firstPassword.getText(), confirnPassword.getText(), "Insira uma senha adequada");
+		verificaAcesso("Selecione um cargo");
 	}
 
+	private Boolean verificaAcesso(String msg) {
+		if(cbxAcesso.getValue() != null) {
+			return true;
+		} else {
+			throw new CampoVazioException(msg);
+		}
+	}
+	
 	private void verificaSalario(String texto, String msg) {
 		if (txtSalario.getText().equals("") || txtSalario.getText() == null) {
-			throw new CampoVazioException("Insira um salário");
+			throw new CampoVazioException(msg);
 		}
 		try {
 			Double.parseDouble(txtSalario.getText());
 		} catch (Exception e) {
-			throw new NumberFormatException("Insira um salário adequado");
+			throw new NumberFormatException("Insira apenas numeros no salário");
 		}
 	}
 
@@ -295,6 +304,7 @@ public class CadFuncionarioController implements Initializable {
 		txtSalario.setText("");
 		firstPassword.setText("");
 		confirnPassword.setText("");
+		cbxAcesso.getSelectionModel().select(null);
 	}
 
 	@FXML
