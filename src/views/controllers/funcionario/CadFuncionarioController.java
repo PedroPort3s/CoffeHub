@@ -2,7 +2,6 @@ package views.controllers.funcionario;
 
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
@@ -12,7 +11,6 @@ import com.sun.istack.internal.Nullable;
 
 import dao.FuncionarioDAO;
 import entitys.Acesso;
-import entitys.Cliente;
 import entitys.Funcionario;
 import exceptions.CampoVazioException;
 import exceptions.MoreThanOneException;
@@ -24,11 +22,11 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import utils.Formatacao;
@@ -129,9 +127,17 @@ public class CadFuncionarioController implements Initializable {
 				if (dao.verificaRG(txtDocumento.getText().replaceAll("[^0-9]+", "")))
 					throw new MoreThanOneException("Rg existente");
 
-			dao.editar(new Funcionario(dataPickerContratacao.getValue(), LocalDate.of(2022, 3, 10), Double.parseDouble(txtSalario.getText()),
-					firstPassword.getText(), cbxAcesso.getValue().getCod(), txtDocumento.getText(), txtTelefone.getText(),
-					txtNome.getText(), txtEndereco.getText(), txtEmail.getText()));
+			if(verificaSenha(firstPassword.getText(), confirnPassword.getText(), "Insira uma senha adequada")) {
+				dao.editar(new Funcionario(dataPickerContratacao.getValue(), LocalDate.of(2022, 3, 10),
+						Double.parseDouble(txtSalario.getText()), null, cbxAcesso.getValue().getCod(),
+						funcionarioStatic.getCod(), txtDocumento.getText(), txtTelefone.getText(), txtNome.getText(),
+						txtEndereco.getText(), txtEmail.getText()));
+			} else {
+				dao.editar(new Funcionario(dataPickerContratacao.getValue(), LocalDate.of(2022, 3, 10),
+						Double.parseDouble(txtSalario.getText()), firstPassword.getText(), cbxAcesso.getValue().getCod(),
+						funcionarioStatic.getCod(), txtDocumento.getText(), txtTelefone.getText(), txtNome.getText(),
+						txtEndereco.getText(), txtEmail.getText()));
+			}
 
 			Alert alert = new Alert(AlertType.CONFIRMATION, "Funcionario editado com sucesso", ButtonType.OK);
 			alert.setHeaderText("Funcionario editado!!");
@@ -177,7 +183,6 @@ public class CadFuncionarioController implements Initializable {
 		throw new RuntimeException("Erro ao carregar tela CadCliente");
 	}
 
-	
 	@FXML
 	void btnGravar_Action(ActionEvent event) {
 		try {
@@ -186,10 +191,10 @@ public class CadFuncionarioController implements Initializable {
 			if (dao.verificaRG(txtDocumento.getText().replaceAll("[^0-9]+", "")))
 				throw new MoreThanOneException("Rg existente");
 
-			dao.inserir(
-					new Funcionario(dataPickerContratacao.getValue(), LocalDate.of(2022, 3, 10), Double.parseDouble(txtSalario.getText()),
-							firstPassword.getText(), cbxAcesso.getValue().getCod(), txtDocumento.getText(), txtTelefone.getText(),
-							txtNome.getText(), txtEndereco.getText(), txtEmail.getText()));
+			dao.inserir(new Funcionario(dataPickerContratacao.getValue(), LocalDate.of(2022, 3, 10),
+					Double.parseDouble(txtSalario.getText()), firstPassword.getText(), cbxAcesso.getValue().getCod(),
+					txtDocumento.getText(), txtTelefone.getText(), txtNome.getText(), txtEndereco.getText(),
+					txtEmail.getText()));
 
 			Alert alert = new Alert(AlertType.CONFIRMATION, "Funcionario cadastrado com sucesso", ButtonType.OK);
 			alert.setHeaderText("Funcionario cadastrado!!");
@@ -228,12 +233,16 @@ public class CadFuncionarioController implements Initializable {
 	}
 
 	private Boolean verificaSenha(String senha1, String senha2, String msg) {
-		if (senha1.equals("") || senha1 == null || senha2.equals("") || senha2 == null) {
-			throw new CampoVazioException(msg);
+		if (senha1.equals("") && senha2.equals("")) {
+			return true;
+		} else {
+			if (senha1.equals("") || senha1 == null || senha2.equals("") || senha2 == null) {
+				throw new CampoVazioException(msg);
+			}
+			if (!senha1.equals(senha2))
+				throw new CampoVazioException("Senhas não batem");
+			return false;
 		}
-		if (!senha1.equals(senha2))
-			throw new CampoVazioException("Senhas não batem");
-		return true;
 	}
 
 	private Boolean verificaEmail(String texto, String msg) {
@@ -309,8 +318,7 @@ public class CadFuncionarioController implements Initializable {
 		dataPickerContratacao.setValue(funcionarioStatic.getData_contratacao());
 		txtSalario.setText(funcionarioStatic.getSalario() + "");
 		cbxAcesso.setValue(Acesso.acharAcesso(funcionarioStatic.getCod_acesso()));
-		
-		
+
 		btnGravar.setVisible(false);
 		btnEditar.setVisible(true);
 		btnExcluir.setVisible(true);

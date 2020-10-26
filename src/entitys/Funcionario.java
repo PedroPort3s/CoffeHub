@@ -84,10 +84,10 @@ public class Funcionario extends Pessoa {
 	public String toString() {
 		if(data_demissao == null) {
 			return "Funcionario [cod=" + getCod() + ", documento=" + Formatacao.formatarDocumento(getDocumento()) + ", telefone=" + Formatacao.formatarTelefone(getTelefone()) + ", nome=" + getNome()
-			+ "data_contratacao=" + data_contratacao + ", endereco=" + getEndereco() + ", salario=" + salario +", email=" + getEmail() + "]";
+			+ ", data_contratacao=" + data_contratacao + ", endereco=" + getEndereco() + ", salario=" + salario +", email=" + getEmail() + "]";
 		} else {
 			return "Funcionario [cod=" + getCod() + ", documento=" + Formatacao.formatarDocumento(getDocumento()) + ", telefone=" + Formatacao.formatarTelefone(getTelefone()) + ", nome=" + getNome()
-			+ "data_contratacao=" + data_contratacao + "data_demissao=" + data_demissao + ", endereco=" + getEndereco() + ", salario=" + salario +", email=" + getEmail() + "]";
+			+ ", data_contratacao=" + data_contratacao + "data_demissao=" + data_demissao + ", endereco=" + getEndereco() + ", salario=" + salario +", email=" + getEmail() + "]";
 		}
 			
 		
