@@ -137,7 +137,7 @@ public class CadCompraController implements Initializable {
 					item.setQtd_item(1);
 					item.setValor_unitario(produtoCarregado.getValor_un());
 
-					if (compraPrivate == null) {
+					if (compraPrivate == null || compraPrivate.getCod() == 0) {
 						Date date = new Date();
 						compraPrivate = new Compra();
 						compraPrivate.setData_origem(date);
@@ -150,7 +150,7 @@ public class CadCompraController implements Initializable {
 						/* funcionario.setData_contratacao(date); */
 						funcionario.setDocumento("123456789101");
 						funcionario.setEmail("a@a.com");
-						funcionario.setEndereco("CUPELUDO");
+						funcionario.setEndereco("FUNC");
 						funcionario.setNome("Guina");
 						funcionario.setTelefone("44444444444");
 						compraPrivate.setFuncionario(funcionario);
@@ -161,16 +161,17 @@ public class CadCompraController implements Initializable {
 
 						RecarregarCompra(compraPrivate);
 					}
+					else {
+						RecarregarCompra(compraPrivate);
+					}
 
 					if (new ControlCompraItens().AdicionarItem(compraPrivate, item) != 1) 
 						throw new Exception("Não foi possivel inserir o item na compra");
 					else {
 						txtCodProduto.setText("");
 						txtProduto.setText("");
-					}
-						
-					
-					RecarregarCompra(compraPrivate);
+						RecarregarCompra(compraPrivate);
+					}					
 				}
 			}
 		}
@@ -392,14 +393,6 @@ public class CadCompraController implements Initializable {
 					if(new ControlCompraItens().RemoverItem(compra, ci) == 1) {
 						this.RecarregarCompra(compra);
 					}
-					else {
-						Alert alert = new Alert(AlertType.WARNING);
-
-						alert.setTitle("Atenção");
-						alert.setHeaderText("Não foi possivel remover o item selecionado");
-
-						alert.showAndWait();
-					}
 				}
 	    	 }
 		}
@@ -465,16 +458,25 @@ public class CadCompraController implements Initializable {
 		try
 		{
 			if(compra != null) {
+				
+				compraPrivate = compra;
+				
 				txtCodCompra.setText(compra.getCod() + "");
 				txtStatusCompra.setText(compra.getStatus());
 				txtDataCompra.setText(compra.getData_origem() + "");
 				
-				Fornecedor fornecedorCompra = new FornecedorDAO().buscarId(compra.getFornecedor().getCod());
-				txtCodFornecedor.setText(fornecedorCompra.getCod() + "");
-				txtFornecedor.setText(fornecedorCompra.getNome());
+				txtCodFornecedor.setText(compra.getFornecedor().getCod() + "");
+				txtFornecedor.setText(compra.getFornecedor().getNome());
 				
-				
-				compra.getItens().forEach(p -> lvProdutos.getItems().add(p.getProduto()));
+				lblTotalCompra.setText("Total: R$ 0.00");				
+
+				// Lista de produto para o list view
+				lvProdutos.getItems().clear();
+				if(compra.getItens() != null && compra.getItens().size() > 0)
+				{
+					compra.getItens().forEach(p -> lvProdutos.getItems().add(p.getProduto()));
+					lblTotalCompra.setText("Total: R$" + compra.TotalCompra());
+				}
 				
 				btnEditar.setVisible(true);
 				btnAlterarQtd.setVisible(true);
@@ -498,26 +500,31 @@ public class CadCompraController implements Initializable {
 		try {
 			if (compra.getCod() > 0) {
 				compra = new ControlCompra().Carregar(compra.getCod());
-
+				
 				if (compra == null) {
 					throw new Exception("Erro ao recarregar compra");
 				}
-
-				txtCodCompra.setText(compra.getCod() + "");
-				txtDataCompra.setText(compra.getData_origem() + "");
 				
-				Fornecedor fornecedorCompra = new FornecedorDAO().buscarId(compra.getFornecedor().getCod());
-				txtCodFornecedor.setText(fornecedorCompra.getCod() + "");
-				txtFornecedor.setText(fornecedorCompra.getNome());
+				compraPrivate = compra;
+				
+				txtCodCompra.setText(compra.getCod() + "");
+				txtDataCompra.setText(compra.getData_origem() + "");				
+				
+				txtCodFornecedor.setText(compra.getFornecedor().getCod() + "");
+				txtFornecedor.setText(compra.getFornecedor().getNome());
 				
 				txtStatusCompra.setText(compra.getStatus());
 				lblTotalCompra.setVisible(true);
-				lblTotalCompra.setText("Total: " + compra.TotalCompra());
+				lblTotalCompra.setText("Total: R$ 0.00");
 				
 
 				// Lista de produto para o list view
-				compra.getItens().forEach(p -> lvProdutos.getItems().add(p.getProduto()));
-				
+				lvProdutos.getItems().clear();
+				if(compra.getItens() != null && compra.getItens().size() > 0)
+				{
+					compra.getItens().forEach(p -> lvProdutos.getItems().add(p.getProduto()));
+					lblTotalCompra.setText("Total: R$" + compra.TotalCompra());
+				}
 				btnEditar.setVisible(true);
 				btnAlterarQtd.setVisible(true);
 

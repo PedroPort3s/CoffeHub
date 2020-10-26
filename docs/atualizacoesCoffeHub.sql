@@ -15,3 +15,9 @@ change column date_recebido data_recebido date;
 alter table compraproduto
 modify qtdVenda decimal(18,2)
 
+alter table compraproduto 
+drop primary key;
+
+alter table compraproduto 
+add primary key (num_item, cod_Compra, cod_Produto);
+

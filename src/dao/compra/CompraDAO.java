@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import dao.FornecedorDAO;
 import dao.interfaces.ICompraVenda;
 import entitys.Compra;
 
@@ -333,13 +334,13 @@ public class CompraDAO implements ICompraVenda<Compra>{
 		double retorno = 0;
 		
 		try {
-			String sum = "select sum(valor_total) as 'totalVendas' from compra where data_recebido='"+ new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(data) +"' and status='C' ";
+			String sum = "select ifnull(sum(valor_total), 0) as 'totalVendas' from compra where data_recebido='"+ new SimpleDateFormat("yyyy-MM-dd").format(data) +"' and status='F' ";
 			PreparedStatement statement = conexao.prepareStatement(sum);
 			ResultSet resultSet;
 			resultSet = statement.executeQuery();
 			
 			while(resultSet.next()) {
-				retorno = resultSet.getInt("totalVendas");
+				retorno = resultSet.getDouble("totalVendas");
 			}
 			
 			if (retorno < 0) throw new Error("Não foi possível recuperar o total das compras no dia "+ data.toString());
@@ -361,7 +362,7 @@ public class CompraDAO implements ICompraVenda<Compra>{
 		compra.setData_recebido(resultSet.getDate("c.data_recebido"));
 		compra.setStatus(resultSet.getString("c.status"));
 		compra.setItens(new Compra_ItemDAO(conexao).CarregarItens(compra.getCod()));
-		// carregar funcionario
+		compra.setFornecedor(new FornecedorDAO().buscarId(resultSet.getInt("c.cod_Fornecedor")));
 		// carregar fornecedor c.cod_Fornecedor, c.cod_Funcionario
 		return compra;
 	}

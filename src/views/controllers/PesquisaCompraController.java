@@ -11,12 +11,9 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 
 import control.compra_venda.ControlCompra;
-import control.produto.ControlProduto;
 import dao.FornecedorDAO;
 import entitys.Compra;
 import entitys.Fornecedor;
-import entitys.Produto;
-import entitys.Venda;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -163,12 +160,13 @@ public class PesquisaCompraController implements Initializable{
     	{
     		Compra compra = lvCompras.getSelectionModel().getSelectedItem();
     		
-    		Fornecedor fornecedorCompra = new FornecedorDAO().buscarId(compra.getCod());
+    		Fornecedor fornecedorCompra = new FornecedorDAO().buscarId(compra. getFornecedor().getCod());
     		compra.setFornecedor(fornecedorCompra);
     		
 			if(compra != null)
     		{
     			CadCompraController.compraCarregada = compra;
+    			CadCompraController.FornecedorEstatico = fornecedorCompra;
     			new CadCompraController().getCadCompra().show();
     			PesquisaCompra.close();
     			PesquisaCompra = null;

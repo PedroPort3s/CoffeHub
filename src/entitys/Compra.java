@@ -21,8 +21,16 @@ public class Compra {
 
 	private List<Compra_Item> itens;
 
-	public double TotalCompra(){
-		return 0;
+	public double TotalCompra(){		
+		double retorno = 0;
+			
+		if(this.itens != null && this.itens.size() > 0) {
+			for(Compra_Item i : itens) {
+				retorno += i.getValor_unitario();
+			}
+		}
+		return retorno;
+		
 	}
 
 	public int getCod() {
@@ -124,17 +132,6 @@ public class Compra {
 			 * Exception("Informe pelo menos 1 item para prosseguir com esta compra");
 			 */
 		}
-	
-	public double TotalVenda() {
-		double retorno = 0;
-		
-		if(this.itens != null && this.itens.size() > 0) {
-			for(Compra_Item i : itens) {
-				retorno += i.getValor_unitario();
-			}
-		}
-		return retorno;
-	}
 
 	@Override
 	public String toString() {
