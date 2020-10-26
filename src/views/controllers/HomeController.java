@@ -19,6 +19,7 @@ import views.controllers.cliente.PesquisaClienteController;
 import views.controllers.cliente.PesquisaClienteGeralController;
 import views.controllers.fornecedor.PesquisaFornecedorController;
 import views.controllers.fornecedor.PesquisaFornecedorGeralController;
+import views.controllers.funcionario.PesquisaFuncionarioController;
 
 public class HomeController {
 
@@ -117,7 +118,13 @@ public class HomeController {
 
     @FXML
     void btnFuncionarios_Action(ActionEvent event) {
-
+    	try {
+			Home.hide();
+			new PesquisaFuncionarioController().getPesquisaFuncionario().show();
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
+			alert.showAndWait();
+		}
     }
 
     @FXML

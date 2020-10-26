@@ -43,7 +43,7 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 					+EnumFuncionario.data_contratacao+", "
 					+EnumFuncionario.data_demissao+", "
 					+EnumFuncionario.senha_funcionario+", "
-					+EnumFuncionario.acesso_cod+") "
+					+EnumFuncionario.cod_acesso+") "
 							+ "VALUES (?, ?, ?, ?, ?, ?)";
 		
 		
@@ -85,6 +85,31 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 		}		
 	}
 
+	public boolean verificaRG(String rg) {
+
+		String sql= "SELECT * FROM "+EnumPessoa.pessoa+" WHERE "+EnumPessoa.documento+" = ?";
+
+		try (Connection connection = ConexaoMySql.getInstance().getConnection();
+				PreparedStatement statement = connection.prepareStatement(sql);) {
+
+			statement.setString(1, rg);
+			ResultSet resultSet = statement.executeQuery();
+			return resultSet.next();
+		} catch (ClassNotFoundException classException) {
+			classException.printStackTrace();
+			System.out.println("esse erro vai acontecer por conta do connector, pesquisem sobre" + "---erro no buscar");
+		} catch (SQLException sqlException) {
+			sqlException.printStackTrace();
+			System.out.println("esse erro foi estritamente no DriverManeger, " + "deem uma olhada, criar o banco talvez"
+					+ "---erro no buscar");
+		} catch (Exception exception) {
+			exception.printStackTrace();
+			System.out.println("Fudeo marreco" + "---erro no buscar");
+		}
+		return false;
+	}
+
+	
 	@Override
 	public void deletar(Integer id) {
 		String sqlFuncionario = "delete from " + EnumFuncionario.funcionario + " where " + EnumFuncionario.cod_pessoa + "= ?";
@@ -125,7 +150,7 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 				" SET " + EnumFuncionario.data_contratacao+ "=?, " +
 				" SET " + EnumFuncionario.data_demissao+ "=?, " +
 				" SET " + EnumFuncionario.senha_funcionario+ "=?, " +
-				" SET " + EnumFuncionario.acesso_cod+ "=? " +
+				" SET " + EnumFuncionario.cod_acesso+ "=? " +
 				" WHERE " + EnumFuncionario.cod_pessoa + "= ?";
 		
 		try (Connection connection = ConexaoMySql.getInstance().getConnection();
@@ -183,7 +208,7 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 						resultSet.getDate(EnumFuncionario.data_demissao.name()).toLocalDate(),
 						resultSet.getDouble(EnumFuncionario.salario.name()),
 						resultSet.getString(EnumFuncionario.senha_funcionario.name()),
-						resultSet.getInt(EnumFuncionario.acesso_cod.name()), 
+						resultSet.getInt(EnumFuncionario.cod_acesso.name()), 
 						resultSet.getInt(EnumPessoa.cod.name()),
 						resultSet.getString(EnumPessoa.documento.name()),
 						resultSet.getString(EnumPessoa.telefone.name()),
@@ -208,9 +233,9 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 	@Override
 	public List<Funcionario> listar() {
 		List<Funcionario> lista = new ArrayList<Funcionario>();
-		String sql= "SELECT * FROM "+EnumPessoa.pessoa+" p "
-				+ "inner join "+EnumFuncionario.funcionario+" f "
-				+ "on p."+EnumPessoa.cod+"= f."+EnumFuncionario.cod_pessoa;
+		String sql= "SELECT * FROM "+EnumPessoa.pessoa+" p"
+				+ " inner join "+EnumFuncionario.funcionario+" f "
+				+ "on p."+EnumPessoa.cod+"="+EnumFuncionario.cod_pessoa;
 
 		
 		try (Connection connection = ConexaoMySql.getInstance().getConnection();
@@ -223,7 +248,7 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 								resultSet.getDate(EnumFuncionario.data_demissao.name()).toLocalDate(),
 								resultSet.getDouble(EnumFuncionario.salario.name()),
 								resultSet.getString(EnumFuncionario.senha_funcionario.name()),
-								resultSet.getInt(EnumFuncionario.acesso_cod.name()), 
+								resultSet.getInt(EnumFuncionario.cod_acesso.name()), 
 								resultSet.getInt(EnumPessoa.cod.name()),
 								resultSet.getString(EnumPessoa.documento.name()),
 								resultSet.getString(EnumPessoa.telefone.name()),
