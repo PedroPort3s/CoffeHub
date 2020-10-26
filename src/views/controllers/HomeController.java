@@ -25,6 +25,10 @@ import javafx.stage.StageStyle;
 import views.controllers.cliente.PesquisaClienteController;
 import views.controllers.fornecedor.PesquisaFornecedorController;
 
+import views.controllers.fornecedor.PesquisaFornecedorGeralController;
+import views.controllers.funcionario.PesquisaFuncionarioController;
+
+
 public class HomeController implements Initializable{
 
 	private static Stage Home;
@@ -139,7 +143,13 @@ public class HomeController implements Initializable{
 
     @FXML
     void btnFuncionarios_Action(ActionEvent event) {
-
+    	try {
+			Home.hide();
+			new PesquisaFuncionarioController().getPesquisaFuncionario().show();
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
+			alert.showAndWait();
+		}
     }
 
     @FXML
@@ -214,7 +224,7 @@ public class HomeController implements Initializable{
 		catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);
 
-			alert.setTitle("Atenção");
+			alert.setTitle("Atenï¿½ï¿½o");
 			alert.setHeaderText(e.getMessage());
 
 			alert.showAndWait();
