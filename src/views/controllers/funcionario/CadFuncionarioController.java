@@ -107,22 +107,14 @@ public class CadFuncionarioController implements Initializable {
 	@FXML
 	void btnDemitir_Action(ActionEvent event) {
 		try {
-			conferirCampos();
+			dao.editarDemissao(funcionarioStatic.getCod());
 
-			if (!funcionarioStatic.getDocumento().equals(txtDocumento.getText().replaceAll("[^0-9]+", "")))
-				if (dao.verificaRG(txtDocumento.getText().replaceAll("[^0-9]+", "")))
-					throw new MoreThanOneException("Rg existente");
-
-			dao.editar(new Funcionario(dataPickerContratacao.getValue(), LocalDate.of(2022, 3, 10), Double.parseDouble(txtSalario.getText()),
-					firstPassword.getText(), cbxAcesso.getValue().getCod(), txtDocumento.getText(), txtTelefone.getText(),
-					txtNome.getText(), txtEndereco.getText(), txtEmail.getText()));
-
-			Alert alert = new Alert(AlertType.CONFIRMATION, "Funcionario editado com sucesso", ButtonType.OK);
-			alert.setHeaderText("Funcionario editado!!");
+			Alert alert = new Alert(AlertType.CONFIRMATION, "Funcionario demitido com sucesso", ButtonType.OK);
+			alert.setHeaderText("Funcionario demitido!!");
 			alert.showAndWait();
 			fechar();
 		} catch (Exception e) {
-			Alert alert = new Alert(AlertType.WARNING, e.getMessage(), ButtonType.OK);
+			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
 			alert.setHeaderText("Atenção");
 			alert.showAndWait();
 		}
@@ -157,8 +149,8 @@ public class CadFuncionarioController implements Initializable {
 		try {
 			dao.deletar(funcionarioStatic.getCod());
 
-			Alert alert = new Alert(AlertType.CONFIRMATION, "Cliente excluído com sucesso", ButtonType.OK);
-			alert.setHeaderText("Cliente excluído!!");
+			Alert alert = new Alert(AlertType.CONFIRMATION, "Funcionario excluído com sucesso", ButtonType.OK);
+			alert.setHeaderText("Funcionario excluído!!");
 			alert.showAndWait();
 			fechar();
 		} catch (Exception e) {
@@ -240,7 +232,7 @@ public class CadFuncionarioController implements Initializable {
 			throw new CampoVazioException(msg);
 		}
 		if (!senha1.equals(senha2))
-			throw new CampoVazioException(msg);
+			throw new CampoVazioException("Senhas não batem");
 		return true;
 	}
 
