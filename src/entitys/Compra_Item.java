@@ -81,5 +81,11 @@ public class Compra_Item {
 		if(item.getValor_unitario() <=0)
 			throw new Exception("Valor invalido");
 	}
+
+	@Override
+	public String toString() {
+		return "Nº item: " + num_item + " - qtd: " + qtd_item + " - valor un: " + valor_unitario + " - produto: " + produto;
+	}
+	
 	
 }

@@ -59,7 +59,7 @@ public int Finalizar(Compra compra) throws Exception {
 			CompraDAO compraDAO = new CompraDAO(conexao);
 			
 			if(!compraDAO.Carregar(compra.getCod()).getStatus().equals("A")) 
-				throw new Exception("Não é possível finalizar uma venda que não está aberta.");
+				throw new Exception("Não é possível finalizar uma compra que não está aberta.");
 			
 			retorno = compraDAO.Finalizar(compra);
 				
