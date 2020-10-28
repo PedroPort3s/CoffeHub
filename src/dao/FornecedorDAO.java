@@ -159,7 +159,7 @@ public class FornecedorDAO implements IFornecedorDAO {
 	
 	@Override
 	public Fornecedor buscarId(Integer id) {
-		Fornecedor fornececdor = new Fornecedor();
+		Fornecedor fornecedor = null;
 		String sql = "SELECT * FROM " + EnumPessoa.pessoa + " p " + "inner join " + EnumFornecedor.fornecedor + " f "
 				+ "on p." + EnumPessoa.cod + "= f." + EnumFornecedor.cod_pessoa + " WHERE p." + EnumPessoa.cod + " = ?";
 
@@ -170,7 +170,7 @@ public class FornecedorDAO implements IFornecedorDAO {
 			ResultSet resultSet = statement.executeQuery();
 
 			if(resultSet.next()) {
-				fornececdor = new Fornecedor(resultSet.getDate(EnumCliente.data_nascimento.name()).toLocalDate(),
+				fornecedor = new Fornecedor(resultSet.getDate(EnumFornecedor.data_contrato.name()).toLocalDate(),
 						resultSet.getInt(EnumPessoa.cod.name()), resultSet.getString(EnumPessoa.documento.name()),
 						resultSet.getString(EnumPessoa.telefone.name()), resultSet.getString(EnumPessoa.nome.name()),
 						resultSet.getString(EnumPessoa.endereco.name()), resultSet.getString(EnumPessoa.email.name()));
@@ -186,7 +186,7 @@ public class FornecedorDAO implements IFornecedorDAO {
 			exception.printStackTrace();
 			System.out.println("Fudeo marreco" + "---erro no buscar");
 		}
-		return fornececdor;
+		return fornecedor;
 	}
 
 	@Override

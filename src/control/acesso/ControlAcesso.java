@@ -17,21 +17,19 @@ public class ControlAcesso {
 			if (senha_funcionario.equals("")) 
 			{
 				throw new Exception("Informe a senha de acesso");
-			}
+			}			
 			
-			if (cod_pessoa > 0 && !senha_funcionario.equals("")) 
+			retorno = new LoginDAO().CarregarLogin(cod_pessoa, senha_funcionario);
+			if (retorno == 1) 
 			{
-				retorno = new LoginDAO().CarregarLogin(cod_pessoa, senha_funcionario);
-				if (retorno == 1) 
-				{
-					retorno = 1;
-				}
-				else
-				{
-					retorno = -1;
-					throw new Exception("Não foi possível efetuar o login");
-				}
-			}						
+				retorno = 1;
+			}
+			else
+			{
+				retorno = -1;
+				throw new Exception("Não foi possível efetuar o login");
+			}
+								
 		} 
 		catch (Exception e) 
 		{

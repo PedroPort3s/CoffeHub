@@ -1,14 +1,21 @@
 package views.controllers;
 
+import java.net.URL;
+import java.util.Date;
 import java.util.Optional;
+import java.util.ResourceBundle;
 
+import control.compra_venda.ControlCompra;
+import entitys.Funcionario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -16,14 +23,18 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import views.controllers.cliente.PesquisaClienteController;
-import views.controllers.cliente.PesquisaClienteGeralController;
 import views.controllers.fornecedor.PesquisaFornecedorController;
+
 import views.controllers.fornecedor.PesquisaFornecedorGeralController;
 import views.controllers.funcionario.PesquisaFuncionarioController;
 
-public class HomeController {
+
+public class HomeController implements Initializable{
 
 	private static Stage Home;
+	
+	public static Funcionario FuncionarioEstatico = new Funcionario();	
+	
     @FXML
     private Button btnOverview;
 
@@ -67,6 +78,9 @@ public class HomeController {
     @FXML
     private Button btnCategorias;
     
+    @FXML
+    private Label lblTotalCompras;
+    
 
 	public Stage getHome() {
 		if (Home == null)
@@ -102,6 +116,17 @@ public class HomeController {
 
     @FXML
     void btnCompras_Action(ActionEvent event) {
+    	try 
+    	{
+			Home.close();
+			Home = null;
+			new PesquisaCompraController().getPesquisaCompra().show();
+		}
+    	catch (Exception e) 
+    	{
+			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
+			alert.showAndWait();
+		}
 
     }
 
@@ -186,5 +211,24 @@ public class HomeController {
 			alert.showAndWait();	
     	}
     }
+    
+    
+	@Override
+	public void initialize(URL arg0, ResourceBundle arg1) {
+
+		try 
+		{						
+			lblTotalCompras.setText(new ControlCompra().TotalVendasDia(new Date()) + "");
+			
+		} 
+		catch (Exception e) {
+			Alert alert = new Alert(AlertType.WARNING);
+
+			alert.setTitle("Aten��o");
+			alert.setHeaderText(e.getMessage());
+
+			alert.showAndWait();
+		}
+	}
 
 }

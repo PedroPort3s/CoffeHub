@@ -114,7 +114,9 @@ public class PesquisaVendaController {
 
     @FXML
     void btnCadVenda_Action(ActionEvent event) {
-
+    	PesquisaVenda.hide();
+    	PesquisaVenda = null;
+    	new CadVendaController().getCadVenda().show();
     }
     
 

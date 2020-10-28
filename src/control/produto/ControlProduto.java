@@ -69,7 +69,6 @@ public class ControlProduto {
 		catch(SQLException ex){
 			throw ex;
 		}
-		
 		catch(Exception e)
 		{
 			throw e;
@@ -79,7 +78,7 @@ public class ControlProduto {
 		return retorno;
 	}
 
-	public Produto Carregar(int id) throws ClassNotFoundException, SQLException {
+	public Produto Carregar(int id) throws ClassNotFoundException, SQLException, Exception {
 		Produto prod = null;
 		try {
 			
@@ -88,7 +87,13 @@ public class ControlProduto {
 			Connection conn = ConexaoMySql.getInstance().getConnection();
 			ProdutoDAO prodDAO = new ProdutoDAO(conn);
 			
-			prod = prodDAO.Carregar(id);
+			try
+			{
+				prod = prodDAO.Carregar(id);
+			} 
+			catch (Exception e) {
+				throw e;
+			}
 			
 			conn.close();
 		}
@@ -188,7 +193,7 @@ private void ValidarProdutoGravar(Produto prod) throws Exception {
 		
 	}
 	
-	private void ValidarProdutoId(Produto prod) throws Exception{
+	public void ValidarProdutoId(Produto prod) throws Exception{
 		if(prod == null) throw new Exception("Informe um produto para a gravação.");
 		
 		if(prod.getCod() <= 0) throw new Exception("Informe uma ID válida para o produto");

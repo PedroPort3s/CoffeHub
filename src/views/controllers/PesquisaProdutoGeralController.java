@@ -1,6 +1,7 @@
 package views.controllers;
 
 import java.net.URL;
+import java.sql.Connection;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -26,6 +27,16 @@ import javafx.stage.StageStyle;
 public class PesquisaProdutoGeralController implements Initializable{
 
 	private static Stage PesquisaProdutoGeral;
+	
+	public static String compraVenda;
+	
+	
+	
+	/*
+	 * public PesquisaProdutoGeralController(String pCompraVenda) { compraVenda =
+	 * pCompraVenda; }
+	 */
+	
 
     @FXML
     private JFXButton btnPesquisar;
@@ -73,9 +84,18 @@ public class PesquisaProdutoGeralController implements Initializable{
 
     @FXML
     void btnVoltar_Action(ActionEvent event) {
-		PesquisaProdutoGeral.hide();
-		PesquisaProdutoGeral = null;
-		
+    	if(compraVenda == "COMPRA") {    		
+    		PesquisaProdutoGeral.hide();
+    		PesquisaProdutoGeral = null;
+    		new CadCompraController().getCadCompra().show();
+    		compraVenda = "";
+    	}
+    	else if(compraVenda == "VENDA") {
+    		PesquisaProdutoGeral.hide();
+    		PesquisaProdutoGeral = null;
+    		new CadVendaController().getCadVenda().show();
+    		compraVenda = "";    		
+    	}
     }
 
     @FXML
@@ -86,11 +106,24 @@ public class PesquisaProdutoGeralController implements Initializable{
         	Produto produto = lvProdutos.getSelectionModel().getSelectedItem();
 			if (produto != null)
 			{
-				CadVendaController.ProdutoEstatico = produto;
-				new CadVendaController().getCadVenda().show();
-				/* new CadVendaController().CarregarProduto(codProduto); */
-				PesquisaProdutoGeral.close();
-				PesquisaProdutoGeral = null;
+				if(compraVenda == "COMPRA")
+				{
+					CadCompraController.ProdutoEstatico = produto;
+					new CadCompraController().getCadCompra().show();
+					PesquisaProdutoGeral.close();
+					PesquisaProdutoGeral = null;		
+					compraVenda = "";
+				}
+				
+				else if(compraVenda == "VENDA")
+				{
+					CadVendaController.ProdutoEstatico = produto;
+					new CadVendaController().getCadVenda().show();
+					PesquisaProdutoGeral.close();
+					PesquisaProdutoGeral = null;
+					compraVenda = "";
+				}
+				
 			}
 		}
     	catch (Exception e) 

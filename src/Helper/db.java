@@ -4,13 +4,14 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date;
 
 public class db {
 	
-private static int ProximaID(Connection conexao, String nomeCampo,String nomeTabela) throws Exception {
+	public static int ProximaID(Connection conexao, String nomeCampo,String nomeTabela) throws Exception {
 		
 		
-		int numeroCategoria = 0;
+		int proxNumero = 0;
 
 		try {		
 
@@ -19,10 +20,10 @@ private static int ProximaID(Connection conexao, String nomeCampo,String nomeTab
 			ResultSet resultSet = statement.executeQuery();
 
 			while(resultSet.next()) {
-				numeroCategoria = resultSet.getInt("maior");
+				proxNumero = resultSet.getInt("maior");
 			}
 			
-			if (numeroCategoria < 0) throw new Exception ("Não foi possível recuperar o proximo número da(o) "+nomeTabela+"");
+			if (proxNumero < 0) throw new Exception ("Não foi possível recuperar o proximo número da(o) "+nomeTabela+"");
 			
 			statement.close();
 			
@@ -38,7 +39,15 @@ private static int ProximaID(Connection conexao, String nomeCampo,String nomeTab
 			throw ex;
 		}
 
-		return numeroCategoria + 1;
+		return proxNumero + 1;
+	}
+
+	public static void VerificarPeriodo(Date dataIni, Date dataFim) throws Exception {
+		if(dataIni == null) throw new Exception("Informe uma data inicial válida.");
+		
+		if(dataFim == null) throw new Exception("Informe uma data final válida.");
+		
+		if(dataFim.before(dataIni)) throw new Exception("A data inicial não pode ser maior que a data final.");
 	}
 
 }

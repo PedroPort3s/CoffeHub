@@ -23,7 +23,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import views.controllers.HomeController;
+import views.controllers.CadCompraController;
+
 
 public class PesquisaFornecedorGeralController {
 
@@ -54,7 +55,9 @@ public class PesquisaFornecedorGeralController {
     
 	@FXML
 	void btnVoltar_Action(ActionEvent event) {
-		//TODO voltar para a tela que está aberta
+    	pesquisaFornecedor.close();
+    	pesquisaFornecedor = null;
+    	new CadCompraController().getCadCompra().show();
 	}
 	
     public Stage getPesquisaFornecedorGeral() {
@@ -77,9 +80,6 @@ public class PesquisaFornecedorGeralController {
 		return pesquisaFornecedor;
 	}
     
-    private void fechar() {
-    	//TODO qual vai ser a ação ao fechar
-    }
 
     @FXML
     void btnPesquisar_Action(ActionEvent event) {
@@ -88,7 +88,27 @@ public class PesquisaFornecedorGeralController {
 
     @FXML
     void lvFornecedor_MouseClicked(MouseEvent event) {
-    	//TODO colocar a ação quando clicado no cliente
+    	try 
+    	{
+    		Fornecedor fornecedor = lvFornecedores.getSelectionModel().getSelectedItem();
+    		if (fornecedor != null)
+    		{
+    			CadCompraController.FornecedorEstatico = null;
+				CadCompraController.FornecedorEstatico = fornecedor;
+				new CadCompraController().getCadCompra().show();
+				pesquisaFornecedor.close();
+				pesquisaFornecedor = null;
+			}
+		}
+    	catch (Exception e) 
+    	{
+    		Alert alert = new Alert(AlertType.WARNING);
+
+            alert.setTitle("Atenção");
+            alert.setHeaderText(e.getMessage());
+            
+            alert.showAndWait();
+         }
     }
 
     private void listarFornecedores() {
