@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXComboBox?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="557.0" prefWidth="582.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.controllers.funcionario.CadFuncionarioController">
+   <children>
+      <JFXTextField fx:id="txtNome" focusColor="#2e1d04" labelFloat="true" layoutX="84.0" layoutY="26.0" prefHeight="40.0" prefWidth="287.0" promptText="Nome" unFocusColor="BLACK" />
+      <JFXTextField fx:id="txtDocumento" focusColor="#2e1d04" labelFloat="true" layoutX="396.0" layoutY="26.0" prefHeight="40.0" prefWidth="167.0" promptText="RG" unFocusColor="BLACK" />
+      <JFXTextField fx:id="txtTelefone" focusColor="#2e1d04" labelFloat="true" layoutX="20.0" layoutY="109.0" prefHeight="40.0" prefWidth="136.0" promptText="Telefone" unFocusColor="BLACK" />
+      <JFXTextField fx:id="txtEmail" focusColor="#2e1d04" labelFloat="true" layoutX="170.0" layoutY="109.0" prefHeight="40.0" prefWidth="393.0" promptText="Email" unFocusColor="BLACK" />
+      <JFXTextField fx:id="txtEndereco" focusColor="#2e1d04" labelFloat="true" layoutX="20.0" layoutY="181.0" prefHeight="40.0" prefWidth="542.0" promptText="Endereço" unFocusColor="BLACK" />
+      <JFXTextField fx:id="txtSalario" focusColor="#2e1d04" labelFloat="true" layoutX="84.0" layoutY="247.0" prefHeight="40.0" prefWidth="109.0" promptText="Salário" unFocusColor="BLACK" />
+      <JFXComboBox fx:id="cbxAcesso" layoutX="260.0" layoutY="247.0" prefHeight="40.0" prefWidth="156.0" promptText="Cargo do funcionário" />
+      <DatePicker fx:id="dataPickerContratacao" layoutX="23.0" layoutY="332.0" prefHeight="40.0" prefWidth="156.0" />
+      <PasswordField fx:id="firstPassword" layoutX="238.0" layoutY="340.0" prefHeight="28.0" prefWidth="251.0" />
+      <PasswordField fx:id="confirnPassword" layoutX="238.0" layoutY="407.0" prefHeight="28.0" prefWidth="251.0" />
+      <JFXButton fx:id="btnGravar" buttonType="RAISED" layoutX="253.0" layoutY="495.0" onAction="#btnGravar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Gravar" textFill="WHITE" />
+      <JFXButton fx:id="btnLimpar" buttonType="RAISED" layoutX="364.0" layoutY="495.0" onAction="#btnLimpar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Limpar" textFill="WHITE" />
+      <JFXButton fx:id="btnVoltar" buttonType="RAISED" layoutX="472.0" layoutY="495.0" onAction="#btnVoltar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Voltar" textFill="WHITE" />
+      <JFXButton fx:id="btnEditar" buttonType="RAISED" layoutX="125.0" layoutY="495.0" onAction="#btnEditar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Editar" textFill="WHITE" />
+      <JFXButton fx:id="btnExcluir" buttonType="RAISED" layoutX="22.0" layoutY="495.0" onAction="#btnExcluir_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Excluir" textFill="WHITE" />
+      <JFXTextField fx:id="txtCod" disable="true" focusColor="#2e1d04" labelFloat="true" layoutX="23.0" layoutY="26.0" prefHeight="40.0" prefWidth="44.0" promptText="Codigo" unFocusColor="BLACK" />
+      <Label layoutX="23.0" layoutY="315.0" text="Data contratação" />
+      <Label fx:id="lblInsiraSenha" layoutX="238.0" layoutY="323.0" text="Insira uma senha" />
+      <Label fx:id="lblConfirmSenha" layoutX="238.0" layoutY="390.0" text="Confirme a senhna" />
+      <JFXButton fx:id="btnDemitir" buttonType="RAISED" layoutX="24.0" layoutY="401.0" onAction="#btnDemitir_Action" prefHeight="40.0" prefWidth="156.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Demitir" textFill="WHITE" />
+      <Label fx:id="lblInsiraSenha1" layoutX="59.0" layoutY="247.0" prefHeight="40.0" prefWidth="20.0" text="R$" />
+   </children>
+</AnchorPane>
