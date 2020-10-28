@@ -27,6 +27,10 @@ public class Formatacao {
 				MaskFormatter mask = new MaskFormatter("##.###.###/####-##");
 				mask.setValueContainsLiteralCharacters(false);
 				cpfRGFormatado = mask.valueToString(cpf_RG);
+			} else if (cpf_RG.length() == 9) {
+				MaskFormatter mask = new MaskFormatter("##.###.###-#");
+				mask.setValueContainsLiteralCharacters(false);
+				cpfRGFormatado = mask.valueToString(cpf_RG);
 			} else {
 				throw new RuntimeException("Erro na hora de formatar o documento");
 			}
