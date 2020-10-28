@@ -9,14 +9,16 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
 import control.acesso.ControlAcesso;
+import dao.FuncionarioDAO;
+import entitys.Funcionario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
@@ -80,6 +82,7 @@ public class LoginController implements Initializable {
 			{
 				try 
 				{
+					HomeController.setFuncionario(new FuncionarioDAO().buscarId(cod));
 					login.hide();
 					new HomeController().getHome().show();
 				} 			  
@@ -93,7 +96,6 @@ public class LoginController implements Initializable {
 		catch (Exception e) 
 		{
     		Alert alert = new Alert(AlertType.WARNING);
-
             alert.setTitle("Atenção");
             alert.setHeaderText(e.getMessage());
             

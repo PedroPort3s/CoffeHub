@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import control.compra_venda.ControlCompra;
+import dao.FuncionarioDAO;
 import entitys.Funcionario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -33,7 +34,7 @@ public class HomeController implements Initializable{
 
 	private static Stage Home;
 	
-	public static Funcionario FuncionarioEstatico = new Funcionario();	
+	private static Funcionario FuncionarioEstatico = new Funcionario();	
 	
     @FXML
     private Button btnOverview;
@@ -95,6 +96,7 @@ public class HomeController implements Initializable{
 			}
 		  catch(Exception e)
 		  	{
+			  e.printStackTrace();
 			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
 			  alert.showAndWait();	
 		  	}
@@ -212,6 +214,50 @@ public class HomeController implements Initializable{
     	}
     }
     
+    private void configurarAcessos() {
+    	if(FuncionarioEstatico != null) {
+    		FuncionarioEstatico = new FuncionarioDAO().buscarId(FuncionarioEstatico.getCod());
+    		if(Home != null) {
+    			Home.setOnShown(acao -> {
+    				configurarAcessos();    				
+    			});
+    		}
+    		if(FuncionarioEstatico.getCod_acesso() == 1) {
+    			//TODO todo poderoso
+    		}
+    		if(FuncionarioEstatico.getCod_acesso() == 2) {
+    			btnVendas.setDisable(true);
+    			btnFornecedores.setDisable(false);
+    			System.out.println("false");
+    		}
+    		if(FuncionarioEstatico.getCod_acesso() == 3) {
+    			btnFornecedores.setDisable(true);
+    			System.out.println("true");
+    		}
+    		
+    	}
+    }
+    
+    @FXML
+    void initialize() {
+        assert btnOverview != null : "fx:id=\"btnOverview\" was not injected: check your FXML file 'Home.fxml'.";
+        assert btnVendas != null : "fx:id=\"btnVendas\" was not injected: check your FXML file 'Home.fxml'.";
+        assert btnProdutos != null : "fx:id=\"btnProdutos\" was not injected: check your FXML file 'Home.fxml'.";
+        assert btnCategorias != null : "fx:id=\"btnCategorias\" was not injected: check your FXML file 'Home.fxml'.";
+        assert btnFuncionarios != null : "fx:id=\"btnFuncionarios\" was not injected: check your FXML file 'Home.fxml'.";
+        assert btnFornecedores != null : "fx:id=\"btnFornecedores\" was not injected: check your FXML file 'Home.fxml'.";
+        assert btnClientes != null : "fx:id=\"btnClientes\" was not injected: check your FXML file 'Home.fxml'.";
+        assert btnCompras != null : "fx:id=\"btnCompras\" was not injected: check your FXML file 'Home.fxml'.";
+        assert btnSair != null : "fx:id=\"btnSair\" was not injected: check your FXML file 'Home.fxml'.";
+        assert pnlCustomer != null : "fx:id=\"pnlCustomer\" was not injected: check your FXML file 'Home.fxml'.";
+        assert pnlOrders != null : "fx:id=\"pnlOrders\" was not injected: check your FXML file 'Home.fxml'.";
+        assert pnlMenus != null : "fx:id=\"pnlMenus\" was not injected: check your FXML file 'Home.fxml'.";
+        assert pnlOverview != null : "fx:id=\"pnlOverview\" was not injected: check your FXML file 'Home.fxml'.";
+        assert lblTotalCompras != null : "fx:id=\"lblTotalCompras\" was not injected: check your FXML file 'Home.fxml'.";
+        assert pnItems != null : "fx:id=\"pnItems\" was not injected: check your FXML file 'Home.fxml'.";
+
+
+    }
     
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -219,11 +265,11 @@ public class HomeController implements Initializable{
 		try 
 		{						
 			lblTotalCompras.setText(new ControlCompra().TotalVendasDia(new Date()) + "");
-			
+			configurarAcessos();
 		} 
 		catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);
-
+			e.printStackTrace();
 			alert.setTitle("Aten��o");
 			alert.setHeaderText(e.getMessage());
 
@@ -231,4 +277,12 @@ public class HomeController implements Initializable{
 		}
 	}
 
+	public static Funcionario getFuncionario() {
+		return FuncionarioEstatico;
+	}
+	
+	public static void setFuncionario(Funcionario func) {
+		FuncionarioEstatico = func;
+	}
+	
 }
