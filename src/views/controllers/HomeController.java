@@ -146,7 +146,8 @@ public class HomeController implements Initializable{
     @FXML
     void btnFuncionarios_Action(ActionEvent event) {
     	try {
-			Home.hide();
+			Home.close();
+			Home = null;
 			new PesquisaFuncionarioController().getPesquisaFuncionario().show();
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
@@ -270,7 +271,7 @@ public class HomeController implements Initializable{
 		catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);
 			e.printStackTrace();
-			alert.setTitle("Atenï¿½ï¿½o");
+			alert.setTitle("Atenção");
 			alert.setHeaderText(e.getMessage());
 
 			alert.showAndWait();
