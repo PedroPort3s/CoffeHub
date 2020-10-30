@@ -34,6 +34,8 @@ public class HomeController implements Initializable{
 
 	private static Stage Home;
 	
+	private static HomeController homeController;
+	
 	private static Funcionario FuncionarioEstatico = new Funcionario();	
 	
     @FXML
@@ -82,7 +84,13 @@ public class HomeController implements Initializable{
     @FXML
     private Label lblTotalCompras;
     
-
+    public static HomeController getHomeController() {
+    	if(homeController == null) {
+    		homeController = new HomeController();
+    	}
+    	return homeController;
+    }
+    
 	public Stage getHome() {
 		if (Home == null)
 		{
@@ -135,7 +143,8 @@ public class HomeController implements Initializable{
     @FXML
     void btnFornecedores_Action(ActionEvent event) {
     	try {
-			Home.hide();
+    		Home.close();
+			Home = null;
 			new PesquisaFornecedorController().getPesquisaFornecedor().show();
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
@@ -146,7 +155,8 @@ public class HomeController implements Initializable{
     @FXML
     void btnFuncionarios_Action(ActionEvent event) {
     	try {
-			Home.hide();
+    		Home.close();
+			Home = null;
 			new PesquisaFuncionarioController().getPesquisaFuncionario().show();
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
@@ -217,24 +227,23 @@ public class HomeController implements Initializable{
     private void configurarAcessos() {
     	if(FuncionarioEstatico != null) {
     		FuncionarioEstatico = new FuncionarioDAO().buscarId(FuncionarioEstatico.getCod());
-    		if(Home != null) {
-    			Home.setOnShown(acao -> {
-    				configurarAcessos();    				
-    			});
-    		}
+    		System.out.println("passou por aqui");
     		if(FuncionarioEstatico.getCod_acesso() == 1) {
     			//TODO todo poderoso
     		}
     		if(FuncionarioEstatico.getCod_acesso() == 2) {
-    			btnVendas.setDisable(true);
-    			btnFornecedores.setDisable(false);
-    			System.out.println("false");
+    			btnFuncionarios.setDisable(true);
+    			btnProdutos.setDisable(true);
+    			btnCategorias.setDisable(true);
+    			btnFornecedores.setDisable(true);
+    			btnCompras.setDisable(true);
+    			
     		}
     		if(FuncionarioEstatico.getCod_acesso() == 3) {
-    			btnFornecedores.setDisable(true);
-    			System.out.println("true");
+    			btnFuncionarios.setDisable(false);
+    			btnClientes.setDisable(false);
+    			btnVendas.setDisable(false);
     		}
-    		
     	}
     }
     
