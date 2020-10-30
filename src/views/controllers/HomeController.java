@@ -26,7 +26,6 @@ import javafx.stage.StageStyle;
 import views.controllers.cliente.PesquisaClienteController;
 import views.controllers.fornecedor.PesquisaFornecedorController;
 
-import views.controllers.fornecedor.PesquisaFornecedorGeralController;
 import views.controllers.funcionario.PesquisaFuncionarioController;
 
 
