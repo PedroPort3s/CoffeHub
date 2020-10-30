@@ -266,7 +266,7 @@ public class CadFuncionarioController implements Initializable {
 		if (texto.equals("") || texto == null)
 			throw new CampoVazioException(msg);
 		texto = texto.replaceAll("[^0-9]+", "");
-		if (texto.length() == 11 || texto.length() == 14)
+		if (texto.length() == 9 || texto.length() == 11 || texto.length() == 14)
 			return true;
 
 		throw new TextoInvalidoException(msg);
