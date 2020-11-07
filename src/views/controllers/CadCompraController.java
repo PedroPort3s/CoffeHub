@@ -144,7 +144,9 @@ public class CadCompraController implements Initializable {
 
 						Fornecedor fornecedorCompra = new FornecedorDAO().buscarId(Integer.parseInt(txtCodFornecedor.getText()));						
 						compraPrivate.setFornecedor(fornecedorCompra);
-
+						
+						
+						// SET LOGGED FUNCIONARIO PARA GRAVAR 
 						Funcionario funcionario = new Funcionario();
 						funcionario.setCod(1);
 						/* funcionario.setData_contratacao(date); */

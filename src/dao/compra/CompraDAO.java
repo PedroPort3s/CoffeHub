@@ -421,4 +421,11 @@ public class CompraDAO implements ICompraVenda<Compra>{
 			}
 			return retorno;
 	}	
+	
+	public int AlterarQtdItem() {
+		
+		
+		return 0;
+		
+	}
 }

@@ -2,13 +2,17 @@ package control.compra_venda;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import Helper.db;
+import dao.ProdutoDAO;
 import dao.compra.CompraDAO;
 import dao.compra.Compra_ItemDAO;
+import dto.attProdutoDTO;
 import entitys.Compra;
+import entitys.Compra_Item;
 import utils.ConexaoMySql;
 
 public class ControlCompra {
@@ -61,6 +65,15 @@ public int Finalizar(Compra compra) throws Exception {
 			if(!compraDAO.Carregar(compra.getCod()).getStatus().equals("A")) 
 				throw new Exception("Não é possível finalizar uma compra que não está aberta.");
 			
+			List<attProdutoDTO> itensDto = new ArrayList<attProdutoDTO>();
+			
+			for(Compra_Item i : compra.getItens())
+			{
+				attProdutoDTO itemDto = new attProdutoDTO(i.getProduto().getCod(), i.getProduto().getQtd_atual());	
+				itensDto.add(itemDto);
+			}
+			
+			if(new ProdutoDAO(conexao).attCompraProduto(itensDto) != 1) throw new Exception("Não foi possivel atualizar o estoque dos itens para prosseguir");
 			retorno = compraDAO.Finalizar(compra);
 				
 			if(retorno != 1) throw new Exception("Erro ao finalizar a compra.");

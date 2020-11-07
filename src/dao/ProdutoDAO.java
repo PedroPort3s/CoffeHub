@@ -9,8 +9,8 @@ import java.util.List;
 
 import Helper.Verifica;
 import dao.interfaces.IProdutoDAO;
+import dto.attProdutoDTO;
 import entitys.Produto;
-import utils.ConexaoMySql;
 
 public class ProdutoDAO implements IProdutoDAO {
 	
@@ -302,6 +302,33 @@ public class ProdutoDAO implements IProdutoDAO {
 
 		return numProduto + 1;
 	}
+	
+	public int attCompraProduto(List<attProdutoDTO> listaDTO) throws ClassNotFoundException, SQLException {
+		int retorno = 0;
+        try {
+            List<Produto> listaProdutos = Buscar();
 
+            for (attProdutoDTO att : listaDTO) {
+                String sql = ("UPDATE Produto set qtd_atual = qtd_atual + " + att.getQtdProduto() + " where cod_produto="
+                        + att.getCodProduto());
+
+                PreparedStatement statement = conexao.prepareStatement(sql);
+                retorno = statement.executeUpdate();
+                statement.close();
+            }
+
+        } catch (ClassNotFoundException classEx) {
+            /* classEx.printStackTrace(); /
+            throw classEx;
+        } catch (SQLException sqlEx) {
+            / sqlEx.printStackTrace(); 
+            throw sqlEx;*/
+        }
+        catch (Exception ex) {
+             ex.printStackTrace();
+            throw ex;
+        }
+        return retorno;
+    }
 
 }
