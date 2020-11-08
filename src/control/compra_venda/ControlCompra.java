@@ -7,7 +7,6 @@ import java.util.Date;
 import java.util.List;
 
 import Helper.db;
-import dao.ProdutoDAO;
 import dao.compra.CompraDAO;
 import dao.compra.Compra_ItemDAO;
 import dto.attProdutoDTO;
@@ -49,7 +48,7 @@ public class ControlCompra {
 		
 		return retorno;
 	}
-	
+
 public int Finalizar(Compra compra) throws Exception {
 		
 		int retorno = 0;
@@ -65,15 +64,19 @@ public int Finalizar(Compra compra) throws Exception {
 			if(!compraDAO.Carregar(compra.getCod()).getStatus().equals("A")) 
 				throw new Exception("Não é possível finalizar uma compra que não está aberta.");
 			
+			if(compra.getItens().size() <= 0) throw new Exception("Não é possivel finalizar uma compra que não possui itens");
+			
 			List<attProdutoDTO> itensDto = new ArrayList<attProdutoDTO>();
 			
 			for(Compra_Item i : compra.getItens())
 			{
-				attProdutoDTO itemDto = new attProdutoDTO(i.getProduto().getCod(), i.getProduto().getQtd_atual());	
+				attProdutoDTO itemDto = new attProdutoDTO(i.getProduto().getCod(), i.getQtd_item());	
 				itensDto.add(itemDto);
-			}
+			}	
 			
-			if(new ProdutoDAO(conexao).attCompraProduto(itensDto) != 1) throw new Exception("Não foi possivel atualizar o estoque dos itens para prosseguir");
+			if(new CompraDAO(conexao).attCompraProduto(itensDto) != 1)
+				throw new Exception("Não foi possivel atualizar o estoque dos itens para prosseguir");
+			
 			retorno = compraDAO.Finalizar(compra);
 				
 			if(retorno != 1) throw new Exception("Erro ao finalizar a compra.");

@@ -80,7 +80,8 @@ public class LoginController implements Initializable {
 			{
 				try 
 				{
-					login.hide();
+					login.close();
+					login = null;
 					new HomeController().getHome().show();
 				} 			  
 		  catch(Exception e)

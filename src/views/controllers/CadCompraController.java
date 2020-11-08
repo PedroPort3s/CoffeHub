@@ -28,6 +28,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -37,12 +38,14 @@ import views.controllers.fornecedor.PesquisaFornecedorGeralController;
 
 public class CadCompraController implements Initializable {
 
+	private int QtdProximoProduto;
+
 	private static Stage CadCompra;
 
 	private static Compra compraPrivate;
-	
+
 	public static Compra compraCarregada;
-	
+
 	public static Produto ProdutoEstatico = new Produto();
 
 	public static Funcionario FuncionarioEstatico = new Funcionario();
@@ -96,12 +99,12 @@ public class CadCompraController implements Initializable {
 
 	@FXML
 	private JFXButton btnFinalizar;
-	
-    @FXML
-    private JFXButton btnEditar;
 
-    @FXML
-    private JFXButton btnAlterarQtd;
+	@FXML
+	private JFXButton btnEditar;
+
+	@FXML
+	private JFXButton btnAlterarQtd;
 
 	@FXML
 	private Label lblTotalCompra;
@@ -134,7 +137,11 @@ public class CadCompraController implements Initializable {
 					Compra_Item item = new Compra_Item();
 					item.setProduto(produtoCarregado);
 
-					item.setQtd_item(1);
+					if (QtdProximoProduto >= 1)
+						item.setQtd_item(QtdProximoProduto);
+					else
+						item.setQtd_item(1);
+
 					item.setValor_unitario(produtoCarregado.getValor_un());
 
 					if (compraPrivate == null || compraPrivate.getCod() == 0) {
@@ -142,11 +149,11 @@ public class CadCompraController implements Initializable {
 						compraPrivate = new Compra();
 						compraPrivate.setData_origem(date);
 
-						Fornecedor fornecedorCompra = new FornecedorDAO().buscarId(Integer.parseInt(txtCodFornecedor.getText()));						
+						Fornecedor fornecedorCompra = new FornecedorDAO()
+								.buscarId(Integer.parseInt(txtCodFornecedor.getText()));
 						compraPrivate.setFornecedor(fornecedorCompra);
-						
-						
-						// SET LOGGED FUNCIONARIO PARA GRAVAR 
+
+						// SET LOGGED FUNCIONARIO PARA GRAVAR
 						Funcionario funcionario = new Funcionario();
 						funcionario.setCod(1);
 						/* funcionario.setData_contratacao(date); */
@@ -158,26 +165,25 @@ public class CadCompraController implements Initializable {
 						compraPrivate.setFuncionario(funcionario);
 
 						compraPrivate.setStatus("A");
-						
+
 						compraPrivate.setCod(new ControlCompra().Inserir(compraPrivate));
 
 						RecarregarCompra(compraPrivate);
-					}
-					else {
+					} else {
 						RecarregarCompra(compraPrivate);
 					}
 
-					if (new ControlCompraItens().AdicionarItem(compraPrivate, item) != 1) 
+					if (new ControlCompraItens().AdicionarItem(compraPrivate, item) != 1)
 						throw new Exception("Não foi possivel inserir o item na compra");
 					else {
 						txtCodProduto.setText("");
 						txtProduto.setText("");
+						QtdProximoProduto = 1;
 						RecarregarCompra(compraPrivate);
-					}					
+					}
 				}
 			}
-		}
-		catch (Exception e) {			
+		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
 			alert.showAndWait();
 		}
@@ -197,38 +203,35 @@ public class CadCompraController implements Initializable {
 		PesquisaProdutoGeralController.compraVenda = "COMPRA";
 		new PesquisaProdutoGeralController().getPesquisaProdutoGeral().show();
 	}
-	
+
 	void Finalizar() {
-		try 
-		{
-	    	Alert ConfirmaRemover = new Alert(AlertType.CONFIRMATION);
-	    	
-	    	ConfirmaRemover.setTitle("Finalizar");
-	    	ConfirmaRemover.setHeaderText("Deseja realmente finalizar esta venda?");  	
-	    	
-	    	Optional<ButtonType> result = ConfirmaRemover.showAndWait();
-	    	 if (result.isPresent() && result.get() == ButtonType.OK) {
-			if (txtCodCompra.getText().equals("") == false) {
-				Compra compraFinalizar = new ControlCompra().Carregar(Integer.parseInt(txtCodCompra.getText()));
-				if (compraFinalizar != null) {
-					if(new ControlCompra().Finalizar(compraFinalizar) == 1) {
-						 	Limpar();
-							Alert alert = new Alert(AlertType.INFORMATION);
+		try {
+			Alert ConfirmaRemover = new Alert(AlertType.CONFIRMATION);
 
-							alert.setTitle("Atenção");
-							alert.setHeaderText("Compra Finalizada com sucesso");
+			ConfirmaRemover.setTitle("Finalizar");
+			ConfirmaRemover.setHeaderText("Deseja realmente finalizar esta venda?");
 
-							alert.showAndWait();
-					}
-					else {
-						throw new Exception("Não foi possivel finalizar a compra");
+			Optional<ButtonType> result = ConfirmaRemover.showAndWait();
+			if (result.isPresent() && result.get() == ButtonType.OK) {
+				if (txtCodCompra.getText().equals("") == false) {
+					Compra compraFinalizar = new ControlCompra().Carregar(Integer.parseInt(txtCodCompra.getText()));
+
+					if (compraFinalizar != null) {						
+						if (new ControlCompra().Finalizar(compraFinalizar) == 1) {
+								Limpar();
+								Alert alert = new Alert(AlertType.INFORMATION);
+
+								alert.setTitle("Atenção");
+								alert.setHeaderText("Compra Finalizada com sucesso");
+
+								alert.showAndWait();
+							} else {
+								throw new Exception("Não foi possivel finalizar a compra");
+							}		
 					}
 				}
 			}
-	    }
-	}
-		catch (Exception e) 
-		{
+		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);
 
 			alert.setTitle("Atenção");
@@ -240,12 +243,9 @@ public class CadCompraController implements Initializable {
 
 	@FXML
 	void btnFinalizar_Action(ActionEvent event) {
-		try 
-		{
+		try {
 			this.Finalizar();
-		}
-		catch (Exception e) 
-		{
+		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);
 
 			alert.setTitle("Atenção");
@@ -284,14 +284,14 @@ public class CadCompraController implements Initializable {
 
 		lblTotalCompra.setVisible(false);
 		lblTotalCompra.setText("");
-		
+
 		btnEditar.setVisible(false);
 		btnAlterarQtd.setVisible(false);
-		
+
 		compraCarregada = null;
-		
+
 		lvProdutos.getItems().clear();
-		
+
 		btnAddProduto.setVisible(true);
 		btnBuscarFornecedor.setVisible(true);
 		btnLimparFornecedor.setVisible(true);
@@ -314,30 +314,25 @@ public class CadCompraController implements Initializable {
 		new PesquisaCompraController().getPesquisaCompra().show();
 	}
 
-
-    @FXML
-    void btnEditar_Action(ActionEvent event) {
-    	try 
-    	{
-    		if(compraCarregada != null) {
-    			EditarCompra(compraCarregada);
-    		}
-		}
-    	catch (Exception e) 
-    	{
+	@FXML
+	void btnEditar_Action(ActionEvent event) {
+		try {
+			if (compraCarregada != null) {
+				EditarCompra(compraCarregada);
+			}
+		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);
 
 			alert.setTitle("Atenção");
 			alert.setHeaderText(e.getMessage());
 
 			alert.showAndWait();
-    	}
-    }
-    
-    void EditarCompra(Compra compra) {
-    	try
-    	{
-			if(new ControlCompra().Editar(compra) == 1) {
+		}
+	}
+
+	void EditarCompra(Compra compra) {
+		try {
+			if (new ControlCompra().Editar(compra) == 1) {
 				Alert alert = new Alert(AlertType.INFORMATION);
 
 				alert.setTitle("Atenção");
@@ -345,77 +340,77 @@ public class CadCompraController implements Initializable {
 
 				alert.showAndWait();
 			}
-			
-		} 
-    	catch (Exception e)
-    	{
+
+		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);
 
 			alert.setTitle("Atenção");
 			alert.setHeaderText(e.getMessage());
 
 			alert.showAndWait();
-    	}
-    }
-
-    void RemoverItem() {
-    	try 
-    	{
-			
 		}
-    	catch (Exception e) 
-    	{
+	}
+
+	void RemoverItem() {
+		try {
+
+		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);
 
 			alert.setTitle("Atenção");
 			alert.setHeaderText(e.getMessage());
 
 			alert.showAndWait();
-    	}
-    }
-    
-    @FXML
-    void btnAlterarQtd_Action(ActionEvent event) {
-    	try 
-    	{
-			
 		}
-    	catch (Exception e) 
-    	{
+	}
+
+	@FXML
+	void btnAlterarQtd_Action(ActionEvent event) {
+		try {
+			TextInputDialog textDialog = new TextInputDialog();
+			textDialog.setTitle("Alterar quantidade");
+			textDialog.setHeaderText("Alterar quantidade do proximo produto");
+			textDialog.setContentText("Informe uma quantidade: ");
+
+			Optional<String> resultado = textDialog.showAndWait();
+			String quantidadeString = resultado.map(Object::toString).orElse(null);
+
+			if (Integer.parseInt(quantidadeString) > 0) {
+				QtdProximoProduto = Integer.parseInt(quantidadeString);
+				textDialog.close();
+			}
+		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);
 
 			alert.setTitle("Atenção");
 			alert.setHeaderText(e.getMessage());
 
 			alert.showAndWait();
-    	}
-    }
-    
+		}
+	}
+
 	@FXML
 	void lvProdutos_MouseClicked(MouseEvent event) {
-		try 
-		{
-	    	Alert ConfirmaRemover = new Alert(AlertType.CONFIRMATION);
-	    	
-	    	ConfirmaRemover.setTitle("Remover Item");
-	    	ConfirmaRemover.setHeaderText("Deseja realmente remover o item selecionado?");  	
-	    	
-	    	Optional<ButtonType> result = ConfirmaRemover.showAndWait();
-	    	 if (result.isPresent() && result.get() == ButtonType.OK) {
-	    		 Compra compra = new ControlCompra().Carregar(Integer.parseInt(txtCodCompra.getText()));
-	    		 
-	    		 List<Compra_Item> itens = compra.getItens();	    		 
-	    		 Compra_Item ci = itens.get(lvProdutos.getSelectionModel().getSelectedIndex());
-	    		 
-	    		 if (compra != null && ci != null) {
-					if(new ControlCompraItens().RemoverItem(compra, ci) == 1) {
+		try {
+			Alert ConfirmaRemover = new Alert(AlertType.CONFIRMATION);
+
+			ConfirmaRemover.setTitle("Remover Item");
+			ConfirmaRemover.setHeaderText("Deseja realmente remover o item selecionado?");
+
+			Optional<ButtonType> result = ConfirmaRemover.showAndWait();
+			if (result.isPresent() && result.get() == ButtonType.OK) {
+				Compra compra = new ControlCompra().Carregar(Integer.parseInt(txtCodCompra.getText()));
+
+				List<Compra_Item> itens = compra.getItens();
+				Compra_Item ci = itens.get(lvProdutos.getSelectionModel().getSelectedIndex());
+
+				if (compra != null && ci != null) {
+					if (new ControlCompraItens().RemoverItem(compra, ci) == 1) {
 						this.RecarregarCompra(compra);
 					}
 				}
-	    	 }
-		}
-		catch (Exception e)
-		{
+			}
+		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);
 
 			alert.setTitle("Atenção");
@@ -450,14 +445,12 @@ public class CadCompraController implements Initializable {
 		}
 	}
 
-	void CarregarFornecedor(Fornecedor fornecedor) throws Exception{
-		try
-		{
-			if(fornecedor != null) {
+	void CarregarFornecedor(Fornecedor fornecedor) throws Exception {
+		try {
+			if (fornecedor != null) {
 				txtCodFornecedor.setText(fornecedor.getCod() + "");
 				txtFornecedor.setText(fornecedor.getNome());
-			}
-			else {
+			} else {
 				throw new Exception("Não foi possivel carregar o fornecedor selecionado");
 			}
 		}
@@ -471,31 +464,29 @@ public class CadCompraController implements Initializable {
 			alert.showAndWait();
 		}
 	}
-	
-	void CarregarCompra(Compra compra) throws Exception{
-		try
-		{
-			if(compra != null) {
-				
+
+	void CarregarCompra(Compra compra) throws Exception {
+		try {
+			if (compra != null) {
+
 				compraPrivate = compra;
-				
+
 				txtCodCompra.setText(compra.getCod() + "");
 				txtStatusCompra.setText(compra.getStatus());
 				txtDataCompra.setText(compra.getData_origem() + "");
-				
+
 				txtCodFornecedor.setText(compra.getFornecedor().getCod() + "");
 				txtFornecedor.setText(compra.getFornecedor().getNome());
-				
-				lblTotalCompra.setText("Total: R$ 0.00");				
+
+				lblTotalCompra.setText("Total: R$ 0.00");
 
 				// Lista de produto para o list view
 				lvProdutos.getItems().clear();
-				if(compra.getItens() != null && compra.getItens().size() > 0)
-				{
+				if (compra.getItens() != null && compra.getItens().size() > 0) {
 					compra.getItens().forEach(p -> lvProdutos.getItems().add(p.getProduto()));
 					lblTotalCompra.setText("Total: R$" + compra.TotalCompra());
 				}
-				if(compra.getStatus().equals("F")) {
+				if (compra.getStatus().equals("F")) {
 					btnAddProduto.setVisible(false);
 					btnBuscarFornecedor.setVisible(false);
 					btnLimparFornecedor.setVisible(false);
@@ -503,13 +494,11 @@ public class CadCompraController implements Initializable {
 					btnLimparProduto.setVisible(false);
 					btnEditar.setVisible(false);
 					btnAlterarQtd.setVisible(false);
+				} else {
+					btnEditar.setVisible(true);
+					btnAlterarQtd.setVisible(true);
 				}
-				else {
-				btnEditar.setVisible(true);
-				btnAlterarQtd.setVisible(true);
-				}
-			}
-			else {
+			} else {
 				throw new Exception("Não foi possivel carregar a compra selecionada");
 			}
 		}
@@ -523,38 +512,36 @@ public class CadCompraController implements Initializable {
 			alert.showAndWait();
 		}
 	}
-	
+
 	void RecarregarCompra(Compra compra) {
 		try {
 			if (compra.getCod() > 0) {
 				compra = new ControlCompra().Carregar(compra.getCod());
-				
+
 				if (compra == null) {
 					throw new Exception("Erro ao recarregar compra");
 				}
-				
+
 				compraPrivate = compra;
-				
+
 				txtCodCompra.setText(compra.getCod() + "");
-				txtDataCompra.setText(compra.getData_origem() + "");				
-				
+				txtDataCompra.setText(compra.getData_origem() + "");
+
 				txtCodFornecedor.setText(compra.getFornecedor().getCod() + "");
 				txtFornecedor.setText(compra.getFornecedor().getNome());
-				
+
 				txtStatusCompra.setText(compra.getStatus());
 				lblTotalCompra.setVisible(true);
 				lblTotalCompra.setText("Total: R$ 0.00");
-				
 
 				// Lista de produto para o list view
 				lvProdutos.getItems().clear();
-				if(compra.getItens() != null && compra.getItens().size() > 0)
-				{
+				if (compra.getItens() != null && compra.getItens().size() > 0) {
 					compra.getItens().forEach(p -> lvProdutos.getItems().add(p.getProduto()));
 					lblTotalCompra.setText("Total: R$" + compra.TotalCompra());
 				}
-				
-				if(compra.getStatus().equals("F")) {
+
+				if (compra.getStatus().equals("F")) {
 					btnAddProduto.setVisible(false);
 					btnBuscarFornecedor.setVisible(false);
 					btnLimparFornecedor.setVisible(false);
@@ -563,12 +550,12 @@ public class CadCompraController implements Initializable {
 					btnEditar.setVisible(false);
 					btnAlterarQtd.setVisible(false);
 				}
-				
+
 				else {
-				btnEditar.setVisible(true);
-				btnAlterarQtd.setVisible(true);
+					btnEditar.setVisible(true);
+					btnAlterarQtd.setVisible(true);
 				}
-				
+
 			}
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);
@@ -587,14 +574,14 @@ public class CadCompraController implements Initializable {
 			if (compraPrivate != null) {
 				RecarregarCompra(compraPrivate);
 			}
-			
+
 			if (ProdutoEstatico != null && ProdutoEstatico.getCod() > 0) {
 				this.CarregarProduto(ProdutoEstatico);
 			}
-			if(FornecedorEstatico != null) {
+			if (FornecedorEstatico != null) {
 				this.CarregarFornecedor(FornecedorEstatico);
 			}
-			if(compraCarregada != null) {
+			if (compraCarregada != null) {
 				this.CarregarCompra(compraCarregada);
 			}
 

@@ -3,8 +3,6 @@ package entitys;
 import java.util.Date;
 import java.util.List;
 
-import control.compra_venda.ControlCompraItens;
-
 public class Compra {
 
 	private int cod;

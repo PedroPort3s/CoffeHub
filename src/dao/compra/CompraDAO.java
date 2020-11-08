@@ -11,6 +11,7 @@ import java.util.List;
 
 import dao.FornecedorDAO;
 import dao.interfaces.ICompraVenda;
+import dto.attProdutoDTO;
 import entitys.Compra;
 
 
@@ -422,10 +423,22 @@ public class CompraDAO implements ICompraVenda<Compra>{
 			return retorno;
 	}	
 	
-	public int AlterarQtdItem() {
-		
-		
-		return 0;
-		
-	}
+	public int attCompraProduto(List<attProdutoDTO> listaDTO) throws ClassNotFoundException, SQLException {
+		int retorno = 0;
+        try {
+            for (attProdutoDTO att : listaDTO) {
+                String sql = ("UPDATE Produto set qtd_atual = qtd_atual + " + att.getQtdProduto() + " where cod_produto="
+                        + att.getCodProduto());
+
+                PreparedStatement statement = conexao.prepareStatement(sql);
+                retorno = statement.executeUpdate();
+                statement.close();
+            }
+        } 
+        catch (Exception ex) {
+             ex.printStackTrace();
+            throw ex;
+        }
+        return retorno;
+    }
 }
