@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import dao.FornecedorDAO;
+import dao.FuncionarioDAO;
 import dao.interfaces.ICompraVenda;
 import dto.attProdutoDTO;
 import entitys.Compra;
@@ -364,11 +365,8 @@ public class CompraDAO implements ICompraVenda<Compra>{
 		compra.setStatus(resultSet.getString("c.status"));
 		compra.setItens(new Compra_ItemDAO(conexao).CarregarItens(compra.getCod()));
 		compra.setFornecedor(new FornecedorDAO().buscarId(resultSet.getInt("c.cod_Fornecedor")));
-		/*
-		 * compra.setFuncionario(new
-		 * FuncionarioDAO().buscarId(resultSet.getInt("c.cod_Funcionario"))); carregar
-		 * fornecedor c.cod_Fornecedor, c.cod_Funcionario
-		 */
+		compra.setFuncionario(new FuncionarioDAO().buscarId(resultSet.getInt("c.cod_Funcionario")));
+		
 		return compra;
 	}
 	

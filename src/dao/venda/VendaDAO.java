@@ -10,6 +10,9 @@ import java.util.Date;
 import java.util.List;
 
 import Helper.db;
+import dao.ClienteDAO;
+import dao.FornecedorDAO;
+import dao.FuncionarioDAO;
 import dao.compra.Compra_ItemDAO;
 import dao.interfaces.ICompraVenda;
 import dao.interfaces.IPadraoDB;
@@ -364,8 +367,9 @@ public class VendaDAO implements ICompraVenda<Venda> {
 		venda.setData_confirmacao(resultSet.getDate("data_confirmacao"));
 		venda.setStatus(resultSet.getString("status"));
 		venda.setItens(new Venda_ItemDAO(conexao).CarregarItens(venda.getCod()));
-		// carregar funcionario
-		// carregar fornecedor c.cod_Fornecedor, c.cod_Funcionario
+		venda.setCliente(new ClienteDAO().buscarId(resultSet.getInt("cod_Cliente")));
+		venda.setFuncionario(new FuncionarioDAO().buscarId(resultSet.getInt("cod_Funcionario")));
+		
 		return venda;
 	}
 
