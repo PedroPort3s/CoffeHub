@@ -16,6 +16,7 @@ import dao.FuncionarioDAO;
 import dao.compra.Compra_ItemDAO;
 import dao.interfaces.ICompraVenda;
 import dao.interfaces.IPadraoDB;
+import dto.attProdutoDTO;
 import entitys.Compra;
 import entitys.Venda;
 
@@ -403,4 +404,23 @@ public class VendaDAO implements ICompraVenda<Venda> {
 			}
 			return retorno;
 	}	
+	
+	public int attVendaProduto(List<attProdutoDTO> listaDTO) throws SQLException {
+		int retorno = 0;
+        try {
+            for (attProdutoDTO att : listaDTO) {
+                String sql = ("UPDATE Produto set qtd_atual = qtd_atual - " + att.getQtdProduto() + " where cod_produto="
+                        + att.getCodProduto());
+
+                PreparedStatement statement = conexao.prepareStatement(sql);
+                retorno = statement.executeUpdate();
+                statement.close();
+            }
+        } 
+        catch (Exception ex) {
+             ex.printStackTrace();
+            throw ex;
+        }
+        return retorno;
+    }
 }
