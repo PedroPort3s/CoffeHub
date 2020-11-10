@@ -1,6 +1,6 @@
 package entitys;
 
-import Helper.Verifica;
+import utils.Verifica;
 
 public class Produto {
 	

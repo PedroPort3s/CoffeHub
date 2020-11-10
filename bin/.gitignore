@@ -1,10 +1,5 @@
-/Helper/
-/cliente/
-/dao/
-/dto/
-/entitys/
-/exceptions/
-/libs/
-/utils/
-/views/
 /control/
+/dao/
+/utils/
+/entitys/
+/views/

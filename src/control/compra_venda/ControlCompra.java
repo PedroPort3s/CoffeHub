@@ -5,14 +5,13 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import Helper.db;
 import dao.compra.CompraDAO;
 import dao.compra.Compra_ItemDAO;
 import dto.attProdutoDTO;
 import entitys.Compra;
 import entitys.Compra_Item;
 import utils.ConexaoMySql;
+import utils.db;
 
 public class ControlCompra {
 	

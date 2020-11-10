@@ -6,10 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import Helper.Verifica;
 import dao.interfaces.ICategoriaDAO;
 import entitys.Categoria;
+import utils.Verifica;
 
 public class CategoriaDAO implements ICategoriaDAO {
 	
