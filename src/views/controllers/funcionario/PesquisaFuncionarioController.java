@@ -80,14 +80,11 @@ public class PesquisaFuncionarioController {
 	// LISTAR FUNCIONARIOS
 
 	private void listarFuncionarios() {
-		ObservableList<Funcionario> listFunc = FXCollections.observableArrayList();
-
-		// parece que as listas funcionam de uma fora diferente do ArrayList(), ela utiliza "ObservableList()"..
-
+		ObservableList<Funcionario> listFunc;
 
 		try {
-			
-			listFunc = (ObservableList<Funcionario>) dao.listar();
+
+			listFunc = FXCollections.observableArrayList(dao.listar());
 
 			cCod.setCellValueFactory(new PropertyValueFactory<Funcionario, Integer>("cod"));
 			cDoc.setCellValueFactory(new PropertyValueFactory<Funcionario, String>("documento"));
@@ -103,54 +100,81 @@ public class PesquisaFuncionarioController {
 
 			tableView.setItems(listFunc);
 
+			if (listFunc != null) {
+				if (txtCodPesquisa != null && conferirNumero(txtCodPesquisa.getText(), "Insira um número")) {
+					List<Funcionario> listaCod = new ArrayList<Funcionario>();
+					for (Funcionario f : listFunc) {
+						if ((f.getCod() == Integer.parseInt(txtCodPesquisa.getText()))) {
+							listaCod.add(f);
+							tableView.setItems(listFunc);
+						}
+					}
+					listFunc = FXCollections.observableArrayList(listaCod);
+				}
+				if (txtNomePesquisa != null) {
+					List<Funcionario> listaNome = new ArrayList<Funcionario>();
+					for (Funcionario f : listFunc) {
+						if (f.getNome().matches(".*" + txtNomePesquisa.getText() + ".*")) {
+							listaNome.add(f);
+						}
+					}
+					listFunc = FXCollections.observableArrayList(listaNome);
+				}
+				listFunc.forEach(f -> lvFuncionarios.getItems().add(f));
+				tableView.setItems(listFunc);
+			}
+
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
 			alert.showAndWait();
 		}
 
-//    	List<Funcionario> lstFuncionarios;    	
-//    	lvFuncionarios.getItems().clear();
-//    	
-//		try {
-//			lstFuncionarios = dao.listar();
-//			if (lstFuncionarios != null) {
-//				if (txtCodPesquisa != null && conferirNumero(txtCodPesquisa.getText(), "Insira um número")) {
-//					List<Funcionario> listaCod = new ArrayList<Funcionario>();
-//					for (Funcionario f : lstFuncionarios) {
-//						if ((f.getCod() == Integer.parseInt(txtCodPesquisa.getText()))) {
-//							listaCod.add(f);
-//						}
+	}
+
+//  private void listarFuncionarios() {
+//	List<Funcionario> lstFuncionarios;
+//	lvFuncionarios.getItems().clear();
+//	
+//	try {
+//		lstFuncionarios = dao.listar();
+//		if (lstFuncionarios != null) {
+//			if (txtCodPesquisa != null && conferirNumero(txtCodPesquisa.getText(), "Insira um número")) {
+//				List<Funcionario> listaCod = new ArrayList<Funcionario>();
+//				for (Funcionario f : lstFuncionarios) {
+//					if ((f.getCod() == Integer.parseInt(txtCodPesquisa.getText()))) {
+//						listaCod.add(f);
 //					}
-//					lstFuncionarios = listaCod;
 //				}
-//				if (txtNomePesquisa != null) {
-//					List<Funcionario> listaNome = new ArrayList<Funcionario>();
-//					for (Funcionario f : lstFuncionarios) {
-//						if (f.getNome().matches(".*" + txtNomePesquisa.getText() + ".*")) {
-//							listaNome.add(f);
-//						}
-//					}
-//					lstFuncionarios = listaNome;
-//				}
-//				lstFuncionarios.forEach(f -> lvFuncionarios.getItems().add(f));
+//				lstFuncionarios = listaCod;
 //			}
-//		} catch (Exception e) {
-//			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
-//			alert.showAndWait();
+//			if (txtNomePesquisa != null) {
+//				List<Funcionario> listaNome = new ArrayList<Funcionario>();
+//				for (Funcionario f : lstFuncionarios) {
+//					if (f.getNome().matches(".*" + txtNomePesquisa.getText() + ".*")) {
+//						listaNome.add(f);
+//					}
+//				}
+//				lstFuncionarios = listaNome;
+//			}
+//			lstFuncionarios.forEach(f -> lvFuncionarios.getItems().add(f));
 //		}
-//    }
+//	} catch (Exception e) {
+//		Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
+//		alert.showAndWait();
+//	}
+//}
 //
-//    private Boolean conferirNumero(String texto, String msg) {
-//    	try {
-//    		if(!texto.equals("")) {
-//    			Integer.parseInt(texto);
-//    		} else if(texto.equals("")) {
-//    			return false;
-//    		}
-//		} catch (Exception e) {
-//			throw new NumberFormatException(msg);
-//		}
-//    	return true;
+	private Boolean conferirNumero(String texto, String msg) {
+		try {
+			if (!texto.equals("")) {
+				Integer.parseInt(texto);
+			} else if (texto.equals("")) {
+				return false;
+			}
+		} catch (Exception e) {
+			throw new NumberFormatException(msg);
+		}
+		return true;
 	}
 
 	// -------------------------------------------------------------------
@@ -230,52 +254,6 @@ public class PesquisaFuncionarioController {
 	void btnPesquisar_Action(ActionEvent event) {
 		listarFuncionarios();
 	}
-
-//    private void listarFuncionarios() {
-//    	List<Funcionario> lstFuncionarios;
-//    	lvFuncionarios.getItems().clear();
-//    	
-//		try {
-//			lstFuncionarios = dao.listar();
-//			if (lstFuncionarios != null) {
-//				if (txtCodPesquisa != null && conferirNumero(txtCodPesquisa.getText(), "Insira um número")) {
-//					List<Funcionario> listaCod = new ArrayList<Funcionario>();
-//					for (Funcionario f : lstFuncionarios) {
-//						if ((f.getCod() == Integer.parseInt(txtCodPesquisa.getText()))) {
-//							listaCod.add(f);
-//						}
-//					}
-//					lstFuncionarios = listaCod;
-//				}
-//				if (txtNomePesquisa != null) {
-//					List<Funcionario> listaNome = new ArrayList<Funcionario>();
-//					for (Funcionario f : lstFuncionarios) {
-//						if (f.getNome().matches(".*" + txtNomePesquisa.getText() + ".*")) {
-//							listaNome.add(f);
-//						}
-//					}
-//					lstFuncionarios = listaNome;
-//				}
-//				lstFuncionarios.forEach(f -> lvFuncionarios.getItems().add(f));
-//			}
-//		} catch (Exception e) {
-//			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
-//			alert.showAndWait();
-//		}
-//    }
-//
-//    private Boolean conferirNumero(String texto, String msg) {
-//    	try {
-//    		if(!texto.equals("")) {
-//    			Integer.parseInt(texto);
-//    		} else if(texto.equals("")) {
-//    			return false;
-//    		}
-//		} catch (Exception e) {
-//			throw new NumberFormatException(msg);
-//		}
-//    	return true;
-//    }
 
 	@FXML
 	void btnVoltar_Action(ActionEvent event) {

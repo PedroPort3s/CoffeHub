@@ -11,6 +11,8 @@ import java.util.List;
 
 import dao.interfaces.IFuncionarioDAO;
 import entitys.Funcionario;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import utils.ConexaoMySql;
 import utils.enuns.EnumFuncionario;
 import utils.enuns.EnumPessoa;
@@ -236,7 +238,11 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 
 	@Override
 	public List<Funcionario> listar() {
-		List<Funcionario> lista = new ArrayList<Funcionario>();
+		
+		
+		List<Funcionario> listFunc = new ArrayList<>();
+		
+		
 		String sql = "SELECT * FROM " + EnumPessoa.pessoa + " p" + " inner join " + EnumFuncionario.funcionario + " f "
 				+ "on p." + EnumPessoa.cod + "=" + EnumFuncionario.cod_pessoa;
 
@@ -247,7 +253,7 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 
 			while (resultSet.next()) {
 				if (resultSet.getDate(EnumFuncionario.data_demissao.name()) == null) {
-					lista.add(new Funcionario(resultSet.getDate(EnumFuncionario.data_contratacao.name()).toLocalDate(),
+					listFunc.add(new Funcionario(resultSet.getDate(EnumFuncionario.data_contratacao.name()).toLocalDate(),
 							null, resultSet.getDouble(EnumFuncionario.salario.name()),
 							resultSet.getString(EnumFuncionario.senha_funcionario.name()),
 							resultSet.getInt(EnumFuncionario.cod_acesso.name()),
@@ -258,7 +264,7 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 							resultSet.getString(EnumPessoa.endereco.name()),
 							resultSet.getString(EnumPessoa.email.name())));
 				} else {
-					lista.add(new Funcionario(resultSet.getDate(EnumFuncionario.data_contratacao.name()).toLocalDate(),
+					listFunc.add(new Funcionario(resultSet.getDate(EnumFuncionario.data_contratacao.name()).toLocalDate(),
 							resultSet.getDate(EnumFuncionario.data_demissao.name()).toLocalDate(),
 							resultSet.getDouble(EnumFuncionario.salario.name()),
 							resultSet.getString(EnumFuncionario.senha_funcionario.name()),
@@ -278,7 +284,7 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 		} catch (Exception exception) {
 			exception.printStackTrace();
 		}
-		return lista;
+		return listFunc;
 	}
 
 }
