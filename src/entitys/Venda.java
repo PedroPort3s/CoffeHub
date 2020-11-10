@@ -90,14 +90,9 @@ public class Venda {
 		if (venda.getFuncionario() != null) {
 			if (venda.getFuncionario().getCod() <= 0)
 				throw new Exception("Informe um funcionario valido.");
-		}
-		if (venda.getItens() != null) {
-			if(venda.getItens().size() == 0)
-			throw new Exception("Esta venda não possui itens");
-		}
-			else {
+		}		
+		if(venda.getItens() != null && venda.getItens().size() > 0)
 			Venda_Item.ValidarVendaItens(venda.getItens());
-		}
 	}
 
 	// Método de validar sem codigo

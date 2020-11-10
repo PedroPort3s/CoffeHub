@@ -109,17 +109,19 @@ public class PesquisaVendaController implements Initializable {
 
 	@FXML
 	void btnLimparCliente_Action(ActionEvent event) {
-
+		txtCodCliente.setText("");
+		txtCliente.setText("");
 	}
 
 	@FXML
 	void btnLimparFuncionario_Action(ActionEvent event) {
-
+		txtCodFuncionario.setText("");
+		txtFuncionario.setText("");
 	}
 
 	@FXML
 	void btnPesquisar_Action(ActionEvent event) {
-
+		this.ListarVendas();
 	}
 
 	@FXML

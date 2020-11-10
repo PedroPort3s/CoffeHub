@@ -20,7 +20,7 @@
       <JFXButton fx:id="btnAddProduto" buttonType="RAISED" layoutX="484.0" layoutY="220.0" onAction="#btnAddProduto_Action" prefHeight="16.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Adicionar" textFill="WHITE" />
       <JFXTextField fx:id="txtStatus" disable="true" focusColor="#2e1d04" labelFloat="true" layoutX="531.0" layoutY="53.0" prefHeight="40.0" prefWidth="241.0" promptText="Status" unFocusColor="BLACK" />
       <JFXButton fx:id="btnFinalizar" buttonType="RAISED" layoutX="473.0" layoutY="506.0" onAction="#btnFinalizar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Finalizar" textFill="WHITE" />
-      <Label fx:id="lblValorTotal" layoutX="602.0" layoutY="206.0" prefHeight="40.0" prefWidth="62.0" textFill="#0015ff">
+      <Label fx:id="lblValorTotal" ellipsisString="" layoutX="602.0" layoutY="206.0" prefHeight="40.0" prefWidth="165.0" textFill="#0015ff">
          <font>
             <Font size="16.0" />
          </font>

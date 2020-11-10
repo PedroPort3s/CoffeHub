@@ -10,13 +10,11 @@ import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 
-import control.compra_venda.ControlCompra;
 import control.compra_venda.ControlVenda;
 import control.compra_venda.ControlVendaItens;
 import control.produto.ControlProduto;
 import dao.ClienteDAO;
 import entitys.Cliente;
-import entitys.Compra;
 import entitys.Funcionario;
 import entitys.Produto;
 import entitys.Venda;
@@ -131,7 +129,7 @@ public class CadVendaController implements Initializable {
 		return CadVenda;
 	}
 
-	@FXML
+	@FXML 
 	void btnAddProduto_Action(ActionEvent event) {
 		try {
 			if (!txtCodProduto.getText().equals("")) {
@@ -254,6 +252,10 @@ public class CadVendaController implements Initializable {
 		txtStatus.setText("");
 
 		btnEditar.setVisible(false);
+		
+		lvProdutos.getItems().clear();
+		
+		lblValorTotal.setVisible(false);
 	}
 
 	@FXML
@@ -402,6 +404,14 @@ public class CadVendaController implements Initializable {
 	void CarregarVenda(Venda venda) {
 		try {
 			if (venda != null) {
+				
+				if (venda.getCod() > 0) {
+					venda = new ControlVenda().Carregar(venda.getCod());
+
+					if (venda == null) {
+						throw new Exception("Erro ao carregar a venda");
+					}
+				}
 
 				VendaPrivate = venda;
 
@@ -433,7 +443,7 @@ public class CadVendaController implements Initializable {
 					btnAlterarQtd.setVisible(true);
 				}
 			} else {
-				throw new Exception("Não foi possivel carregar a compra selecionada");
+				throw new Exception("Não foi possivel carregar a venda selecionada");
 			}
 		}
 
