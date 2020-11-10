@@ -33,6 +33,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import utils.Logado;
 import views.controllers.cliente.PesquisaClienteGeralController;
 
 public class CadVendaController implements Initializable {
@@ -41,11 +42,9 @@ public class CadVendaController implements Initializable {
 
 	private static Stage CadVenda;
 
-	public static Produto ProdutoEstatico = new Produto();
+	public static Produto ProdutoEstatico = null;
 
-	public static Cliente ClienteEstatico = new Cliente();
-
-	public static Funcionario FuncionarioEstatico = new Funcionario();
+	public static Cliente ClienteEstatico = null;
 
 	public static Venda VendaPrivate;
 
@@ -155,15 +154,7 @@ public class CadVendaController implements Initializable {
 						VendaPrivate.setCliente(clienteVenda);
 
 						// SET LOGGED FUNCIONARIO PARA GRAVAR
-						Funcionario funcionario = new Funcionario();
-						funcionario.setCod(1);
-						/* funcionario.setData_contratacao(date); */
-						funcionario.setDocumento("123456789101");
-						funcionario.setEmail("a@a.com");
-						funcionario.setEndereco("FUNC");
-						funcionario.setNome("Guina");
-						funcionario.setTelefone("44444444444");
-						VendaPrivate.setFuncionario(funcionario);
+						VendaPrivate.setFuncionario(Logado.Funcionario);
 
 						VendaPrivate.setStatus("A");
 

@@ -1,4 +1,4 @@
-package Helper;
+package utils;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,7 +23,7 @@ public class db {
 				proxNumero = resultSet.getInt("maior");
 			}
 			
-			if (proxNumero < 0) throw new Exception ("Não foi possível recuperar o proximo número da(o) "+nomeTabela+"");
+			if (proxNumero < 0) throw new Exception ("Nï¿½o foi possï¿½vel recuperar o proximo nï¿½mero da(o) "+nomeTabela+"");
 			
 			statement.close();
 			
@@ -43,11 +43,11 @@ public class db {
 	}
 
 	public static void VerificarPeriodo(Date dataIni, Date dataFim) throws Exception {
-		if(dataIni == null) throw new Exception("Informe uma data inicial válida.");
+		if(dataIni == null) throw new Exception("Informe uma data inicial vï¿½lida.");
 		
-		if(dataFim == null) throw new Exception("Informe uma data final válida.");
+		if(dataFim == null) throw new Exception("Informe uma data final vï¿½lida.");
 		
-		if(dataFim.before(dataIni)) throw new Exception("A data inicial não pode ser maior que a data final.");
+		if(dataFim.before(dataIni)) throw new Exception("A data inicial nï¿½o pode ser maior que a data final.");
 	}
 
 }

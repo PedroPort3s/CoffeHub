@@ -8,13 +8,12 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-
-import Helper.db;
 import dao.ClienteDAO;
 import dao.FuncionarioDAO;
 import dao.interfaces.ICompraVenda;
 import dto.attProdutoDTO;
 import entitys.Venda;
+import utils.db;
 
 public class VendaDAO implements ICompraVenda<Venda> {
 	
