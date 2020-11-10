@@ -18,7 +18,6 @@ import dao.FornecedorDAO;
 import entitys.Compra;
 import entitys.Compra_Item;
 import entitys.Fornecedor;
-import entitys.Funcionario;
 import entitys.Produto;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -34,6 +33,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import utils.Logado;
 import views.controllers.fornecedor.PesquisaFornecedorGeralController;
 
 public class CadCompraController implements Initializable {
@@ -47,8 +47,6 @@ public class CadCompraController implements Initializable {
 	public static Compra compraCarregada;
 
 	public static Produto ProdutoEstatico = new Produto();
-
-	public static Funcionario FuncionarioEstatico = new Funcionario();
 
 	public static Fornecedor FornecedorEstatico = new Fornecedor();
 
@@ -154,15 +152,7 @@ public class CadCompraController implements Initializable {
 						compraPrivate.setFornecedor(fornecedorCompra);
 
 						// SET LOGGED FUNCIONARIO PARA GRAVAR
-						Funcionario funcionario = new Funcionario();
-						funcionario.setCod(1);
-						/* funcionario.setData_contratacao(date); */
-						funcionario.setDocumento("123456789101");
-						funcionario.setEmail("a@a.com");
-						funcionario.setEndereco("FUNC");
-						funcionario.setNome("Guina");
-						funcionario.setTelefone("44444444444");
-						compraPrivate.setFuncionario(funcionario);
+						compraPrivate.setFuncionario(Logado.Funcionario);
 
 						compraPrivate.setStatus("A");
 
@@ -494,7 +484,16 @@ public class CadCompraController implements Initializable {
 					btnLimparProduto.setVisible(false);
 					btnEditar.setVisible(false);
 					btnAlterarQtd.setVisible(false);
-				} else {
+				} else if (compra.getStatus().equals("E")) {
+					btnAddProduto.setVisible(false);
+					btnBuscarFornecedor.setVisible(false);
+					btnLimparFornecedor.setVisible(false);
+					btnBuscarProduto.setVisible(false);
+					btnLimparProduto.setVisible(false);
+					btnEditar.setVisible(false);
+					btnAlterarQtd.setVisible(false);
+				}
+				else {
 					btnEditar.setVisible(true);
 					btnAlterarQtd.setVisible(true);
 				}

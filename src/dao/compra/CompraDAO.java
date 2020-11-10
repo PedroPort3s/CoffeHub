@@ -421,10 +421,38 @@ public class CompraDAO implements ICompraVenda<Compra>{
 			return retorno;
 	}	
 	
+	public int Enviar(Compra compra) throws Exception {
+		
+			int retorno = 0;
+			try {			
+				
+				StringBuilder sql = new StringBuilder();
+				sql.append("UPDATE compra SET");
+				sql.append(" valor_total = " + compra.TotalCompra() + ",");
+				sql.append(" status = 'E'");
+				sql.append(" WHERE cod = "+ compra.getCod());
+
+				PreparedStatement statement = conexao.prepareStatement(sql.toString());
+
+				retorno = statement.executeUpdate();
+				
+				statement.close();
+
+			}  catch (SQLException sqlEx) {
+				sqlEx.printStackTrace();
+				throw sqlEx;
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				throw ex;
+			}
+			return retorno;
+	}
+	
 	public int attCompraProduto(List<attProdutoDTO> listaDTO) throws ClassNotFoundException, SQLException {
 		int retorno = 0;
         try {
             for (attProdutoDTO att : listaDTO) {
+            	
                 String sql = ("UPDATE Produto set qtd_atual = qtd_atual + " + att.getQtdProduto() + " where cod_produto="
                         + att.getCodProduto());
 

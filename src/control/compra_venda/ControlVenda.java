@@ -72,7 +72,7 @@ public class ControlVenda {
 			List<attProdutoDTO> itensDto = new ArrayList<attProdutoDTO>();
 
 			for (Venda_Item i : venda.getItens()) {
-				attProdutoDTO itemDto = new attProdutoDTO(i.getProduto().getCod(), i.getQtd_item());
+				attProdutoDTO itemDto = new attProdutoDTO(i.getProduto().getCod(),i.getProduto().getDescricao() ,i.getQtd_item());
 				itensDto.add(itemDto);
 			}
 

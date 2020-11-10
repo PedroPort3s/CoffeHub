@@ -2,6 +2,8 @@ package dto;
 
 public class attProdutoDTO {
     private int codProduto;
+    
+    private String nomeProduto;
 
     private double qtdProduto;
 
@@ -10,6 +12,13 @@ public class attProdutoDTO {
         this.codProduto = codProduto;
         this.qtdProduto = qtdProduto;
     }
+    
+    public attProdutoDTO(int codProduto, String nomeProduto, double qtdProduto) {
+		super();
+		this.codProduto = codProduto;
+		this.nomeProduto = nomeProduto;
+		this.qtdProduto = qtdProduto;
+	}
 
     @Override
     public String toString() {
@@ -24,7 +33,17 @@ public class attProdutoDTO {
         this.codProduto = codProduto;
     }
 
-    public double getQtdProduto() {
+    public String getNomeProduto() {
+		return nomeProduto;
+	}
+
+	
+
+	public void setNomeProduto(String nomeProduto) {
+		this.nomeProduto = nomeProduto;
+	}
+
+	public double getQtdProduto() {
         return qtdProduto;
     }
 

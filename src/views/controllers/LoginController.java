@@ -9,6 +9,7 @@ import com.jfoenix.controls.JFXPasswordField;
 import com.jfoenix.controls.JFXTextField;
 
 import control.acesso.ControlAcesso;
+import entitys.Funcionario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -21,102 +22,96 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import utils.Logado;
 
 public class LoginController implements Initializable {
 
 	private static Stage login;
-	
-    @FXML
-    private JFXTextField txtUsuario;
 
-    @FXML
-    private JFXPasswordField txtSenha;
-    
-    @FXML
-    private JFXButton btnSair;
-    
-    @FXML
-    private JFXButton btnAcessar;
-    
+	@FXML
+	private JFXTextField txtUsuario;
+
+	@FXML
+	private JFXPasswordField txtSenha;
+
+	@FXML
+	private JFXButton btnSair;
+
+	@FXML
+	private JFXButton btnAcessar;
+
 	public Stage getlogin() {
-		if (login == null)
-		{
+		if (login == null) {
 			try {
-		    	Stage primaryStage = new Stage();
-				AnchorPane root = (AnchorPane)FXMLLoader.load(getClass().getResource("/views/Login.fxml"));
+				Stage primaryStage = new Stage();
+				AnchorPane root = (AnchorPane) FXMLLoader.load(getClass().getResource("/views/Login.fxml"));
 				Scene scene = new Scene(root);
 				primaryStage.setScene(scene);
 				primaryStage.initStyle(StageStyle.TRANSPARENT);
 				scene.setFill(Color.TRANSPARENT);
 				login = primaryStage;
+			} catch (Exception e) {
+				Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
+				System.out.println("asdasdasd");
+				alert.showAndWait();
 			}
-		  catch(Exception e)
-		  	{
-			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
-			  System.out.println("asdasdasd");
-			  alert.showAndWait();	
-		  	}
 		}
 		return login;
 	}
 
-    @FXML
-    void btnAcessar_Action(ActionEvent event) throws Exception {
-    	
-		int retorno = 0 ;	
+	@FXML
+	void btnAcessar_Action(ActionEvent event) throws Exception {
+
+		int retorno = 0;
 		int cod = 0;
-		try 
-		{	
-			if (txtUsuario.getText().equals("")) 
-			{				
+		try {
+			if (txtUsuario.getText().equals("")) {
 				throw new Exception("Informe o código de acesso");
+			} else {
+				cod = Integer.parseInt(txtUsuario.getText());
 			}
-			else
-			{
-				cod = Integer.parseInt(txtUsuario.getText());				
-			}			
-			retorno = new ControlAcesso().CarregarLogin(cod, txtSenha.getText());
-			if (retorno == 1)
-			{
-				try 
-				{
+
+			Funcionario funcionario = new ControlAcesso().CarregarLogin(cod, txtSenha.getText());
+			
+			if (funcionario != null) {
+				try {
+					Logado.Funcionario = funcionario;
+					
 					login.close();
 					login = null;
 					new HomeController().getHome().show();
-				} 			  
-		  catch(Exception e)
-		  	{
-			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
-			  alert.showAndWait();	
-		  	}
-		}
-	} 
-		catch (Exception e) 
-		{
-    		Alert alert = new Alert(AlertType.WARNING);
+				} catch (Exception e) {
+					Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
+					alert.showAndWait();
+				}
+			}
+			else {
+				throw new Exception("Erro ao efetuar o login");
+			}
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.WARNING);
 
-            alert.setTitle("Atenção");
-            alert.setHeaderText(e.getMessage());
-            
-            alert.showAndWait();
-            
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+
+			alert.showAndWait();
+
 		}
 	}
-    
 
+	@FXML
+	void btnSair_Action(ActionEvent event) {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
 
-    @FXML
-    void btnSair_Action(ActionEvent event) {
-    	Alert alert = new Alert(AlertType.CONFIRMATION);
-    	
-    	alert.setTitle("Sair");
-    	alert.setHeaderText("Deseja realmente sair?");  	
-    	
-    	Optional<ButtonType> result = alert.showAndWait();
-    	 if (result.isPresent() && result.get() == ButtonType.OK) {
-    	     System.exit(0);
-    	 }  
-    }
+		alert.setTitle("Sair");
+		alert.setHeaderText("Deseja realmente sair?");
+
+		Optional<ButtonType> result = alert.showAndWait();
+		if (result.isPresent() && result.get() == ButtonType.OK) {
+			Logado.Funcionario = null;
+			System.exit(0);
+		}
+	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {

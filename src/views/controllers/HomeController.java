@@ -22,6 +22,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import utils.Logado;
 import views.controllers.cliente.PesquisaClienteController;
 import views.controllers.fornecedor.PesquisaFornecedorController;
 
@@ -31,8 +32,6 @@ import views.controllers.funcionario.PesquisaFuncionarioController;
 public class HomeController implements Initializable{
 
 	private static Stage Home;
-	
-	public static Funcionario FuncionarioEstatico = new Funcionario();	
 	
     @FXML
     private Button btnOverview;
@@ -175,6 +174,7 @@ public class HomeController implements Initializable{
     	
     	Optional<ButtonType> result = alert.showAndWait();
     	 if (result.isPresent() && result.get() == ButtonType.OK) {
+    		 Logado.Funcionario = null;
     	     System.exit(0);
     	 }  
     }

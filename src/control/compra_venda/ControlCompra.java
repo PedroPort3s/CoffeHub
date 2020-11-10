@@ -49,51 +49,92 @@ public class ControlCompra {
 		return retorno;
 	}
 
-public int Finalizar(Compra compra) throws Exception {
-		
+	public int Finalizar(Compra compra) throws Exception {
+
 		int retorno = 0;
-	
-		try  {
-			
+
+		try {
+
 			Compra.ValidarCompraCod(compra);
 			conexao = ConexaoMySql.getInstance().getConnection();
 			conexao.setAutoCommit(false);
-			
+
 			CompraDAO compraDAO = new CompraDAO(conexao);
-			
-			if(!compraDAO.Carregar(compra.getCod()).getStatus().equals("A")) 
+
+			if (!compraDAO.Carregar(compra.getCod()).getStatus().equals("A"))
 				throw new Exception("Não é possível finalizar uma compra que não está aberta.");
-			
-			if(compra.getItens().size() <= 0) throw new Exception("Não é possivel finalizar uma compra que não possui itens");
-			
+
+			if (compra.getItens().size() <= 0)
+				throw new Exception("Não é possivel finalizar uma compra que não possui itens");
+
 			List<attProdutoDTO> itensDto = new ArrayList<attProdutoDTO>();
-			
-			for(Compra_Item i : compra.getItens())
-			{
-				attProdutoDTO itemDto = new attProdutoDTO(i.getProduto().getCod(), i.getQtd_item());	
+
+			for (Compra_Item i : compra.getItens()) {
+				attProdutoDTO itemDto = new attProdutoDTO(i.getProduto().getCod(), i.getQtd_item());
 				itensDto.add(itemDto);
-			}	
-			
-			if(new CompraDAO(conexao).attCompraProduto(itensDto) != 1)
+			}
+
+			if (new CompraDAO(conexao).attCompraProduto(itensDto) != 1)
 				throw new Exception("Não foi possivel atualizar o estoque dos itens para prosseguir");
-			
+
 			retorno = compraDAO.Finalizar(compra);
-				
-			if(retorno != 1) throw new Exception("Erro ao finalizar a compra.");
-				
+
+			if (retorno != 1)
+				throw new Exception("Erro ao finalizar a compra.");
+
 			conexao.commit();
 			conexao.close();
-		}
-		catch(SQLException ex){
-			if(conexao != null) conexao.rollback();
-			
+		} catch (SQLException ex) {
+			if (conexao != null)
+				conexao.rollback();
+
 			throw ex;
-		}
-		catch(Exception e) {
-			if(conexao != null) conexao.rollback();
+		} catch (Exception e) {
+			if (conexao != null)
+				conexao.rollback();
 			throw e;
 		}
-		
+
+		return retorno;
+	}
+	
+	public int Enviar(Compra compra) throws Exception {
+
+		int retorno = 0;
+
+		try {
+
+			Compra.ValidarCompraCod(compra);
+			
+			if (compra.getItens().size() <= 0)
+				throw new Exception("Não é possivel enviar uma compra que não possui itens");	
+			
+			conexao = ConexaoMySql.getInstance().getConnection();
+			conexao.setAutoCommit(false);
+
+			CompraDAO compraDAO = new CompraDAO(conexao);
+			
+			if (!compraDAO.Carregar(compra.getCod()).getStatus().equals("A"))
+				throw new Exception("Não é possível enviar uma compra que não está aberta.");					
+
+			retorno = compraDAO.Enviar(compra);
+
+			if (retorno != 1)
+				throw new Exception("Erro ao enviar a compra.");
+
+			conexao.commit();
+			conexao.close();
+		} catch (SQLException ex) {
+			if (conexao != null)
+				conexao.rollback();
+
+			throw ex;
+		} catch (Exception e) {
+			if (conexao != null)
+				conexao.rollback();
+			throw e;
+		}
+
 		return retorno;
 	}
 	

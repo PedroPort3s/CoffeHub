@@ -96,7 +96,7 @@ public class VendaDAO implements ICompraVenda<Venda> {
 			StringBuilder sql = new StringBuilder();
 			sql.append("UPDATE venda SET");
 			sql.append(" valor_total = " + venda.TotalVenda() + ",");
-			sql.append(" cod_Fornecedor = " +venda.getCliente().getCod());
+			sql.append(" cod_Cliente = " +venda.getCliente().getCod());
 			sql.append(" WHERE cod = " + venda.getCod());
 
 			PreparedStatement statement = conexao.prepareStatement(sql.toString());
@@ -405,10 +405,24 @@ public class VendaDAO implements ICompraVenda<Venda> {
 			return retorno;
 	}	
 	
-	public int attVendaProduto(List<attProdutoDTO> listaDTO) throws SQLException {
+	public int attVendaProduto(List<attProdutoDTO> listaDTO) throws Exception {
 		int retorno = 0;
         try {
             for (attProdutoDTO att : listaDTO) {
+            	String sqlQtdAtual = "select qtd_atual from produto where cod_produto="+att.getQtdProduto();
+            	PreparedStatement qtdAtual = conexao.prepareStatement(sqlQtdAtual);
+            	
+            	ResultSet resultSet = qtdAtual.executeQuery();
+				
+				while(resultSet.next()) {
+					
+					double qtd = resultSet.getDouble("qtd_atual");
+					
+					if ((qtd - att.getQtdProduto()) < 0) {
+						throw new Exception("Produto:"+ att.getCodProduto() + " - " + att.getNomeProduto() + " quantidade no estoque:" + qtd +" quantidade da venda: "+att.getQtdProduto()+". Quantidade de venda incompatível com o estoque.");
+					}
+				}
+            	
                 String sql = ("UPDATE Produto set qtd_atual = qtd_atual - " + att.getQtdProduto() + " where cod_produto="
                         + att.getCodProduto());
 
