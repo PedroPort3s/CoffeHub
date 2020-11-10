@@ -11,13 +11,9 @@ import java.util.List;
 
 import Helper.db;
 import dao.ClienteDAO;
-import dao.FornecedorDAO;
 import dao.FuncionarioDAO;
-import dao.compra.Compra_ItemDAO;
 import dao.interfaces.ICompraVenda;
-import dao.interfaces.IPadraoDB;
 import dto.attProdutoDTO;
-import entitys.Compra;
 import entitys.Venda;
 
 public class VendaDAO implements ICompraVenda<Venda> {
@@ -40,7 +36,7 @@ public class VendaDAO implements ICompraVenda<Venda> {
 		
 		try {
 			
-			String sql = "INSERT INTO compra(cod, data_origem, data_recebido, valor_total, status, cod_Fornecedor, cod_Funcionario) VALUES (?,?,?,?,?,?,?)";
+			String sql = "INSERT INTO venda(cod, data_origem, data_confirmacao, valor_total, status, cod_Cliente, cod_Funcionario) VALUES (?,?,?,?,?,?,?)";
 
 			PreparedStatement statement = conexao.prepareStatement(sql);
 			retorno = this.ProximoCodVenda();

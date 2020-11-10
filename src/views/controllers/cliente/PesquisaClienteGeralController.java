@@ -1,38 +1,29 @@
 package views.controllers.cliente;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXListView;
-import com.jfoenix.controls.JFXTextField;
-import com.sun.istack.internal.Nullable;
-
-import control.produto.ControlCategoria;
-import control.produto.ControlProduto;
-import dao.ClienteDAO;
-import entitys.Categoria;
-import entitys.Cliente;
-import entitys.Produto;
-
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXListView;
+import com.jfoenix.controls.JFXTextField;
+
+import dao.ClienteDAO;
+import entitys.Cliente;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
-import views.controllers.HomeController;
+import views.controllers.CadVendaController;
 
 public class PesquisaClienteGeralController {
 
@@ -86,10 +77,6 @@ public class PesquisaClienteGeralController {
 		return pesquisaCliente;
 	}
     
-    private void fechar() {
-    	//TODO qual vai ser a ação ao fechar
-    }
-
     @FXML
     void btnPesquisar_Action(ActionEvent event) {
     	listarClientes();
@@ -97,7 +84,27 @@ public class PesquisaClienteGeralController {
 
     @FXML
     void lvCliente_MouseClicked(MouseEvent event) {
-    	//TODO colocar a ação quando clicado no cliente
+    	try 
+    	{
+    		Cliente cliente = lvClientes.getSelectionModel().getSelectedItem();
+    		if (cliente != null)
+    		{
+    			CadVendaController.ClienteEstatico = null;
+    			CadVendaController.ClienteEstatico  = cliente;
+				new CadVendaController().getCadVenda().show();
+				pesquisaCliente.close();
+				pesquisaCliente = null;
+			}
+		}
+    	catch (Exception e) 
+    	{
+    		Alert alert = new Alert(AlertType.WARNING);
+
+            alert.setTitle("Atenção");
+            alert.setHeaderText(e.getMessage());
+            
+            alert.showAndWait();
+         }
     }
 
     private void listarClientes() {

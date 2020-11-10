@@ -91,9 +91,11 @@ public class Venda {
 			if (venda.getFuncionario().getCod() <= 0)
 				throw new Exception("Informe um funcionario valido.");
 		}
-		if (venda.getItens().size() == 0)
+		if (venda.getItens() != null) {
+			if(venda.getItens().size() == 0)
 			throw new Exception("Esta venda não possui itens");
-		else {
+		}
+			else {
 			Venda_Item.ValidarVendaItens(venda.getItens());
 		}
 	}
@@ -112,9 +114,12 @@ public class Venda {
 			if (venda.getFuncionario().getCod() <= 0)
 				throw new Exception("Informe um funcionario valido.");
 		}
-		if (venda.getItens().size() == 0)
+		if (venda.getItens() != null) {
+			if(venda.getItens().size() == 0)
 			throw new Exception("Informe pelo menos 1 item para prosseguir com esta venda.");
-	}
+
+		}
+}
 
 	public double TotalVenda() {
 		double retorno = 0;
@@ -125,4 +130,12 @@ public class Venda {
 		}
 		return retorno;
 	}
+
+	@Override
+	public String toString() {
+		return "Cod: " + cod + " - data origem: " +  data_origem + " - data confirmação: " + data_confirmacao
+				+ " - status: " + status + " - funcionario: " + funcionario + " - cliente: " + cliente  + "" ;
+	}
+	
+	
 }

@@ -186,7 +186,7 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 
 	@Override
 	public Funcionario buscarId(Integer id) {
-		Funcionario funcionario = new Funcionario();
+		Funcionario funcionario = null;
 		String sql = "SELECT * FROM " + EnumPessoa.pessoa + " p " + "inner join " + EnumFuncionario.funcionario + " f "
 				+ "on p." + EnumPessoa.cod + "=f." + EnumFuncionario.cod_pessoa + " WHERE p." + EnumPessoa.cod + " = ?";
 
@@ -197,7 +197,8 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 			ResultSet resultSet = statement.executeQuery();
 
 			if (resultSet.next()) {
-				if (resultSet.getDate(EnumFuncionario.data_demissao.name()).toLocalDate() == null) {
+				if (resultSet.getDate(EnumFuncionario.data_demissao.name())
+						== null) {
 					funcionario = new Funcionario(
 							resultSet.getDate(EnumFuncionario.data_contratacao.name()).toLocalDate(), null,
 							resultSet.getDouble(EnumFuncionario.salario.name()),
