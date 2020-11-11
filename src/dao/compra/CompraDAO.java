@@ -10,8 +10,11 @@ import java.util.Date;
 import java.util.List;
 
 import dao.FornecedorDAO;
+import dao.ProdutoDAO;
 import dao.interfaces.ICompraVenda;
+import dto.attProdutoDTO;
 import entitys.Compra;
+import entitys.Compra_Item;
 
 
 public class CompraDAO implements ICompraVenda<Compra>{
@@ -421,4 +424,34 @@ public class CompraDAO implements ICompraVenda<Compra>{
 			}
 			return retorno;
 	}	
+	
+	public int atualizarItens(Compra compra) {
+		
+		ProdutoDAO daoProduto = new ProdutoDAO(conexao);
+		ArrayList<attProdutoDTO> list = new ArrayList<attProdutoDTO>();
+		
+		
+		for(Compra_Item ci : compra.getItens()) {
+			list.add(new attProdutoDTO(ci.getProduto().getCod(), ci.getQtd_item()));
+		}
+		
+		
+		return 1;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
