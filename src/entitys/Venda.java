@@ -90,8 +90,8 @@ public class Venda {
 		if (venda.getFuncionario() != null) {
 			if (venda.getFuncionario().getCod() <= 0)
 				throw new Exception("Informe um funcionario valido.");
-		}		
-		if(venda.getItens() != null && venda.getItens().size() > 0)
+		}
+		if (venda.getItens() != null && venda.getItens().size() > 0)
 			Venda_Item.ValidarVendaItens(venda.getItens());
 	}
 
@@ -110,17 +110,17 @@ public class Venda {
 				throw new Exception("Informe um funcionario valido.");
 		}
 		if (venda.getItens() != null) {
-			if(venda.getItens().size() == 0)
-			throw new Exception("Informe pelo menos 1 item para prosseguir com esta venda.");
+			if (venda.getItens().size() == 0)
+				throw new Exception("Informe pelo menos 1 item para prosseguir com esta venda.");
 
 		}
-}
+	}
 
 	public double TotalVenda() {
 		double retorno = 0;
 		if (this.itens != null && this.itens.size() > 0) {
 			for (Venda_Item i : itens) {
-				retorno += i.getValor_venda();
+				retorno += (i.getValor_venda() * i.getQtd_item());
 			}
 		}
 		return retorno;
@@ -128,9 +128,8 @@ public class Venda {
 
 	@Override
 	public String toString() {
-		return "Cod: " + cod + " - data origem: " +  data_origem + " - data confirmação: " + data_confirmacao
-				+ " - status: " + status + " - funcionario: " + funcionario + " - cliente: " + cliente  + "" ;
+		return "Cod: " + cod + " - data origem: " + data_origem + " - data confirmação: " + data_confirmacao
+				+ " - status: " + status + " - funcionario: " + funcionario + " - cliente: " + cliente + "";
 	}
-	
-	
+
 }

@@ -199,25 +199,25 @@ public class CadCompraController implements Initializable {
 			Alert ConfirmaRemover = new Alert(AlertType.CONFIRMATION);
 
 			ConfirmaRemover.setTitle("Finalizar");
-			ConfirmaRemover.setHeaderText("Deseja realmente finalizar esta venda?");
+			ConfirmaRemover.setHeaderText("Deseja realmente finalizar esta compra?");
 
 			Optional<ButtonType> result = ConfirmaRemover.showAndWait();
 			if (result.isPresent() && result.get() == ButtonType.OK) {
 				if (txtCodCompra.getText().equals("") == false) {
 					Compra compraFinalizar = new ControlCompra().Carregar(Integer.parseInt(txtCodCompra.getText()));
 
-					if (compraFinalizar != null) {						
+					if (compraFinalizar != null) {
 						if (new ControlCompra().Finalizar(compraFinalizar) == 1) {
-								Limpar();
-								Alert alert = new Alert(AlertType.INFORMATION);
+							Limpar();
+							Alert alert = new Alert(AlertType.INFORMATION);
 
-								alert.setTitle("Atenção");
-								alert.setHeaderText("Compra Finalizada com sucesso");
+							alert.setTitle("Atenção");
+							alert.setHeaderText("Compra finalizada com sucesso");
 
-								alert.showAndWait();
-							} else {
-								throw new Exception("Não foi possivel finalizar a compra");
-							}		
+							alert.showAndWait();
+						} else {
+							throw new Exception("Não foi possivel finalizar a compra");
+						}
 					}
 				}
 			}
@@ -492,8 +492,7 @@ public class CadCompraController implements Initializable {
 					btnLimparProduto.setVisible(false);
 					btnEditar.setVisible(false);
 					btnAlterarQtd.setVisible(false);
-				}
-				else {
+				} else {
 					btnEditar.setVisible(true);
 					btnAlterarQtd.setVisible(true);
 				}
