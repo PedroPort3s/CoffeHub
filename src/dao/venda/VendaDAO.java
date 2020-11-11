@@ -405,7 +405,7 @@ public class VendaDAO implements ICompraVenda<Venda> {
 		int retorno = 0;
         try {
             for (attProdutoDTO att : listaDTO) {
-            	String sqlQtdAtual = "select qtd_atual from produto where cod_produto="+att.getQtdProduto();
+            	String sqlQtdAtual = "select qtd_atual from produto where cod_produto="+att.getCodProduto();
             	PreparedStatement qtdAtual = conexao.prepareStatement(sqlQtdAtual);
             	
             	ResultSet resultSet = qtdAtual.executeQuery();

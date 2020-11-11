@@ -109,6 +109,9 @@ public class CadVendaController implements Initializable {
 	@FXML
 	private JFXButton btnLimparCliente;
 
+	@FXML
+	private JFXTextField txtQtdProxProduto;
+
 	public Stage getCadVenda() {
 		if (CadVenda == null) {
 			try {
@@ -127,7 +130,7 @@ public class CadVendaController implements Initializable {
 		return CadVenda;
 	}
 
-	@FXML 
+	@FXML
 	void btnAddProduto_Action(ActionEvent event) {
 		try {
 			if (!txtCodProduto.getText().equals("")) {
@@ -137,11 +140,13 @@ public class CadVendaController implements Initializable {
 					Venda_Item item = new Venda_Item();
 					item.setProduto(produtoCarregado);
 
-					if (QtdProximoProduto >= 1)
+					if (QtdProximoProduto >= 1) {
 						item.setQtd_item(QtdProximoProduto);
-					else
+						txtQtdProxProduto.setText(QtdProximoProduto + "");
+					} else {
 						item.setQtd_item(QtdProximoProduto = 1);
-
+						txtQtdProxProduto.setText(QtdProximoProduto + "");
+					}
 					item.setValor_venda(produtoCarregado.getValor_un());
 
 					if (VendaPrivate == null || VendaPrivate.getCod() == 0) {
@@ -170,6 +175,7 @@ public class CadVendaController implements Initializable {
 						txtCodProduto.setText("");
 						txtProduto.setText("");
 						QtdProximoProduto = 1;
+						txtQtdProxProduto.setText(QtdProximoProduto + "");
 						CarregarVenda(VendaPrivate);
 					}
 				}
@@ -242,9 +248,9 @@ public class CadVendaController implements Initializable {
 		txtStatus.setText("");
 
 		btnEditar.setVisible(false);
-		
+
 		lvProdutos.getItems().clear();
-		
+
 		lblValorTotal.setVisible(false);
 	}
 
@@ -354,6 +360,7 @@ public class CadVendaController implements Initializable {
 
 			if (Integer.parseInt(quantidadeString) > 0) {
 				QtdProximoProduto = Integer.parseInt(quantidadeString);
+				txtQtdProxProduto.setText(QtdProximoProduto + "");
 				textDialog.close();
 			}
 		} catch (Exception e) {
@@ -366,9 +373,48 @@ public class CadVendaController implements Initializable {
 		}
 	}
 
+	void Editar(Venda venda) {
+		try {
+			if (Integer.parseInt(txtCodCliente.getText()) != venda.getCliente().getCod()) {
+				Cliente clienteAlterado = new ClienteDAO().buscarId(Integer.parseInt(txtCodCliente.getText()));
+				if (clienteAlterado != null && clienteAlterado.getCod() > 0) {
+					venda.setCliente(clienteAlterado);
+					if (new ControlVenda().Editar(venda) == 1) {
+						CarregarVenda(venda);
+						Alert alert = new Alert(AlertType.INFORMATION);
+
+						alert.setTitle("Atenção");
+						alert.setHeaderText("Venda editada com sucesso");
+
+						alert.showAndWait();
+					}
+				}
+			}
+
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.WARNING);
+
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+
+			alert.showAndWait();
+		}
+	}
+
 	@FXML
 	void btnEditar_Action(ActionEvent event) {
+		try {
+			if (VendaPrivate != null && VendaPrivate.getCod() > 0)
+				this.Editar(VendaPrivate);
 
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.WARNING);
+
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+
+			alert.showAndWait();
+		}
 	}
 
 	void CarregarCliente(Cliente cliente) {
@@ -394,7 +440,7 @@ public class CadVendaController implements Initializable {
 	void CarregarVenda(Venda venda) {
 		try {
 			if (venda != null) {
-				
+
 				if (venda.getCod() > 0) {
 					venda = new ControlVenda().Carregar(venda.getCod());
 
