@@ -109,6 +109,9 @@ public class CadVendaController implements Initializable {
 	@FXML
 	private JFXButton btnLimparCliente;
 
+	@FXML
+	private JFXTextField txtQtdProxProduto;
+
 	public Stage getCadVenda() {
 		if (CadVenda == null) {
 			try {
@@ -137,11 +140,13 @@ public class CadVendaController implements Initializable {
 					Venda_Item item = new Venda_Item();
 					item.setProduto(produtoCarregado);
 
-					if (QtdProximoProduto >= 1)
+					if (QtdProximoProduto >= 1) {
 						item.setQtd_item(QtdProximoProduto);
-					else
+						txtQtdProxProduto.setText(QtdProximoProduto + "");
+					} else {
 						item.setQtd_item(QtdProximoProduto = 1);
-
+						txtQtdProxProduto.setText(QtdProximoProduto + "");
+					}
 					item.setValor_venda(produtoCarregado.getValor_un());
 
 					if (VendaPrivate == null || VendaPrivate.getCod() == 0) {
@@ -170,6 +175,7 @@ public class CadVendaController implements Initializable {
 						txtCodProduto.setText("");
 						txtProduto.setText("");
 						QtdProximoProduto = 1;
+						txtQtdProxProduto.setText(QtdProximoProduto + "");
 						CarregarVenda(VendaPrivate);
 					}
 				}
@@ -354,6 +360,7 @@ public class CadVendaController implements Initializable {
 
 			if (Integer.parseInt(quantidadeString) > 0) {
 				QtdProximoProduto = Integer.parseInt(quantidadeString);
+				txtQtdProxProduto.setText(QtdProximoProduto + "");
 				textDialog.close();
 			}
 		} catch (Exception e) {

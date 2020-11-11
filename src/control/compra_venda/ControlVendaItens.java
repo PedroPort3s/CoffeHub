@@ -65,7 +65,7 @@ public class ControlVendaItens {
 			Venda.ValidarVendaCod(venda);
 			Venda_Item.ValidarVendaItem(item);
 
-			if(venda.getStatus() == "F") {
+			if(venda.getStatus().equals("F")) {
 				throw new Exception("Não é possivel remover um item de uma venda finalizada");
 			}
 			

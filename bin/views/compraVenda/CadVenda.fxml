@@ -17,21 +17,22 @@
       <JFXTextField fx:id="txtCodVenda" disable="true" editable="false" focusColor="#2e1d04" labelFloat="true" layoutX="14.0" layoutY="53.0" prefHeight="40.0" prefWidth="357.0" promptText="Código" unFocusColor="BLACK" />
       <JFXTextField fx:id="txtProduto" disable="true" focusColor="#2e1d04" labelFloat="true" layoutX="58.0" layoutY="200.0" prefHeight="40.0" prefWidth="307.0" promptText="Produto" unFocusColor="BLACK" />
       <JFXListView fx:id="lvProdutos" layoutX="19.0" layoutY="272.0" onMouseClicked="#lvProdutos_MouseClicked" prefHeight="221.0" prefWidth="761.0" />
-      <JFXButton fx:id="btnAddProduto" buttonType="RAISED" layoutX="484.0" layoutY="220.0" onAction="#btnAddProduto_Action" prefHeight="16.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Adicionar" textFill="WHITE" />
+      <JFXButton fx:id="btnAddProduto" buttonType="RAISED" layoutX="524.0" layoutY="220.0" onAction="#btnAddProduto_Action" prefHeight="16.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Adicionar" textFill="WHITE" />
       <JFXTextField fx:id="txtStatus" disable="true" focusColor="#2e1d04" labelFloat="true" layoutX="531.0" layoutY="53.0" prefHeight="40.0" prefWidth="241.0" promptText="Status" unFocusColor="BLACK" />
       <JFXButton fx:id="btnFinalizar" buttonType="RAISED" layoutX="473.0" layoutY="506.0" onAction="#btnFinalizar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Finalizar" textFill="WHITE" />
-      <Label fx:id="lblValorTotal" ellipsisString="" layoutX="602.0" layoutY="206.0" prefHeight="40.0" prefWidth="165.0" textFill="#0015ff">
+      <Label fx:id="lblValorTotal" ellipsisString="" layoutX="621.0" layoutY="206.0" prefHeight="40.0" prefWidth="165.0" textFill="#0015ff">
          <font>
             <Font size="16.0" />
          </font>
       </Label>
-      <JFXButton fx:id="btnBuscarProduto" buttonType="RAISED" layoutX="387.0" layoutY="220.0" onAction="#btnBuscarProduto_Action" prefHeight="25.0" prefWidth="32.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="+" textFill="WHITE" />
-      <JFXButton fx:id="btnLimparProduto" buttonType="RAISED" layoutX="427.0" layoutY="220.0" onAction="#btnLimparProduto_Action" prefHeight="25.0" prefWidth="32.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="x" textFill="WHITE" />
+      <JFXButton fx:id="btnBuscarProduto" buttonType="RAISED" layoutX="444.0" layoutY="220.0" onAction="#btnBuscarProduto_Action" prefHeight="25.0" prefWidth="32.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="+" textFill="WHITE" />
+      <JFXButton fx:id="btnLimparProduto" buttonType="RAISED" layoutX="484.0" layoutY="220.0" onAction="#btnLimparProduto_Action" prefHeight="25.0" prefWidth="32.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="x" textFill="WHITE" />
       <JFXTextField fx:id="txtCodProduto" disable="true" focusColor="#2e1d04" labelFloat="true" layoutX="8.0" layoutY="201.0" prefHeight="40.0" prefWidth="43.0" promptText="Cód." unFocusColor="BLACK" />
       <JFXButton fx:id="btnAlterarQtd" buttonType="RAISED" layoutX="131.0" layoutY="506.0" onAction="#btnAlterarQtd_Action" prefHeight="40.0" prefWidth="109.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Alterar Qtd." textFill="WHITE" />
       <JFXButton fx:id="btnEditar" buttonType="RAISED" layoutX="19.0" layoutY="506.0" onAction="#btnEditar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Editar" textFill="WHITE" visible="false" />
       <JFXTextField fx:id="txtCodCliente" disable="true" focusColor="#2e1d04" labelFloat="true" layoutX="8.0" layoutY="129.0" prefHeight="40.0" prefWidth="43.0" promptText="Cód." unFocusColor="BLACK" />
       <JFXButton fx:id="btnBuscarCliente" buttonType="RAISED" layoutX="391.0" layoutY="149.0" onAction="#btnBuscarCliente_Action" prefHeight="25.0" prefWidth="32.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="+" textFill="WHITE" />
       <JFXButton fx:id="btnLimparCliente" buttonType="RAISED" layoutX="431.0" layoutY="149.0" onAction="#btnLimparCliente_Action" prefHeight="25.0" prefWidth="32.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="x" textFill="WHITE" />
+      <JFXTextField fx:id="txtQtdProxProduto" disable="true" focusColor="#2e1d04" labelFloat="true" layoutX="370.0" layoutY="200.0" prefHeight="40.0" prefWidth="59.0" promptText="Qtd" unFocusColor="BLACK" />
    </children>
 </AnchorPane>
