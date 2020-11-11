@@ -332,6 +332,7 @@ public class VendaDAO implements ICompraVenda<Venda> {
 			double retorno = 0;
 			
 			try {
+				
 				String sum = "select sum(valor_total) as 'totalVendas' from venda where data_recebido='"+ new SimpleDateFormat("yyyy-MM-dd HH:mm:ss").format(data) +"' and status='F' ";
 				PreparedStatement statement = conexao.prepareStatement(sum);
 				ResultSet resultSet;

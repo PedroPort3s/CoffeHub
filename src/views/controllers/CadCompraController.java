@@ -423,9 +423,7 @@ public class CadCompraController implements Initializable {
 			} else {
 				throw new Exception("Não foi possivel carregar o produto selecionado");
 			}
-		}
-
-		catch (Exception e) {
+		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);
 
 			alert.setTitle("Atenção");

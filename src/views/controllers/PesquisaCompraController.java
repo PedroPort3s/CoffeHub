@@ -26,6 +26,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import utils.Verifica;
 
 public class PesquisaCompraController implements Initializable{
 	
@@ -216,8 +217,13 @@ public class PesquisaCompraController implements Initializable{
     			Date dataIni = new SimpleDateFormat("dd/MM/yyyy").parse(dataInit);   
     			
     			String dataFim = txtDataFinal.getText();
-    			Date dataFinal = new SimpleDateFormat("dd/MM/yyyy").parse(dataFim); 
-    			lstCompras = new ControlCompra().Listar(dataIni, dataFinal, txtStatus.getText());
+    			Date dataFinal = new SimpleDateFormat("dd/MM/yyyy").parse(dataFim);
+    			
+    			int codFuncionario = Verifica.ehNumeroInt(txtCodFuncionario.getText()) == true ? Integer.parseInt(txtCodFuncionario.getText()) : 0;
+    			
+    			int codFornecedor = Verifica.ehNumeroInt(txtCodFornecedor.getText()) == true ? Integer.parseInt(txtCodFornecedor.getText()) : 0;
+    			
+    			lstCompras = new ControlCompra().Listar(dataIni, dataFinal, txtStatus.getText(), codFuncionario, codFornecedor);
     			
     			if(lstCompras != null) 
     				lstCompras.forEach(c -> lvCompras.getItems().add(c));    		
