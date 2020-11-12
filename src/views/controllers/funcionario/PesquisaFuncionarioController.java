@@ -5,12 +5,13 @@ import java.net.URL;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
-import com.sun.deploy.uitoolkit.impl.fx.ui.FXConsole;
+import utils.GenericTableButton;
 
 import dao.FuncionarioDAO;
 import entitys.Funcionario;
@@ -75,9 +76,42 @@ public class PesquisaFuncionarioController {
 
 	@FXML
 	private TableColumn<Funcionario, Integer> cAcesso;
+
+	@FXML
+	private TableColumn<Funcionario, Funcionario> cEditar;
+
+	@FXML
+	private TableColumn<Funcionario, Funcionario> cExcluir;
+
 	// -------------------------------------------------------------------
 
-	// LISTAR FUNCIONARIOS
+	@FXML
+	private ResourceBundle resources;
+
+	@FXML
+	private URL location;
+
+	@FXML
+	private JFXTextField txtCodPesquisa;
+
+	@FXML
+	private JFXTextField txtNomePesquisa;
+
+	@FXML
+	private JFXButton btnPesquisar;
+
+	@FXML
+	private JFXButton btnCadFuncionario;
+
+	@FXML
+	private JFXButton btnVoltar;
+
+	@FXML
+	private JFXListView<Funcionario> lvFuncionarios;
+
+	// ÍCONES SVG (EDITAR e EXCLUIR)
+	public static final String PEN_SOLID = "M290.74 93.24l128.02 128.02-277.99 277.99-114.14 12.6C11.35 513.54-1.56 500.62.14 485.34l12.7-114.22 277.9-277.88zm207.2-19.06l-60.11-60.11c-18.75-18.75-49.16-18.75-67.91 0l-56.55 56.55 128.02 128.02 56.55-56.55c18.75-18.76 18.75-49.16 0-67.91z";
+	public static final String TRASH_SOLID = "M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z";
 
 	private void listarFuncionarios() {
 		ObservableList<Funcionario> listFunc;
@@ -99,6 +133,51 @@ public class PesquisaFuncionarioController {
 			cAcesso.setCellValueFactory(new PropertyValueFactory<Funcionario, Integer>("cod_acesso"));
 
 			tableView.setItems(listFunc);
+
+			GenericTableButton.initButtons(cEditar, 15, PEN_SOLID, "svg-gray",
+					(Funcionario funcionario, ActionEvent event) -> {
+												
+						try {
+							if (funcionario != null) {
+								CadFuncionarioController.funcionarioStatic = funcionario;
+								fechar();
+								new CadFuncionarioController().getCadFuncionario().show();
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+							Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
+							alert.showAndWait();
+						}
+					});
+
+			GenericTableButton.initButtons(cExcluir, 15, TRASH_SOLID, "svg-red",
+					(Funcionario funcionario, ActionEvent event) -> {
+						try {
+							Alert alert = new Alert(AlertType.CONFIRMATION);
+
+							alert.setTitle("Excluir Funcionario");
+							alert.setHeaderText(
+									" Caso o funcionário seja excluído seus dados serão perdidos permanentemente! \n Se deseja editar ou demitir funcionário vá para guia de edição.");
+							Optional<ButtonType> result = alert.showAndWait();
+							if (result.isPresent() && result.get() == ButtonType.OK) {
+								if (funcionario != null) {
+
+//									CadFuncionarioController.funcionarioStatic = funcionario;
+									dao.deletar(funcionario.getCod());
+
+									ObservableList<Funcionario> listFuncUp;
+									listFuncUp = FXCollections.observableArrayList(dao.listar());
+									tableView.setItems(listFuncUp);
+									funcionario = null;
+								}
+							}
+						} catch (Exception e) {
+							Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
+							alert.setHeaderText("Atenção");
+							alert.showAndWait();
+						}
+
+					});
 
 			if (listFunc != null) {
 				if (txtCodPesquisa != null && conferirNumero(txtCodPesquisa.getText(), "Insira um número")) {
@@ -131,39 +210,6 @@ public class PesquisaFuncionarioController {
 
 	}
 
-//  private void listarFuncionarios() {
-//	List<Funcionario> lstFuncionarios;
-//	lvFuncionarios.getItems().clear();
-//	
-//	try {
-//		lstFuncionarios = dao.listar();
-//		if (lstFuncionarios != null) {
-//			if (txtCodPesquisa != null && conferirNumero(txtCodPesquisa.getText(), "Insira um número")) {
-//				List<Funcionario> listaCod = new ArrayList<Funcionario>();
-//				for (Funcionario f : lstFuncionarios) {
-//					if ((f.getCod() == Integer.parseInt(txtCodPesquisa.getText()))) {
-//						listaCod.add(f);
-//					}
-//				}
-//				lstFuncionarios = listaCod;
-//			}
-//			if (txtNomePesquisa != null) {
-//				List<Funcionario> listaNome = new ArrayList<Funcionario>();
-//				for (Funcionario f : lstFuncionarios) {
-//					if (f.getNome().matches(".*" + txtNomePesquisa.getText() + ".*")) {
-//						listaNome.add(f);
-//					}
-//				}
-//				lstFuncionarios = listaNome;
-//			}
-//			lstFuncionarios.forEach(f -> lvFuncionarios.getItems().add(f));
-//		}
-//	} catch (Exception e) {
-//		Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
-//		alert.showAndWait();
-//	}
-//}
-//
 	private Boolean conferirNumero(String texto, String msg) {
 		try {
 			if (!texto.equals("")) {
@@ -175,48 +221,6 @@ public class PesquisaFuncionarioController {
 			throw new NumberFormatException(msg);
 		}
 		return true;
-	}
-
-	// -------------------------------------------------------------------
-
-	@FXML
-	private ResourceBundle resources;
-
-	@FXML
-	private URL location;
-
-	@FXML
-	private JFXTextField txtCodPesquisa;
-
-	@FXML
-	private JFXTextField txtNomePesquisa;
-
-	@FXML
-	private JFXButton btnPesquisar;
-
-	@FXML
-	private JFXButton btnCadFuncionario;
-
-	@FXML
-	private JFXButton btnVoltar;
-
-	@FXML
-	private JFXListView<Funcionario> lvFuncionarios;
-
-	@FXML
-	void lvFuncionario_MouseClicked(MouseEvent event) {
-		try {
-			Funcionario funcionario = lvFuncionarios.getSelectionModel().getSelectedItem();
-			if (funcionario != null) {
-				CadFuncionarioController.funcionarioStatic = funcionario;
-				fechar();
-				new CadFuncionarioController().getCadFuncionario().show();
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
-			alert.showAndWait();
-		}
 	}
 
 	public Stage getPesquisaFuncionario() {
@@ -277,4 +281,11 @@ public class PesquisaFuncionarioController {
 
 		listarFuncionarios();
 	}
+
+	// DEPRECATED (NOT USED)
+	@FXML
+	void lvFuncionario_MouseClicked(MouseEvent event) {
+	}
+	// *
+
 }
