@@ -61,8 +61,8 @@ public class ControlCompra {
 
 			CompraDAO compraDAO = new CompraDAO(conexao);
 
-			if (!compraDAO.Carregar(compra.getCod()).getStatus().equals("A"))
-				throw new Exception("Não é possível finalizar uma compra que não está aberta.");
+			if (!compraDAO.Carregar(compra.getCod()).getStatus().equals("E"))
+				throw new Exception("Não é possível finalizar uma compra que não está enviada.");
 
 			if (compra.getItens().size() <= 0)
 				throw new Exception("Não é possivel finalizar uma compra que não possui itens");
@@ -281,8 +281,10 @@ public class ControlCompra {
 
 			db.VerificarPeriodo(dataIni, dataFim);
 
-			if (!status.equals("A") || !status.equals("F") || !status.equals("E"))
-				throw new Exception("Informe o status A (Aberto), E (Enviado) ou F (Finalizado).");
+			if (!status.equals("")) {
+				if (!status.equals("A") || !status.equals("F") || !status.equals("E"))
+					throw new Exception("Informe o status A (Aberto), E (Enviado) ou F (Finalizado).");
+			}
 
 			lstCompra = compraDAO.Buscar(dataIni, dataFim, status, codFuncionario, codFornecedor);
 

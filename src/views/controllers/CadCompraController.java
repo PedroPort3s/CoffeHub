@@ -107,6 +107,12 @@ public class CadCompraController implements Initializable {
 	@FXML
 	private Label lblTotalCompra;
 
+	@FXML
+	private JFXButton btnEnviar;
+	
+    @FXML
+    private JFXTextField txtQtdProxProduto;
+
 	public Stage getCadCompra() {
 		if (CadCompra == null) {
 			try {
@@ -194,6 +200,57 @@ public class CadCompraController implements Initializable {
 		new PesquisaProdutoGeralController().getPesquisaProdutoGeral().show();
 	}
 
+	void Enviar() {
+		try {
+			Alert ConfirmaEnvio = new Alert(AlertType.CONFIRMATION);
+
+			ConfirmaEnvio.setTitle("Finalizar");
+			ConfirmaEnvio.setHeaderText("Deseja realmente enviar esta compra?");
+
+			Optional<ButtonType> result = ConfirmaEnvio.showAndWait();
+			if (result.isPresent() && result.get() == ButtonType.OK) {
+				if (txtCodCompra.getText().equals("") == false) {
+					Compra compraEnviar = new ControlCompra().Carregar(Integer.parseInt(txtCodCompra.getText()));
+
+					if (compraEnviar != null) {
+						if (new ControlCompra().Enviar(compraEnviar) == 1) {
+							Limpar();
+							Alert alert = new Alert(AlertType.INFORMATION);
+
+							alert.setTitle("Atenção");
+							alert.setHeaderText("Compra enviada com sucesso");
+
+							alert.showAndWait();
+						} else {
+							throw new Exception("Não foi possivel enviar a compra");
+						}
+					}
+				}
+			}
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.WARNING);
+
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+
+			alert.showAndWait();
+		}
+	}
+
+	@FXML
+	void btnEnviar_Action(ActionEvent event) {
+		try {
+			Enviar();
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.WARNING);
+
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+
+			alert.showAndWait();
+		}
+	}
+
 	void Finalizar() {
 		try {
 			Alert ConfirmaRemover = new Alert(AlertType.CONFIRMATION);
@@ -274,6 +331,8 @@ public class CadCompraController implements Initializable {
 
 		lblTotalCompra.setVisible(false);
 		lblTotalCompra.setText("");
+		
+		txtStatusCompra.setText("");
 
 		btnEditar.setVisible(false);
 		btnAlterarQtd.setVisible(false);
@@ -367,6 +426,7 @@ public class CadCompraController implements Initializable {
 
 			if (Integer.parseInt(quantidadeString) > 0) {
 				QtdProximoProduto = Integer.parseInt(quantidadeString);
+				txtQtdProxProduto.setText(QtdProximoProduto + "");
 				textDialog.close();
 			}
 		} catch (Exception e) {
@@ -482,6 +542,8 @@ public class CadCompraController implements Initializable {
 					btnLimparProduto.setVisible(false);
 					btnEditar.setVisible(false);
 					btnAlterarQtd.setVisible(false);
+					btnEnviar.setVisible(false);
+					btnFinalizar.setVisible(false);
 				} else if (compra.getStatus().equals("E")) {
 					btnAddProduto.setVisible(false);
 					btnBuscarFornecedor.setVisible(false);
@@ -490,6 +552,8 @@ public class CadCompraController implements Initializable {
 					btnLimparProduto.setVisible(false);
 					btnEditar.setVisible(false);
 					btnAlterarQtd.setVisible(false);
+					btnEnviar.setVisible(false);
+					btnFinalizar.setVisible(true);
 				} else {
 					btnEditar.setVisible(true);
 					btnAlterarQtd.setVisible(true);
@@ -545,8 +609,19 @@ public class CadCompraController implements Initializable {
 					btnLimparProduto.setVisible(false);
 					btnEditar.setVisible(false);
 					btnAlterarQtd.setVisible(false);
+					btnEnviar.setVisible(false);
+					btnFinalizar.setVisible(false);
+				} else if (compra.getStatus().equals("E")) {
+					btnAddProduto.setVisible(false);
+					btnBuscarFornecedor.setVisible(false);
+					btnLimparFornecedor.setVisible(false);
+					btnBuscarProduto.setVisible(false);
+					btnLimparProduto.setVisible(false);
+					btnEditar.setVisible(false);
+					btnAlterarQtd.setVisible(false);
+					btnEnviar.setVisible(false);
+					btnFinalizar.setVisible(true);
 				}
-
 				else {
 					btnEditar.setVisible(true);
 					btnAlterarQtd.setVisible(true);
