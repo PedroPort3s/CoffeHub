@@ -337,7 +337,7 @@ public class CompraDAO implements ICompraVenda<Compra> {
 		return lista;
 	}
 
-	public double TotalVendasDia(Date data) throws SQLException {
+	public double TotalComprasDia(Date data) throws SQLException {
 
 		double retorno = 0;
 

@@ -6,17 +6,17 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import control.compra_venda.ControlCompra;
-import entitys.Funcionario;
+import control.compra_venda.ControlVenda;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -25,7 +25,6 @@ import javafx.stage.StageStyle;
 import utils.Logado;
 import views.controllers.cliente.PesquisaClienteController;
 import views.controllers.fornecedor.PesquisaFornecedorController;
-
 import views.controllers.funcionario.PesquisaFuncionarioController;
 
 
@@ -78,6 +77,9 @@ public class HomeController implements Initializable{
     
     @FXML
     private Label lblTotalCompras;
+
+    @FXML
+    private Label lblTotalVendas;
     
 
 	public Stage getHome() {
@@ -217,8 +219,8 @@ public class HomeController implements Initializable{
 
 		try 
 		{						
-			lblTotalCompras.setText(new ControlCompra().TotalVendasDia(new Date()) + "");
-			
+			lblTotalCompras.setText(new ControlCompra().TotalComprasDia(new Date()) + "");
+			lblTotalVendas.setText(new ControlVenda().TotalVendasDia(new Date()) + "");			
 		} 
 		catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);

@@ -301,7 +301,7 @@ public class ControlCompra {
 		return lstCompra;
 	}
 
-	public double TotalVendasDia(Date data) throws Exception {
+	public double TotalComprasDia(Date data) throws Exception {
 		double retorno = 0;
 		try {
 
@@ -312,7 +312,7 @@ public class ControlCompra {
 			if (data == null)
 				throw new Exception("Informe uma data para obter o total de compras naquele dia.");
 
-			retorno = compraDAO.TotalVendasDia(data);
+			retorno = compraDAO.TotalComprasDia(data);
 
 			conexao.close();
 		} catch (SQLException ex) {

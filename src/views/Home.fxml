@@ -150,17 +150,7 @@
                      <children>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Label text="0.0" textFill="#2a73ff">
-                                 <font>
-                                    <Font name="System Bold" size="26.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Vendas Hoje" textFill="#e7e5e5" />
-                           </children>
-                        </VBox>
-                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
-                           <children>
-                              <Label text="0.0" textFill="#26bfbc">
+                              <Label fx:id="lblTotalVendas" text="0.0" textFill="#2a73ff">
                                  <font>
                                     <Font name="System Bold" size="26.0" />
                                  </font>
@@ -170,12 +160,16 @@
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
                            <children>
-                              <Label fx:id="lblTotalCompras" textFill="#fa5f7e">
-                                 <font>
-                                    <Font name="System Bold" size="26.0" />
-                                 </font>
-                              </Label>
-                              <Label text="Total a Pagar" textFill="#e7e5e5" />
+                              <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                                 <children>
+                                    <Label fx:id="lblTotalCompras" textFill="#fa5f7e">
+                                       <font>
+                                          <Font name="System Bold" size="26.0" />
+                                       </font>
+                                    </Label>
+                                    <Label text="Total a Pagar" textFill="#e7e5e5" />
+                                 </children>
+                              </VBox>
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
