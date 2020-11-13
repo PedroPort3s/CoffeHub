@@ -38,7 +38,7 @@ import views.controllers.cliente.PesquisaClienteGeralController;
 
 public class CadVendaController implements Initializable {
 
-	private double QtdProximoProduto;
+	private static double QtdProximoProduto;
 
 	private static Stage CadVenda;
 
@@ -260,6 +260,9 @@ public class CadVendaController implements Initializable {
 		lvProdutos.getItems().clear();
 
 		lblValorTotal.setVisible(false);
+		
+		QtdProximoProduto = 1;
+		txtQtdProxProduto.setText(QtdProximoProduto + "");
 	}
 
 	@FXML
@@ -515,6 +518,8 @@ public class CadVendaController implements Initializable {
 			if (ClienteEstatico != null && ClienteEstatico.getCod() > 0) {
 				this.CarregarCliente(ClienteEstatico);
 			}
+			
+			txtQtdProxProduto.setText(QtdProximoProduto + "");
 
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);

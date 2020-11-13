@@ -38,7 +38,7 @@ import views.controllers.fornecedor.PesquisaFornecedorGeralController;
 
 public class CadCompraController implements Initializable {
 
-	private int QtdProximoProduto;
+	private static int QtdProximoProduto;
 
 	private static Stage CadCompra;
 
@@ -109,9 +109,9 @@ public class CadCompraController implements Initializable {
 
 	@FXML
 	private JFXButton btnEnviar;
-	
-    @FXML
-    private JFXTextField txtQtdProxProduto;
+
+	@FXML
+	private JFXTextField txtQtdProxProduto;
 
 	public Stage getCadCompra() {
 		if (CadCompra == null) {
@@ -177,6 +177,8 @@ public class CadCompraController implements Initializable {
 						QtdProximoProduto = 1;
 						RecarregarCompra(compraPrivate);
 					}
+				} else {
+					throw new Exception("Informe um produto para prosseguir.");
 				}
 			}
 		} catch (Exception e) {
@@ -332,7 +334,7 @@ public class CadCompraController implements Initializable {
 
 		lblTotalCompra.setVisible(false);
 		lblTotalCompra.setText("");
-		
+
 		txtStatusCompra.setText("");
 
 		btnEditar.setVisible(false);
@@ -347,6 +349,9 @@ public class CadCompraController implements Initializable {
 		btnLimparFornecedor.setVisible(true);
 		btnBuscarProduto.setVisible(true);
 		btnLimparProduto.setVisible(true);
+		
+		QtdProximoProduto = 1;
+		txtQtdProxProduto.setText(QtdProximoProduto + "");
 	}
 
 	@FXML
@@ -622,8 +627,7 @@ public class CadCompraController implements Initializable {
 					btnAlterarQtd.setVisible(false);
 					btnEnviar.setVisible(false);
 					btnFinalizar.setVisible(true);
-				}
-				else {
+				} else {
 					btnEditar.setVisible(true);
 					btnAlterarQtd.setVisible(true);
 				}
@@ -656,6 +660,8 @@ public class CadCompraController implements Initializable {
 			if (compraCarregada != null) {
 				this.CarregarCompra(compraCarregada);
 			}
+			
+			txtQtdProxProduto.setText(QtdProximoProduto + "");
 
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);
