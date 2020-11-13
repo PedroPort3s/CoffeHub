@@ -189,6 +189,7 @@ public class CadCompraController implements Initializable {
 	void btnBuscarFornecedor_Action(ActionEvent event) {
 		CadCompra.close();
 		CadCompra = null;
+		PesquisaFornecedorGeralController.cadPesqCompra = "CADCOMPRA";
 		new PesquisaFornecedorGeralController().getPesquisaFornecedorGeral().show();
 	}
 

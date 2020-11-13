@@ -13,6 +13,7 @@ import com.jfoenix.controls.JFXTextField;
 import control.compra_venda.ControlVenda;
 import dao.ClienteDAO;
 import entitys.Cliente;
+import entitys.Funcionario;
 import entitys.Venda;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -26,10 +27,14 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import utils.Logado;
+import views.controllers.cliente.PesquisaClienteGeralController;
 
 public class PesquisaVendaController implements Initializable {
 
 	private static Stage PesquisaVenda;
+
+	public static Cliente clienteEstatico = null;
 
 	@FXML
 	private JFXButton btnCadVenda;
@@ -99,7 +104,10 @@ public class PesquisaVendaController implements Initializable {
 
 	@FXML
 	void btnBuscarCliente_Action(ActionEvent event) {
-
+		PesquisaVenda.close();
+		PesquisaVenda = null;
+		PesquisaClienteGeralController.cadPesqVenda = "PESQUISAVENDA";
+		new PesquisaClienteGeralController().getPesquisaClienteGeral().show();
 	}
 
 	@FXML
@@ -167,6 +175,7 @@ public class PesquisaVendaController implements Initializable {
 				new CadVendaController().getCadVenda().show();
 				PesquisaVenda.close();
 				PesquisaVenda = null;
+				clienteEstatico = null;
 			}
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);
@@ -201,10 +210,75 @@ public class PesquisaVendaController implements Initializable {
 		}
 	}
 
+	void ValidarFuncionarioLogado(Funcionario funcionario) {
+		try {
+			if (funcionario != null) {
+				// vendedor/ balconista - poode fazer compras e vendas
+				if (funcionario.getCod_acesso() == 2) {
+					txtCodFuncionario.setText(funcionario.getCod() + "");
+					txtFuncionario.setText(funcionario.getNome());
+
+					btnBuscarFuncionario.setVisible(false);
+					btnLimparFuncionario.setVisible(false);
+
+					btnBuscarCliente.setVisible(false);
+					btnLimparCliente.setVisible(false);
+
+					this.ListarVendas();
+				}
+
+				// Estoquista, pode fazer compras, não pode vendas
+				else if (funcionario.getCod_acesso() == 3) {
+					txtCodFuncionario.setText(funcionario.getCod() + "");
+					txtFuncionario.setText(funcionario.getNome());
+
+					btnBuscarFuncionario.setVisible(false);
+					btnLimparFuncionario.setVisible(false);
+
+					btnBuscarCliente.setVisible(false);
+					btnLimparCliente.setVisible(false);
+					btnCadVenda.setVisible(false);
+					btnPesquisar.setVisible(false);
+				}
+
+			}
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.WARNING);
+
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+
+			alert.showAndWait();
+		}
+	}
+
+	void CarregarCliente(Cliente cliente) {
+		try {
+			if (cliente.getCod() > 0) {
+				txtCodCliente.setText(cliente.getCod() + "");
+				txtCliente.setText(cliente.getNome());
+
+				clienteEstatico = null;
+			}
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.WARNING);
+
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+
+			alert.showAndWait();
+		}
+	}
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		try {
-			this.ListarVendas();
+			this.ValidarFuncionarioLogado(Logado.Funcionario);
+
+			if (clienteEstatico != null && clienteEstatico.getCod() > 0) {
+				this.CarregarCliente(clienteEstatico);
+			}
+
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
 			alert.showAndWait();

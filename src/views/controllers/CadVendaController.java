@@ -324,6 +324,7 @@ public class CadVendaController implements Initializable {
 	void btnBuscarCliente_Action(ActionEvent event) {
 		CadVenda.close();
 		CadVenda = null;
+		PesquisaClienteGeralController.cadPesqVenda = "CADVENDA";
 		new PesquisaClienteGeralController().getPesquisaClienteGeral().show();
 	}
 

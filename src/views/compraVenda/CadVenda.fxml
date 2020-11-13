@@ -7,20 +7,20 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="799.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.controllers.CadVendaController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="570.0" prefWidth="874.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.controllers.CadVendaController">
    <children>
-      <JFXButton fx:id="btnVoltar" buttonType="RAISED" layoutX="682.0" layoutY="506.0" onAction="#btnVoltar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Voltar" textFill="WHITE" />
-      <JFXButton fx:id="btnLimpar" buttonType="RAISED" layoutX="574.0" layoutY="506.0" onAction="#btnLimpar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Limpar" textFill="WHITE" />
+      <JFXButton fx:id="btnVoltar" buttonType="RAISED" layoutX="763.0" layoutY="506.0" onAction="#btnVoltar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Voltar" textFill="WHITE" />
+      <JFXButton fx:id="btnLimpar" buttonType="RAISED" layoutX="655.0" layoutY="506.0" onAction="#btnLimpar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Limpar" textFill="WHITE" />
       <JFXTextField fx:id="txtCliente" disable="true" focusColor="#2e1d04" labelFloat="true" layoutX="64.0" layoutY="129.0" prefHeight="40.0" prefWidth="307.0" promptText="Cliente" unFocusColor="BLACK" />
       <JFXTextField fx:id="txtDataOrigem" disable="true" focusColor="#2e1d04" labelFloat="true" layoutX="529.0" layoutY="129.0" prefHeight="40.0" prefWidth="241.0" promptText="Data da Venda" unFocusColor="BLACK" />
       <JFXTextField fx:id="txtDataConfirmacao" disable="true" editable="false" focusColor="#2e1d04" labelFloat="true" layoutX="439.0" layoutY="206.0" prefHeight="40.0" prefWidth="264.0" promptText="Data da Confirmação" unFocusColor="BLACK" visible="false" />
       <JFXTextField fx:id="txtCodVenda" disable="true" editable="false" focusColor="#2e1d04" labelFloat="true" layoutX="14.0" layoutY="53.0" prefHeight="40.0" prefWidth="357.0" promptText="Código" unFocusColor="BLACK" />
       <JFXTextField fx:id="txtProduto" disable="true" focusColor="#2e1d04" labelFloat="true" layoutX="58.0" layoutY="200.0" prefHeight="40.0" prefWidth="307.0" promptText="Produto" unFocusColor="BLACK" />
-      <JFXListView fx:id="lvProdutos" layoutX="19.0" layoutY="272.0" onMouseClicked="#lvProdutos_MouseClicked" prefHeight="221.0" prefWidth="761.0" />
+      <JFXListView fx:id="lvProdutos" layoutX="19.0" layoutY="272.0" onMouseClicked="#lvProdutos_MouseClicked" prefHeight="221.0" prefWidth="842.0" />
       <JFXButton fx:id="btnAddProduto" buttonType="RAISED" layoutX="524.0" layoutY="220.0" onAction="#btnAddProduto_Action" prefHeight="16.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Adicionar" textFill="WHITE" />
       <JFXTextField fx:id="txtStatus" disable="true" focusColor="#2e1d04" labelFloat="true" layoutX="531.0" layoutY="53.0" prefHeight="40.0" prefWidth="241.0" promptText="Status" unFocusColor="BLACK" />
-      <JFXButton fx:id="btnFinalizar" buttonType="RAISED" layoutX="473.0" layoutY="506.0" onAction="#btnFinalizar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Finalizar" textFill="WHITE" />
-      <Label fx:id="lblValorTotal" ellipsisString="" layoutX="621.0" layoutY="206.0" prefHeight="40.0" prefWidth="165.0" textFill="#0015ff">
+      <JFXButton fx:id="btnFinalizar" buttonType="RAISED" layoutX="554.0" layoutY="506.0" onAction="#btnFinalizar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Finalizar" textFill="WHITE" />
+      <Label fx:id="lblValorTotal" ellipsisString="" layoutX="650.0" layoutY="206.0" prefHeight="40.0" prefWidth="216.0" textFill="#0015ff">
          <font>
             <Font size="16.0" />
          </font>

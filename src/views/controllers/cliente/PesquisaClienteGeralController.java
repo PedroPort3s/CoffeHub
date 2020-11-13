@@ -24,40 +24,53 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import views.controllers.CadVendaController;
+import views.controllers.PesquisaVendaController;
 
 public class PesquisaClienteGeralController {
 
 	private static Stage pesquisaCliente;
-	
+
+	public static String cadPesqVenda;
+
 	private ClienteDAO dao = new ClienteDAO();
-	
-    @FXML
-    private ResourceBundle resources;
 
-    @FXML
-    private URL location;
+	@FXML
+	private ResourceBundle resources;
 
-    @FXML
-    private JFXButton btnPesquisar;
+	@FXML
+	private URL location;
 
-    @FXML
-    private JFXButton btnVoltar;
+	@FXML
+	private JFXButton btnPesquisar;
 
-    @FXML
-    private JFXTextField txtNomePesquisa;
+	@FXML
+	private JFXButton btnVoltar;
 
-    @FXML
-    private JFXListView<Cliente> lvClientes;
+	@FXML
+	private JFXTextField txtNomePesquisa;
 
-    @FXML
-    private JFXTextField txtCodPesquisa;
-    
+	@FXML
+	private JFXListView<Cliente> lvClientes;
+
+	@FXML
+	private JFXTextField txtCodPesquisa;
+
 	@FXML
 	void btnVoltar_Action(ActionEvent event) {
-		//TODO voltar para a tela que está aberta
+
+		if (cadPesqVenda == "CADVENDA") {
+			new CadVendaController().getCadVenda().show();
+			pesquisaCliente.close();
+			pesquisaCliente = null;
+		}
+		if (cadPesqVenda == "PESQUISAVENDA") {
+			new PesquisaVendaController().getPesquisaVenda().show();
+			pesquisaCliente.close();
+			pesquisaCliente = null;
+		}
 	}
-	
-    public Stage getPesquisaClienteGeral() {
+
+	public Stage getPesquisaClienteGeral() {
 		if (pesquisaCliente == null) {
 			try {
 				Stage primaryStage = new Stage();
@@ -76,41 +89,49 @@ public class PesquisaClienteGeralController {
 		}
 		return pesquisaCliente;
 	}
-    
-    @FXML
-    void btnPesquisar_Action(ActionEvent event) {
-    	listarClientes();
-    }
 
-    @FXML
-    void lvCliente_MouseClicked(MouseEvent event) {
-    	try 
-    	{
-    		Cliente cliente = lvClientes.getSelectionModel().getSelectedItem();
-    		if (cliente != null)
-    		{
-    			CadVendaController.ClienteEstatico = null;
-    			CadVendaController.ClienteEstatico  = cliente;
-				new CadVendaController().getCadVenda().show();
-				pesquisaCliente.close();
-				pesquisaCliente = null;
+	@FXML
+	void btnPesquisar_Action(ActionEvent event) {
+		listarClientes();
+	}
+
+	@FXML
+	void lvCliente_MouseClicked(MouseEvent event) {
+		try
+		{
+			
+			Cliente cliente = lvClientes.getSelectionModel().getSelectedItem();
+			if (cliente != null) {
+				if (cadPesqVenda == "CADVENDA") {
+					CadVendaController.ClienteEstatico = null;
+					CadVendaController.ClienteEstatico = cliente;
+					new CadVendaController().getCadVenda().show();
+					pesquisaCliente.close();
+					pesquisaCliente = null;
+				}
+				if (cadPesqVenda == "PESQUISAVENDA") {
+					PesquisaVendaController.clienteEstatico = null;
+					PesquisaVendaController.clienteEstatico = cliente;
+					new PesquisaVendaController().getPesquisaVenda().show();
+					pesquisaCliente.close();
+					pesquisaCliente = null;
+				}
 			}
+			
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.WARNING);
+
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+
+			alert.showAndWait();
 		}
-    	catch (Exception e) 
-    	{
-    		Alert alert = new Alert(AlertType.WARNING);
+	}
 
-            alert.setTitle("Atenção");
-            alert.setHeaderText(e.getMessage());
-            
-            alert.showAndWait();
-         }
-    }
+	private void listarClientes() {
+		List<Cliente> lstClientes;
+		lvClientes.getItems().clear();
 
-    private void listarClientes() {
-    	List<Cliente> lstClientes;
-    	lvClientes.getItems().clear();
-    	
 		try {
 			lstClientes = dao.listar();
 			if (lstClientes != null) {
@@ -139,28 +160,32 @@ public class PesquisaClienteGeralController {
 			alert.showAndWait();
 		}
 	}
-    
-    private Boolean conferirNumero(String texto, String msg) {
-    	try {
-    		if(!texto.equals("")) {
-    			Integer.parseInt(texto);
-    		} else if(texto.equals("")) {
-    			return false;
-    		}
+
+	private Boolean conferirNumero(String texto, String msg) {
+		try {
+			if (!texto.equals("")) {
+				Integer.parseInt(texto);
+			} else if (texto.equals("")) {
+				return false;
+			}
 		} catch (Exception e) {
 			throw new NumberFormatException(msg);
 		}
-    	return true;
-    }
-    
-    @FXML
-    void initialize() {
-        assert btnPesquisar != null : "fx:id=\"btnPesquisar\" was not injected: check your FXML file 'PesquisaCliente.fxml'.";
-        assert btnVoltar != null : "fx:id=\"btnVoltar\" was not injected: check your FXML file 'PesquisaCliente.fxml'.";
-        assert txtNomePesquisa != null : "fx:id=\"txtNomePesquisa\" was not injected: check your FXML file 'PesquisaCliente.fxml'.";
-        assert lvClientes != null : "fx:id=\"lvClientes\" was not injected: check your FXML file 'PesquisaCliente.fxml'.";
-        assert txtCodPesquisa != null : "fx:id=\"txtCodPesquisa\" was not injected: check your FXML file 'PesquisaCliente.fxml'.";
+		return true;
+	}
 
-        listarClientes();
-    }
+	@FXML
+	void initialize() {
+		assert btnPesquisar != null
+				: "fx:id=\"btnPesquisar\" was not injected: check your FXML file 'PesquisaCliente.fxml'.";
+		assert btnVoltar != null : "fx:id=\"btnVoltar\" was not injected: check your FXML file 'PesquisaCliente.fxml'.";
+		assert txtNomePesquisa != null
+				: "fx:id=\"txtNomePesquisa\" was not injected: check your FXML file 'PesquisaCliente.fxml'.";
+		assert lvClientes != null
+				: "fx:id=\"lvClientes\" was not injected: check your FXML file 'PesquisaCliente.fxml'.";
+		assert txtCodPesquisa != null
+				: "fx:id=\"txtCodPesquisa\" was not injected: check your FXML file 'PesquisaCliente.fxml'.";
+
+		listarClientes();
+	}
 }
