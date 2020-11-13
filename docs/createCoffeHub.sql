@@ -96,9 +96,11 @@ CREATE TABLE IF NOT EXISTS `coffehub`.`Funcionario` (
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
-insert into pessoa (documento, telefone, nome, endereco, email) values ('documento', '984941246', 'nome','endereco','email');
+insert into pessoa (documento, telefone, nome, endereco, email) values ('documento', '984941246', 'nome','endereco','admin@admin.com');
 insert into funcionario values (1, 2000,'2010-02-03',null,'1');
 
+insert into pessoa (documento, telefone, nome, endereco, email) values ('sem documento', '99999999999', 'consumidor final','endereco','email');
+insert into cliente values (2, '1999-05-10');
 
 -- -----------------------------------------------------
 -- Table `coffehub`.`Compra`

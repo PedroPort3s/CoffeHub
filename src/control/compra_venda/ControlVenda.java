@@ -14,7 +14,7 @@ import utils.ConexaoMySql;
 import utils.db;
 
 public class ControlVenda {
-	
+
 	private Connection conexao = null;
 
 	public int Inserir(Venda venda) throws Exception {
@@ -71,7 +71,8 @@ public class ControlVenda {
 			List<attProdutoDTO> itensDto = new ArrayList<attProdutoDTO>();
 
 			for (Venda_Item i : venda.getItens()) {
-				attProdutoDTO itemDto = new attProdutoDTO(i.getProduto().getCod(),i.getProduto().getDescricao() ,i.getQtd_item());
+				attProdutoDTO itemDto = new attProdutoDTO(i.getProduto().getCod(), i.getProduto().getDescricao(),
+						i.getQtd_item());
 				itensDto.add(itemDto);
 			}
 
@@ -201,10 +202,10 @@ public class ControlVenda {
 		}
 
 		return venda;
-
 	}
 
-	public List<Venda> Listar(Date dataIni, Date dataFim, String statusVenda) throws Exception {
+	public List<Venda> Listar(Date dataIni, Date dataFim, String status, int codFuncionario, int codCliente)
+			throws Exception {
 		List<Venda> lstVenda = null;
 		try {
 
@@ -214,40 +215,12 @@ public class ControlVenda {
 
 			db.VerificarPeriodo(dataIni, dataFim);
 
-			if (statusVenda.trim().equals("")) {
-				lstVenda = VendaDAO.Buscar(dataIni, dataFim);
-			} else {
-				lstVenda = VendaDAO.Buscar(dataIni, dataFim, statusVenda);
+			if (!status.equals("")) {
+				if (!status.equals("A") && !status.equals("F") && !status.equals("E"))
+					throw new Exception("Informe o status A (Aberto) ou F (Finalizado).");
 			}
 
-			conexao.close();
-		} catch (SQLException ex) {
-			throw ex;
-		} catch (Exception e) {
-			throw e;
-		}
-
-		return lstVenda;
-	}
-
-	public List<Venda> ListarPorPessoa(Date dataIni, Date dataFim, int codigo, String tipoPesquisa) throws Exception {
-		List<Venda> lstVenda = null;
-		try {
-
-			conexao = ConexaoMySql.getInstance().getConnection();
-
-			VendaDAO VendaDAO = new VendaDAO(conexao);
-
-			db.VerificarPeriodo(dataIni, dataFim);
-
-			if (!tipoPesquisa.toUpperCase().equals("FUNCIONARIO") || !tipoPesquisa.toUpperCase().equals("CLIENTE")) {
-				throw new Exception("Informe se a pesquisa deve ser por funcionário ou cliente.");
-			}
-
-			if (codigo <= 0)
-				throw new Exception("Informe um código de " + tipoPesquisa.toLowerCase() + " válido para a pesquisa.");
-
-			lstVenda = VendaDAO.Buscar(dataIni, dataFim, codigo, tipoPesquisa);
+			lstVenda = VendaDAO.Buscar(dataIni, dataFim, status, codFuncionario, codCliente);
 
 			if (lstVenda == null || lstVenda.size() <= 0)
 				throw new Exception("Não foi encontrado nenhum registro com os parâmetros informados.");

@@ -33,6 +33,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import utils.Logado;
+import utils.Verifica;
 import views.controllers.cliente.PesquisaClienteGeralController;
 
 public class CadVendaController implements Initializable {
@@ -154,6 +155,10 @@ public class CadVendaController implements Initializable {
 						VendaPrivate = new Venda();
 						VendaPrivate.setData_origem(date);
 
+						if (txtCodCliente.getText().equals("") || !Verifica.ehNumeroInt(txtCodCliente.getText())) {
+							throw new Exception("Informe um cliente para a venda");
+						}
+
 						Cliente clienteVenda = new ClienteDAO().buscarId(Integer.parseInt(txtCodCliente.getText()));
 						VendaPrivate.setCliente(clienteVenda);
 
@@ -179,6 +184,9 @@ public class CadVendaController implements Initializable {
 						CarregarVenda(VendaPrivate);
 					}
 				}
+			} 
+			else {
+				throw new Exception("Informe um produto para prosseguir.");
 			}
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);

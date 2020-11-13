@@ -28,6 +28,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import utils.Logado;
+import utils.Verifica;
 import views.controllers.cliente.PesquisaClienteGeralController;
 
 public class PesquisaVendaController implements Initializable {
@@ -197,7 +198,16 @@ public class PesquisaVendaController implements Initializable {
 
 			String dataFim = txtDataFinal.getText();
 			Date dataFinal = new SimpleDateFormat("dd/MM/yyyy").parse(dataFim);
-			lstVendas = new ControlVenda().Listar(dataIni, dataFinal, txtStatus.getText());
+			
+			int codFuncionario = Verifica.ehNumeroInt(txtCodFuncionario.getText()) == true
+					? Integer.parseInt(txtCodFuncionario.getText())
+					: 0;
+
+			int codCliente = Verifica.ehNumeroInt(txtCodCliente.getText()) == true
+					? Integer.parseInt(txtCodCliente.getText())
+					: 0;
+			
+			lstVendas = new ControlVenda().Listar(dataIni, dataFinal, txtStatus.getText(), codFuncionario, codCliente);
 
 			if (lstVendas != null)
 				lstVendas.forEach(v -> lvVendas.getItems().add(v));

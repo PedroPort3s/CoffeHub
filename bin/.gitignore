@@ -1,3 +1,7 @@
 /control/
 /dao/
+/dto/
+/entitys/
+/exceptions/
+/utils/
 /views/

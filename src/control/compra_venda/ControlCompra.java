@@ -282,7 +282,7 @@ public class ControlCompra {
 			db.VerificarPeriodo(dataIni, dataFim);
 
 			if (!status.equals("")) {
-				if (!status.equals("A") || !status.equals("F") || !status.equals("E"))
+				if (!status.equals("A") && !status.equals("F") && !status.equals("E"))
 					throw new Exception("Informe o status A (Aberto), E (Enviado) ou F (Finalizado).");
 			}
 
