@@ -112,42 +112,36 @@ public class PesquisaFuncionarioController {
 	@FXML
 	private JFXButton btnVoltar;
 
-	@FXML
-	private JFXListView<Funcionario> lvFuncionarios;
-
 	// ÍCONES SVG (EDITAR e EXCLUIR)
 	public static final String PEN_SOLID = "M290.74 93.24l128.02 128.02-277.99 277.99-114.14 12.6C11.35 513.54-1.56 500.62.14 485.34l12.7-114.22 277.9-277.88zm207.2-19.06l-60.11-60.11c-18.75-18.75-49.16-18.75-67.91 0l-56.55 56.55 128.02 128.02 56.55-56.55c18.75-18.76 18.75-49.16 0-67.91z";
 	public static final String TRASH_SOLID = "M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z";
 
-	
 	static class CellTooltip extends TableCell<Funcionario, String> {
-        @Override
-        protected void updateItem(String item, boolean empty) {
-            super.updateItem(item, empty);
-            this.setText(item);
-            this.setTooltip(
-                    (empty || item==null) ? null : new Tooltip(item));
-        }
-    }
-	
+		@Override
+		protected void updateItem(String item, boolean empty) {
+			super.updateItem(item, empty);
+			this.setText(item);
+			this.setTooltip((empty || item == null) ? null : new Tooltip(item));
+		}
+	}
+
 	private void inserirToolTip() {
 		cEndereco.setCellValueFactory(
-                new Callback<TableColumn.CellDataFeatures<Funcionario, String>, ObservableValue<String>>() {
-                    @Override
-                    public ObservableValue<String> call(CellDataFeatures<Funcionario, String> param) {
-                        return new ReadOnlyStringWrapper(param.getValue().getEndereco());
-                    }
-                });
-        cEndereco.setCellFactory(new Callback<TableColumn<Funcionario, String>, TableCell<Funcionario, String>>() {
-            @Override
-            public TableCell<Funcionario, String> call(TableColumn<Funcionario, String> param) {
-                return new CellTooltip();
-            }
-        });
-        
+				new Callback<TableColumn.CellDataFeatures<Funcionario, String>, ObservableValue<String>>() {
+					@Override
+					public ObservableValue<String> call(CellDataFeatures<Funcionario, String> param) {
+						return new ReadOnlyStringWrapper(param.getValue().getEndereco());
+					}
+				});
+		cEndereco.setCellFactory(new Callback<TableColumn<Funcionario, String>, TableCell<Funcionario, String>>() {
+			@Override
+			public TableCell<Funcionario, String> call(TableColumn<Funcionario, String> param) {
+				return new CellTooltip();
+			}
+		});
+
 	}
-	
-	
+
 	private void listarFuncionarios() {
 		ObservableList<Funcionario> listFunc;
 
@@ -156,7 +150,6 @@ public class PesquisaFuncionarioController {
 			listFunc = FXCollections.observableArrayList(dao.listar());
 
 			cCod.setCellValueFactory(new PropertyValueFactory<Funcionario, Integer>("cod"));
-			
 			cDoc.setCellValueFactory(new PropertyValueFactory<Funcionario, String>("documento"));
 			cFone.setCellValueFactory(new PropertyValueFactory<Funcionario, String>("telefone"));
 			cNome.setCellValueFactory(new PropertyValueFactory<Funcionario, String>("nome"));
@@ -172,7 +165,7 @@ public class PesquisaFuncionarioController {
 
 			GenericTableButton.initButtons(cEditar, 15, PEN_SOLID, "svg-gray",
 					(Funcionario funcionario, ActionEvent event) -> {
-												
+
 						try {
 							if (funcionario != null) {
 								CadFuncionarioController.funcionarioStatic = funcionario;
@@ -198,7 +191,6 @@ public class PesquisaFuncionarioController {
 							if (result.isPresent() && result.get() == ButtonType.OK) {
 								if (funcionario != null) {
 
-//									CadFuncionarioController.funcionarioStatic = funcionario;
 									dao.deletar(funcionario.getCod());
 
 									ObservableList<Funcionario> listFuncUp;
@@ -235,7 +227,6 @@ public class PesquisaFuncionarioController {
 					}
 					listFunc = FXCollections.observableArrayList(listaNome);
 				}
-				listFunc.forEach(f -> lvFuncionarios.getItems().add(f));
 				tableView.setItems(listFunc);
 			}
 
@@ -313,16 +304,9 @@ public class PesquisaFuncionarioController {
 		assert btnPesquisar != null : "fx:id=\"btnPesquisar\" was not injected: check your FXML file 'PesquisaFuncionario.fxml'.";
 		assert btnCadFuncionario != null : "fx:id=\"btnCadFuncionario\" was not injected: check your FXML file 'PesquisaFuncionario.fxml'.";
 		assert btnVoltar != null : "fx:id=\"btnVoltar\" was not injected: check your FXML file 'PesquisaFuncionario.fxml'.";
-		assert lvFuncionarios != null : "fx:id=\"lvFuncionarios\" was not injected: check your FXML file 'PesquisaFuncionario.fxml'.";
 
 		listarFuncionarios();
 		inserirToolTip();
 	}
-
-	// DEPRECATED (NOT USED)
-	@FXML
-	void lvFuncionario_MouseClicked(MouseEvent event) {
-	}
-	// *
 
 }
