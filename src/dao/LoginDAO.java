@@ -12,11 +12,10 @@ public class LoginDAO extends ConexaoMySql{
 	// Carregar usuario e retornar 1 para autorizar acesso
 	// Retorno diferente de 1 significa acesso incorreto ou usuario invalido	
 	
-	final String SQl_SELECT_FUNCIONARIO = "SELECT cod_pessoa, senha_funcionario FROM funcionario where cod_pessoa = ? and senha_funcionario = ?";
+	final String SQl_SELECT_FUNCIONARIO = "SELECT f.cod_Pessoa, f.salario, f.data_Contratacao, f.data_Demissao, f.senha_funcionario FROM funcionario as f where f.cod_pessoa = ? and f.senha_funcionario = ?";
 	
-	public int CarregarLogin(int cod_pessoa, String senha_funcionario) throws Exception
-	{
-		
+	public Funcionario CarregarLogin(int cod_pessoa, String senha_funcionario) throws Exception
+	{	
 		Funcionario funcionario = null;
 		int retorno = 0;
 			
@@ -32,18 +31,18 @@ public class LoginDAO extends ConexaoMySql{
 			ResultSet rs = pst.executeQuery();
 			
 			while(rs.next()) {
-				funcionario = new Funcionario();
 				
-				funcionario.setCod(rs.getInt("cod_pessoa"));
-				funcionario.setSenha_funcionario("senha_funcionario");
+				funcionario = new Funcionario();
+				funcionario.setCod(rs.getInt("f.cod_pessoa"));
+				funcionario.setSenha_funcionario("f.senha_funcionario");
 							
 				if(funcionario.getCod() > 0 && !funcionario.getSenha_funcionario().equals(""))
 				{
-					retorno = 1;
+					funcionario = new FuncionarioDAO().buscarId(funcionario.getCod());
 				}
 				else
 				{
-					retorno = -1;
+					funcionario = null;
 				}
 			}
 
@@ -54,7 +53,7 @@ public class LoginDAO extends ConexaoMySql{
 		}
 		
 	
-		return retorno;
+		return funcionario;
 	}
 }
 

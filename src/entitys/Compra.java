@@ -3,8 +3,6 @@ package entitys;
 import java.util.Date;
 import java.util.List;
 
-import control.compra_venda.ControlCompraItens;
-
 public class Compra {
 
 	private int cod;
@@ -21,16 +19,16 @@ public class Compra {
 
 	private List<Compra_Item> itens;
 
-	public double TotalCompra(){		
+	public double TotalCompra() {
 		double retorno = 0;
-			
-		if(this.itens != null && this.itens.size() > 0) {
-			for(Compra_Item i : itens) {
-				retorno += i.getValor_unitario();
+
+		if (this.itens != null && this.itens.size() > 0) {
+			for (Compra_Item i : itens) {
+				retorno += (i.getValor_unitario() * i.getQtd_item());
 			}
 		}
 		return retorno;
-		
+
 	}
 
 	public int getCod() {
@@ -88,56 +86,51 @@ public class Compra {
 	public void setItens(List<Compra_Item> itens) {
 		this.itens = itens;
 	}
-	
+
 	// Método de validar com codigo
-		public static void ValidarCompraCod(Compra compra) throws Exception{
-			if (compra.getCod() <= 0 )
-				throw new Exception("Informe o código da compra");
-			if(compra.getData_origem() == null)
-				throw new Exception("Data de origem invalida");
-			if(compra.getStatus().equals(""))
-				throw new Exception("Status inválido");
-			if(compra.getFornecedor() != null)
-			{
-				if(compra.getFornecedor().getCod() <= 0)
-					throw new Exception("Fornecedor inválido.");
-			}
-			if(compra.getFuncionario() != null)
-			{
-				if(compra.getFuncionario().getCod() <= 0)
-					throw new Exception("Funcionario inválido.");
-			}
-			if(compra.getItens() != null && compra.getItens().size() > 0)
-				Compra_Item.ValidarCompraItens(compra.getItens());		
+	public static void ValidarCompraCod(Compra compra) throws Exception {
+		if (compra.getCod() <= 0)
+			throw new Exception("Informe o código da compra");
+		if (compra.getData_origem() == null)
+			throw new Exception("Data de origem invalida");
+		if (compra.getStatus().equals(""))
+			throw new Exception("Status inválido");
+		if (compra.getFornecedor() != null) {
+			if (compra.getFornecedor().getCod() <= 0)
+				throw new Exception("Fornecedor inválido.");
 		}
-		
-		// Método de validar sem codigo
-		public static void ValidarCompraGravar(Compra compra) throws Exception{
-			if(compra.getData_origem() == null)
-				throw new Exception("Informe uma data de origem valida");
-			if(compra.getStatus().equals(""))
-				throw new Exception("Informe um status valido");
-			if(compra.getFornecedor() != null)
-			{
-				if(compra.getFornecedor().getCod() <= 0)
-					throw new Exception("Informe um fornecedor valido.");
-			}
-			if(compra.getFuncionario() != null)
-			{
-				if(compra.getFuncionario().getCod() <= 0)
-					throw new Exception("Informe um funcionario valido.");
-			}
-			/*
-			 * if(compra.getItens() == null || compra.getItens().size() == 0) throw new
-			 * Exception("Informe pelo menos 1 item para prosseguir com esta compra");
-			 */
+		if (compra.getFuncionario() != null) {
+			if (compra.getFuncionario().getCod() <= 0)
+				throw new Exception("Funcionario inválido.");
 		}
+		if (compra.getItens() != null && compra.getItens().size() > 0)
+			Compra_Item.ValidarCompraItens(compra.getItens());
+	}
+
+	// Método de validar sem codigo
+	public static void ValidarCompraGravar(Compra compra) throws Exception {
+		if (compra.getData_origem() == null)
+			throw new Exception("Informe uma data de origem valida");
+		if (compra.getStatus().equals(""))
+			throw new Exception("Informe um status valido");
+		if (compra.getFornecedor() != null) {
+			if (compra.getFornecedor().getCod() <= 0)
+				throw new Exception("Informe um fornecedor valido.");
+		}
+		if (compra.getFuncionario() != null) {
+			if (compra.getFuncionario().getCod() <= 0)
+				throw new Exception("Informe um funcionario valido.");
+		}
+		/*
+		 * if(compra.getItens() == null || compra.getItens().size() == 0) throw new
+		 * Exception("Informe pelo menos 1 item para prosseguir com esta compra");
+		 */
+	}
 
 	@Override
 	public String toString() {
 		return "Compra: " + cod + " - data: " + data_origem + " - recebimento: " + data_recebido + " - status: "
 				+ status + " - fornecedor: " + fornecedor + " - funcionario:" + funcionario;
 	}
-	
-	
+
 }

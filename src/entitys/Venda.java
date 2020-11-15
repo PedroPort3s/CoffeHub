@@ -12,7 +12,7 @@ public class Venda {
 	private Date data_confirmacao;
 
 	private String status;
-	
+
 	private Funcionario funcionario;
 
 	private Cliente cliente;
@@ -73,60 +73,63 @@ public class Venda {
 
 	public void setItens(List<Venda_Item> itens) {
 		this.itens = itens;
-	}	
-	
-	// Método de validar com codigo
-			public static void ValidarVendaCod(Venda venda) throws Exception{
-				if (venda.getCod() <= 0 )
-					throw new Exception("Informe o código da venda");
-				if(venda.getData_origem() == null)
-					throw new Exception("Informe uma data de origem valida");
-				if(venda.getStatus().equals(""))
-					throw new Exception("Informe um status valido");
-				if(venda.getCliente() != null)
-				{
-					if(venda.getCliente().getCod() <= 0)
-						throw new Exception("Informe um cliente valido.");
-				}
-				if(venda.getFuncionario() != null)
-				{
-					if(venda.getFuncionario().getCod() <= 0)
-						throw new Exception("Informe um funcionario valido.");
-				}
-				if(venda.getItens().size() == 0)
-					throw new Exception("Esta venda não possui itens");
-				else {
-					Venda_Item.ValidarVendaItens(venda.getItens());
-				}
-			}
-			
-			// Método de validar sem codigo
-			public static void ValidarVendaGravar(Venda venda) throws Exception{
-				if(venda.getData_origem() == null)
-					throw new Exception("Informe uma data de origem valida");
-				if(venda.getStatus().equals(""))
-					throw new Exception("Informe um status valido");
-				if(venda.getCliente() != null)
-				{
-					if(venda.getCliente().getCod() <= 0)
-						throw new Exception("Informe um cliente valido.");
-				}
-				if(venda.getFuncionario() != null)
-				{
-					if(venda.getFuncionario().getCod() <= 0)
-						throw new Exception("Informe um funcionario valido.");
-				}
-				if(venda.getItens().size() == 0)
-					throw new Exception("Informe pelo menos 1 item para prosseguir com esta venda.");
-			}
+	}
 
-	public double TotalVenda(){
+	// Método de validar com codigo
+	public static void ValidarVendaCod(Venda venda) throws Exception {
+		if (venda.getCod() <= 0)
+			throw new Exception("Informe o código da venda");
+		if (venda.getData_origem() == null)
+			throw new Exception("Informe uma data de origem valida");
+		if (venda.getStatus().equals(""))
+			throw new Exception("Informe um status valido");
+		if (venda.getCliente() != null) {
+			if (venda.getCliente().getCod() <= 0)
+				throw new Exception("Informe um cliente valido.");
+		}
+		if (venda.getFuncionario() != null) {
+			if (venda.getFuncionario().getCod() <= 0)
+				throw new Exception("Informe um funcionario valido.");
+		}
+		if (venda.getItens() != null && venda.getItens().size() > 0)
+			Venda_Item.ValidarVendaItens(venda.getItens());
+	}
+
+	// Método de validar sem codigo
+	public static void ValidarVendaGravar(Venda venda) throws Exception {
+		if (venda.getData_origem() == null)
+			throw new Exception("Informe uma data de origem valida");
+		if (venda.getStatus().equals(""))
+			throw new Exception("Informe um status valido");
+		if (venda.getCliente() != null) {
+			if (venda.getCliente().getCod() <= 0)
+				throw new Exception("Informe um cliente valido.");
+		}
+		if (venda.getFuncionario() != null) {
+			if (venda.getFuncionario().getCod() <= 0)
+				throw new Exception("Informe um funcionario valido.");
+		}
+		if (venda.getItens() != null) {
+			if (venda.getItens().size() == 0)
+				throw new Exception("Informe pelo menos 1 item para prosseguir com esta venda.");
+
+		}
+	}
+
+	public double TotalVenda() {
 		double retorno = 0;
-		if(this.itens != null && this.itens.size() > 0) {
-			for(Venda_Item i : itens) {
-				retorno += i.getValor_venda();
+		if (this.itens != null && this.itens.size() > 0) {
+			for (Venda_Item i : itens) {
+				retorno += (i.getValor_venda() * i.getQtd_item());
 			}
 		}
 		return retorno;
 	}
+
+	@Override
+	public String toString() {
+		return "Cod: " + cod + " - data origem: " + data_origem + " - data confirmação: " + data_confirmacao
+				+ " - status: " + status + " - funcionario: " + funcionario + " - cliente: " + cliente + "";
+	}
+
 }

@@ -24,43 +24,52 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import views.controllers.CadCompraController;
-
+import views.controllers.PesquisaCompraController;
 
 public class PesquisaFornecedorGeralController {
 
 	private static Stage pesquisaFornecedor;
-	
+
+	public static String cadPesqCompra;
+
 	private FornecedorDAO dao = new FornecedorDAO();
-	
-    @FXML
-    private ResourceBundle resources;
 
-    @FXML
-    private URL location;
+	@FXML
+	private ResourceBundle resources;
 
-    @FXML
-    private JFXButton btnPesquisar;
+	@FXML
+	private URL location;
 
-    @FXML
-    private JFXButton btnVoltar;
+	@FXML
+	private JFXButton btnPesquisar;
 
-    @FXML
-    private JFXTextField txtNomePesquisa;
+	@FXML
+	private JFXButton btnVoltar;
 
-    @FXML
-    private JFXListView<Fornecedor> lvFornecedores;
+	@FXML
+	private JFXTextField txtNomePesquisa;
 
-    @FXML
-    private JFXTextField txtCodPesquisa;
-    
+	@FXML
+	private JFXListView<Fornecedor> lvFornecedores;
+
+	@FXML
+	private JFXTextField txtCodPesquisa;
+
 	@FXML
 	void btnVoltar_Action(ActionEvent event) {
-    	pesquisaFornecedor.close();
-    	pesquisaFornecedor = null;
-    	new CadCompraController().getCadCompra().show();
+		if (cadPesqCompra == "CADCOMPRA") {
+			new CadCompraController().getCadCompra().show();
+			pesquisaFornecedor.close();
+			pesquisaFornecedor = null;
+		}
+		if (cadPesqCompra == "PESQUISACOMPRA") {
+			new PesquisaCompraController().getPesquisaCompra().show();
+			pesquisaFornecedor.close();
+			pesquisaFornecedor = null;
+		}
 	}
-	
-    public Stage getPesquisaFornecedorGeral() {
+
+	public Stage getPesquisaFornecedorGeral() {
 		if (pesquisaFornecedor == null) {
 			try {
 				Stage primaryStage = new Stage();
@@ -79,42 +88,46 @@ public class PesquisaFornecedorGeralController {
 		}
 		return pesquisaFornecedor;
 	}
-    
 
-    @FXML
-    void btnPesquisar_Action(ActionEvent event) {
-    	listarFornecedores();
-    }
+	@FXML
+	void btnPesquisar_Action(ActionEvent event) {
+		listarFornecedores();
+	}
 
-    @FXML
-    void lvFornecedor_MouseClicked(MouseEvent event) {
-    	try 
-    	{
-    		Fornecedor fornecedor = lvFornecedores.getSelectionModel().getSelectedItem();
-    		if (fornecedor != null)
-    		{
-    			CadCompraController.FornecedorEstatico = null;
-				CadCompraController.FornecedorEstatico = fornecedor;
-				new CadCompraController().getCadCompra().show();
-				pesquisaFornecedor.close();
-				pesquisaFornecedor = null;
+	@FXML
+	void lvFornecedor_MouseClicked(MouseEvent event) {
+		try {
+			Fornecedor fornecedor = lvFornecedores.getSelectionModel().getSelectedItem();
+			if (fornecedor != null) {
+				if (cadPesqCompra == "CADCOMPRA") {
+					CadCompraController.FornecedorEstatico = null;
+					CadCompraController.FornecedorEstatico = fornecedor;
+					new CadCompraController().getCadCompra().show();
+					pesquisaFornecedor.close();
+					pesquisaFornecedor = null;
+				}
+				if (cadPesqCompra == "PESQUISACOMPRA") {
+					PesquisaCompraController.fornecedorEstatico = null;
+					PesquisaCompraController.fornecedorEstatico = fornecedor;
+					new PesquisaCompraController().getPesquisaCompra().show();
+					pesquisaFornecedor.close();
+					pesquisaFornecedor = null;
+				}
 			}
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.WARNING);
+
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+
+			alert.showAndWait();
 		}
-    	catch (Exception e) 
-    	{
-    		Alert alert = new Alert(AlertType.WARNING);
+	}
 
-            alert.setTitle("Atenção");
-            alert.setHeaderText(e.getMessage());
-            
-            alert.showAndWait();
-         }
-    }
+	private void listarFornecedores() {
+		List<Fornecedor> lstFornecedor;
+		lvFornecedores.getItems().clear();
 
-    private void listarFornecedores() {
-    	List<Fornecedor> lstFornecedor;
-    	lvFornecedores.getItems().clear();
-    	
 		try {
 			lstFornecedor = dao.listar();
 			if (lstFornecedor != null) {
@@ -143,28 +156,33 @@ public class PesquisaFornecedorGeralController {
 			alert.showAndWait();
 		}
 	}
-    
-    private Boolean conferirNumero(String texto, String msg) {
-    	try {
-    		if(!texto.equals("")) {
-    			Integer.parseInt(texto);
-    		} else if(texto.equals("")) {
-    			return false;
-    		}
+
+	private Boolean conferirNumero(String texto, String msg) {
+		try {
+			if (!texto.equals("")) {
+				Integer.parseInt(texto);
+			} else if (texto.equals("")) {
+				return false;
+			}
 		} catch (Exception e) {
 			throw new NumberFormatException(msg);
 		}
-    	return true;
-    }
-    
-    @FXML
-    void initialize() {
-    	assert txtCodPesquisa != null : "fx:id=\"txtCodPesquisa\" was not injected: check your FXML file 'PesquisaFornecedor.fxml'.";
-        assert txtNomePesquisa != null : "fx:id=\"txtNomePesquisa\" was not injected: check your FXML file 'PesquisaFornecedor.fxml'.";
-        assert btnPesquisar != null : "fx:id=\"btnPesquisar\" was not injected: check your FXML file 'PesquisaFornecedor.fxml'.";
-        assert btnVoltar != null : "fx:id=\"btnVoltar\" was not injected: check your FXML file 'PesquisaFornecedor.fxml'.";
-        assert lvFornecedores != null : "fx:id=\"lvFornecedores\" was not injected: check your FXML file 'PesquisaFornecedor.fxml'.";
+		return true;
+	}
 
-        listarFornecedores();
-    }
+	@FXML
+	void initialize() {
+		assert txtCodPesquisa != null
+				: "fx:id=\"txtCodPesquisa\" was not injected: check your FXML file 'PesquisaFornecedor.fxml'.";
+		assert txtNomePesquisa != null
+				: "fx:id=\"txtNomePesquisa\" was not injected: check your FXML file 'PesquisaFornecedor.fxml'.";
+		assert btnPesquisar != null
+				: "fx:id=\"btnPesquisar\" was not injected: check your FXML file 'PesquisaFornecedor.fxml'.";
+		assert btnVoltar != null
+				: "fx:id=\"btnVoltar\" was not injected: check your FXML file 'PesquisaFornecedor.fxml'.";
+		assert lvFornecedores != null
+				: "fx:id=\"lvFornecedores\" was not injected: check your FXML file 'PesquisaFornecedor.fxml'.";
+
+		listarFornecedores();
+	}
 }

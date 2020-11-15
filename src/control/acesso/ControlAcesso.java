@@ -1,12 +1,14 @@
 package control.acesso;
 
 import dao.LoginDAO;
+import entitys.Funcionario;
 
 public class ControlAcesso {
 
-	public int CarregarLogin(int cod_pessoa, String senha_funcionario) throws Exception{
+	public Funcionario CarregarLogin(int cod_pessoa, String senha_funcionario) throws Exception{
 		
-		int retorno = 0;
+		Funcionario funcionario = null;
+		
 		try 
 		{			
 			if (cod_pessoa <= 0) 
@@ -19,15 +21,16 @@ public class ControlAcesso {
 				throw new Exception("Informe a senha de acesso");
 			}			
 			
-			retorno = new LoginDAO().CarregarLogin(cod_pessoa, senha_funcionario);
-			if (retorno == 1) 
+			funcionario = new LoginDAO().CarregarLogin(cod_pessoa, senha_funcionario);
+			
+			if (funcionario != null) 
 			{
-				retorno = 1;
+				if(funcionario.getData_demissao() != null) 
+					throw new Exception("O funcionário informado consta como demitido no sistema.");
 			}
 			else
 			{
-				retorno = -1;
-				throw new Exception("Não foi possível efetuar o login");
+				throw new Exception("Não foi possível efetuar o login, verifique seu usuario e senha.");
 			}
 								
 		} 
@@ -36,6 +39,6 @@ public class ControlAcesso {
 			throw e;
 		}
 		
-		return retorno;		
+		return funcionario;		
 	}
 }

@@ -1,6 +1,8 @@
 package entitys;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Observer;
 
 import com.sun.istack.internal.Nullable;
 
@@ -58,6 +60,11 @@ public class Funcionario extends Pessoa {
 	public LocalDate getData_contratacao() {
 		return data_contratacao;
 	}
+	
+	public String getData_contratacaoString() {
+		DateTimeFormatter dataFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		return data_contratacao.format(dataFormat);
+	}
 
 	public void setData_contratacao(LocalDate data_contratacao) {
 		this.data_contratacao = data_contratacao;
@@ -67,6 +74,15 @@ public class Funcionario extends Pessoa {
 		return data_demissao;
 	}
 
+	public String getData_demissaoString() {
+		DateTimeFormatter dataFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		if(data_demissao == null) {
+			return "Atual";	
+		} else {
+			return data_demissao.format(dataFormat);
+		}
+	}
+	
 	public void setData_demissao(LocalDate data_demissao) {
 		this.data_demissao = data_demissao;
 	}

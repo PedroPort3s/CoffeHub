@@ -2,6 +2,7 @@ package views.controllers.fornecedor;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
@@ -109,7 +110,7 @@ public class CadFornecedorController implements Initializable {
 			Alert alert = new Alert(AlertType.CONFIRMATION, "Fornecedor editado com sucesso", ButtonType.OK);
 			alert.setHeaderText("Fornecedor editado!!");
 			alert.showAndWait();
-			close();
+			fechar();
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING, e.getMessage(), ButtonType.OK);
 			alert.setHeaderText("Atenção");
@@ -120,12 +121,18 @@ public class CadFornecedorController implements Initializable {
 	@FXML
 	void btnExcluir_Action(ActionEvent event) {
 		try {
-			dao.deletar(fornecedorStatic.getCod());
+			Alert alert = new Alert(AlertType.CONFIRMATION);
 
-			Alert alert = new Alert(AlertType.CONFIRMATION, "Fornecedor excluído com sucesso", ButtonType.OK);
-			alert.setHeaderText("Fornecedor excluído!!");
-			alert.showAndWait();
-			close();
+			alert.setTitle("Excluir Fornecedor");
+			alert.setHeaderText(
+					" Caso o Fornecedor seja excluído seus dados serão perdidos permanentemente!");
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.isPresent() && result.get() == ButtonType.OK) {
+				if (fornecedorStatic != null) {
+					dao.deletar(fornecedorStatic.getCod());
+					fechar();
+				}
+			}
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
 			alert.setHeaderText("Atenção");
@@ -147,7 +154,7 @@ public class CadFornecedorController implements Initializable {
 			Alert alert = new Alert(AlertType.CONFIRMATION, "Fornecedor cadastrado com sucesso", ButtonType.OK);
 			alert.setHeaderText("Fornecedor cadastrado!!");
 			alert.showAndWait();
-			close();
+			fechar();
 		} catch (CampoVazioException e) {
 			Alert alert = new Alert(AlertType.WARNING, e.getMessage(), ButtonType.OK);
 			alert.setHeaderText("Atenção");
@@ -216,7 +223,7 @@ public class CadFornecedorController implements Initializable {
 
 	@FXML
 	void btnVoltar_Action(ActionEvent event) {
-		close();
+		fechar();
 	}
 
 	private void paraEditarFornecedor() {
@@ -240,7 +247,7 @@ public class CadFornecedorController implements Initializable {
 		btnExcluir.setVisible(false);
 	}
 
-	private void close() {
+	private void fechar() {
 		new PesquisaFornecedorController().getPesquisaFornecedor().show();
 		fornecedorStatic = null;
 		CadFornecedor.close();

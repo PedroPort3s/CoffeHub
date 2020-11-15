@@ -37,6 +37,11 @@ public class Fornecedor extends Pessoa {
 		return data_contrato;
 	}
 
+	public String getData_contratoString() {
+		DateTimeFormatter dataFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		return data_contrato.format(dataFormat);
+	}
+	
 	public void setData_contrato(LocalDate data_contrato) {
 		this.data_contrato = data_contrato;
 	}
