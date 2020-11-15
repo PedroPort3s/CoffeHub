@@ -238,11 +238,8 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 	}
 
 	@Override
-	public List<Funcionario> listar() {
-		
-		
+	public List<Funcionario> listar() {		
 		List<Funcionario> listFunc = new ArrayList<>();
-		
 		
 		String sql = "SELECT * FROM " + EnumPessoa.pessoa + " p" + " inner join " + EnumFuncionario.funcionario + " f "
 				+ "on p." + EnumPessoa.cod + "=" + EnumFuncionario.cod_pessoa;

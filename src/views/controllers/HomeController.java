@@ -6,6 +6,7 @@ import java.util.Optional;
 import java.util.ResourceBundle;
 
 import control.compra_venda.ControlCompra;
+import control.compra_venda.ControlVenda;
 import dao.FuncionarioDAO;
 import entitys.Funcionario;
 import javafx.event.ActionEvent;
@@ -23,6 +24,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import utils.Logado;
 import views.controllers.cliente.PesquisaClienteController;
 import views.controllers.fornecedor.PesquisaFornecedorController;
 
@@ -33,8 +35,6 @@ import views.controllers.funcionario.PesquisaFuncionarioController;
 public class HomeController implements Initializable{
 
 	private static Stage Home;
-	
-	private static Funcionario FuncionarioEstatico = new Funcionario();	
 	
     @FXML
     private Button btnOverview;
@@ -81,6 +81,9 @@ public class HomeController implements Initializable{
     
     @FXML
     private Label lblTotalCompras;
+
+    @FXML
+    private Label lblTotalVendas;
     
 
 	public Stage getHome() {
@@ -96,7 +99,6 @@ public class HomeController implements Initializable{
 			}
 		  catch(Exception e)
 		  	{
-			  e.printStackTrace();
 			  Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
 			  alert.showAndWait();	
 		  	}
@@ -179,6 +181,7 @@ public class HomeController implements Initializable{
     	
     	Optional<ButtonType> result = alert.showAndWait();
     	 if (result.isPresent() && result.get() == ButtonType.OK) {
+    		 Logado.Funcionario = null;
     	     System.exit(0);
     	 }  
     }
@@ -215,30 +218,6 @@ public class HomeController implements Initializable{
     	}
     }
     
-    private void configurarAcessos() {
-    	if(FuncionarioEstatico != null) {
-    		FuncionarioEstatico = new FuncionarioDAO().buscarId(FuncionarioEstatico.getCod());
-    		if(Home != null) {
-    			Home.setOnShown(acao -> {
-    				configurarAcessos();    				
-    			});
-    		}
-    		if(FuncionarioEstatico.getCod_acesso() == 1) {
-    			//TODO todo poderoso
-    		}
-    		if(FuncionarioEstatico.getCod_acesso() == 2) {
-    			btnVendas.setDisable(true);
-    			btnFornecedores.setDisable(false);
-    			System.out.println("false");
-    		}
-    		if(FuncionarioEstatico.getCod_acesso() == 3) {
-    			btnFornecedores.setDisable(true);
-    			System.out.println("true");
-    		}
-    		
-    	}
-    }
-    
     @FXML
     void initialize() {
         assert btnOverview != null : "fx:id=\"btnOverview\" was not injected: check your FXML file 'Home.fxml'.";
@@ -264,26 +243,16 @@ public class HomeController implements Initializable{
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
 		try 
-		{						
-			lblTotalCompras.setText(new ControlCompra().TotalVendasDia(new Date()) + "");
-			configurarAcessos();
+		{
+			lblTotalCompras.setText(new ControlCompra().TotalComprasDia(new Date()) + "");
+			lblTotalVendas.setText(new ControlVenda().TotalVendasDia(new Date()) + "");			
 		} 
 		catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);
-			e.printStackTrace();
 			alert.setTitle("Atenção");
 			alert.setHeaderText(e.getMessage());
 
 			alert.showAndWait();
 		}
 	}
-
-	public static Funcionario getFuncionario() {
-		return FuncionarioEstatico;
-	}
-	
-	public static void setFuncionario(Funcionario func) {
-		FuncionarioEstatico = func;
-	}
-	
 }

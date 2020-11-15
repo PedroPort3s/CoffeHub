@@ -6,11 +6,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import Helper.db;
 import dao.ProdutoDAO;
 import dao.interfaces.ICompraVendaItem;
 import entitys.Venda_Item;
+import utils.db;
 
 public class Venda_ItemDAO implements ICompraVendaItem<Venda_Item> {
 	
