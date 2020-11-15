@@ -13,6 +13,7 @@ import exceptions.TextoInvalidoException;
 import java.net.URL;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -111,7 +112,7 @@ public class CadClienteController implements Initializable {
 			Alert alert = new Alert(AlertType.CONFIRMATION, "Cliente editado com sucesso", ButtonType.OK);
 			alert.setHeaderText("Cliente editado!!");
 			alert.showAndWait();
-			close();
+			fechar();
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING, e.getMessage(), ButtonType.OK);
 			alert.setHeaderText("Atenção");
@@ -122,12 +123,18 @@ public class CadClienteController implements Initializable {
 	@FXML
 	void btnExcluir_Action(ActionEvent event) {
 		try {
-			dao.deletar(clienteStatic.getCod());
+			Alert alert = new Alert(AlertType.CONFIRMATION);
 
-			Alert alert = new Alert(AlertType.CONFIRMATION, "Cliente excluído com sucesso", ButtonType.OK);
-			alert.setHeaderText("Cliente excluído!!");
-			alert.showAndWait();
-			close();
+			alert.setTitle("Excluir Cliente");
+			alert.setHeaderText(
+					" Caso o Cliente seja excluído seus dados serão perdidos permanentemente!");
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.isPresent() && result.get() == ButtonType.OK) {
+				if (clienteStatic != null) {
+					dao.deletar(clienteStatic.getCod());
+					fechar();
+				}
+			}
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
 			alert.setHeaderText("Atenção");
@@ -149,7 +156,7 @@ public class CadClienteController implements Initializable {
 			Alert alert = new Alert(AlertType.CONFIRMATION, "Cliente cadastrado com sucesso", ButtonType.OK);
 			alert.setHeaderText("Cliente cadastrado!!");
 			alert.showAndWait();
-			close();
+			fechar();
 		} catch (CampoVazioException e) {
 			Alert alert = new Alert(AlertType.WARNING, e.getMessage(), ButtonType.OK);
 			alert.setHeaderText("Atenção");
@@ -220,7 +227,7 @@ public class CadClienteController implements Initializable {
 
 	@FXML
 	void btnVoltar_Action(ActionEvent event) {
-		close();
+		fechar();
 	}
 
 	private void paraEditarCliente() {
@@ -244,7 +251,7 @@ public class CadClienteController implements Initializable {
 		btnExcluir.setVisible(false);
 	}
 
-	private void close() {
+	private void fechar() {
 		new PesquisaClienteController().getPesquisaCliente().show();
 		clienteStatic = null;
 		CadCliente.close();

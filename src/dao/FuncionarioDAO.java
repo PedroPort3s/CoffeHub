@@ -201,7 +201,8 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 			if (resultSet.next()) {
 				if (resultSet.getDate(EnumFuncionario.data_demissao.name()) == null) {
 					funcionario = new Funcionario(
-							resultSet.getDate(EnumFuncionario.data_contratacao.name()).toLocalDate(), null,
+							resultSet.getDate(EnumFuncionario.data_contratacao.name()).toLocalDate(), 
+							null,
 							resultSet.getDouble(EnumFuncionario.salario.name()),
 							resultSet.getString(EnumFuncionario.senha_funcionario.name()),
 							resultSet.getInt(EnumFuncionario.cod_acesso.name()),

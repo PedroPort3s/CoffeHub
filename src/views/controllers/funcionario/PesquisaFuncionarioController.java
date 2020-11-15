@@ -13,6 +13,8 @@ import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 
 import dao.FuncionarioDAO;
+import entitys.Cliente;
+import entitys.Fornecedor;
 import entitys.Funcionario;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ObservableValue;
@@ -36,6 +38,7 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Callback;
+import utils.Formatacao;
 import utils.GenericTableButton;
 import views.controllers.HomeController;
 
@@ -72,10 +75,10 @@ public class PesquisaFuncionarioController {
 	private TableColumn<Funcionario, Double> cSalario;
 
 	@FXML
-	private TableColumn<Funcionario, LocalDate> cDataContratacao;
+	private TableColumn<Funcionario, String> cDataContratacao;
 
 	@FXML
-	private TableColumn<Funcionario, LocalDate> cDataDemissao;
+	private TableColumn<Funcionario, String> cDataDemissao;
 
 	@FXML
 	private TableColumn<Funcionario, String> cSenha;
@@ -150,14 +153,36 @@ public class PesquisaFuncionarioController {
 			listFunc = FXCollections.observableArrayList(dao.listar());
 
 			cCod.setCellValueFactory(new PropertyValueFactory<Funcionario, Integer>("cod"));
-			cDoc.setCellValueFactory(new PropertyValueFactory<Funcionario, String>("documento"));
-			cFone.setCellValueFactory(new PropertyValueFactory<Funcionario, String>("telefone"));
+			cCod.setMaxWidth(35);
+			cCod.setMinWidth(35);
+			cDoc.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Funcionario, String>, ObservableValue<String>>() {
+	            @Override
+	            public ObservableValue<String> call(CellDataFeatures<Funcionario, String> param) {
+	                return new ReadOnlyStringWrapper(Formatacao.formatarDocumento(param.getValue().getDocumento()));
+	            }
+	        });
+			cFone.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Funcionario, String>, ObservableValue<String>>() {
+	            @Override
+	            public ObservableValue<String> call(CellDataFeatures<Funcionario, String> param) {
+	                return new ReadOnlyStringWrapper(Formatacao.formatarTelefone(param.getValue().getTelefone()));
+	            }
+	        });	
 			cNome.setCellValueFactory(new PropertyValueFactory<Funcionario, String>("nome"));
 			cEndereco.setCellValueFactory(new PropertyValueFactory<Funcionario, String>("endereco"));
 			cEmail.setCellValueFactory(new PropertyValueFactory<Funcionario, String>("email"));
 			cSalario.setCellValueFactory(new PropertyValueFactory<Funcionario, Double>("salario"));
-			cDataContratacao.setCellValueFactory(new PropertyValueFactory<Funcionario, LocalDate>("data_contratacao"));
-			cDataDemissao.setCellValueFactory(new PropertyValueFactory<Funcionario, LocalDate>("data_demissao"));
+			cDataContratacao.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Funcionario, String>, ObservableValue<String>>() {
+	            @Override
+	            public ObservableValue<String> call(CellDataFeatures<Funcionario, String> param) {
+	                return new ReadOnlyStringWrapper(param.getValue().getData_contratacaoString());
+	            }
+	        });
+			cDataDemissao.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Funcionario, String>, ObservableValue<String>>() {
+				@Override
+				public ObservableValue<String> call(CellDataFeatures<Funcionario, String> param) {
+					return new ReadOnlyStringWrapper(param.getValue().getData_demissaoString());
+				}
+			});
 			cSenha.setCellValueFactory(new PropertyValueFactory<Funcionario, String>("senha_funcionario"));
 			cAcesso.setCellValueFactory(new PropertyValueFactory<Funcionario, Integer>("cod_acesso"));
 

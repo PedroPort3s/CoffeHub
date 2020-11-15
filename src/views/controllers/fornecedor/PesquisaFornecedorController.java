@@ -15,6 +15,8 @@ import com.jfoenix.controls.JFXTextField;
 import dao.FornecedorDAO;
 import entitys.Fornecedor;
 import entitys.Funcionario;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,6 +25,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
@@ -31,7 +34,9 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Callback;
 import views.controllers.HomeController;
+import utils.Formatacao;
 import utils.GenericTableButton;
 
 public class PesquisaFornecedorController {
@@ -64,7 +69,7 @@ public class PesquisaFornecedorController {
     private TableColumn<Fornecedor, String> cDoc;
 
     @FXML
-    private TableColumn<Fornecedor, LocalDate> cDataContratacao; 
+    private TableColumn<Fornecedor, String> cDataContratacao; 
     
     @FXML
     private TableColumn<Fornecedor, Fornecedor> cEditar;
@@ -153,12 +158,29 @@ public class PesquisaFornecedorController {
 			listForn = FXCollections.observableArrayList(dao.listar());
 			
 			cCod.setCellValueFactory(new PropertyValueFactory<Fornecedor, Integer>("cod"));
-			cDoc.setCellValueFactory(new PropertyValueFactory<Fornecedor, String>("documento"));
-			cFone.setCellValueFactory(new PropertyValueFactory<Fornecedor, String>("telefone"));
+			cCod.setMaxWidth(35);
+			cCod.setMinWidth(35);
+			cDoc.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Fornecedor, String>, ObservableValue<String>>() {
+	            @Override
+	            public ObservableValue<String> call(CellDataFeatures<Fornecedor, String> param) {
+	                return new ReadOnlyStringWrapper(Formatacao.formatarDocumento(param.getValue().getDocumento()));
+	            }
+	        });
+			cFone.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Fornecedor, String>, ObservableValue<String>>() {
+	            @Override
+	            public ObservableValue<String> call(CellDataFeatures<Fornecedor, String> param) {
+	                return new ReadOnlyStringWrapper(Formatacao.formatarTelefone(param.getValue().getTelefone()));
+	            }
+	        });
 			cNome.setCellValueFactory(new PropertyValueFactory<Fornecedor, String>("nome"));
 			cEndereco.setCellValueFactory(new PropertyValueFactory<Fornecedor, String>("endereco"));
 			cEmail.setCellValueFactory(new PropertyValueFactory<Fornecedor, String>("email"));
-			cDataContratacao.setCellValueFactory(new PropertyValueFactory<Fornecedor, LocalDate>("data_contrato"));
+			cDataContratacao.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Fornecedor, String>, ObservableValue<String>>() {
+	            @Override
+	            public ObservableValue<String> call(CellDataFeatures<Fornecedor, String> param) {
+	                return new ReadOnlyStringWrapper(param.getValue().getData_contratoString());
+	            }
+	        });
 			
 			tableView.setItems(listForn);
 			
