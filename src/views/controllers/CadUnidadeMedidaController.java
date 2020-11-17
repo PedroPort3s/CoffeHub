@@ -172,9 +172,10 @@ public class CadUnidadeMedidaController implements Initializable {
 
 	@FXML
 	void btnVoltar_Action(ActionEvent event) {
+		Limpar();
 		CadUnidadeMedida = null;
 		CadUnidadeMedida.close();
-		new HomeController().getHome().show();
+		new PesquisaUnidadeMedidaController().getPesquisaUnidadeMedida().show();
 	}
 
 	private void Limpar() {
