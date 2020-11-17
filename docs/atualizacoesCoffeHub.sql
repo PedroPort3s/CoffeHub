@@ -35,7 +35,7 @@ create table UnidadeMedida(
 
 alter table Produto drop column un_medida;
 alter table Produto add column idUnidadeMedida int;
-alter table Produto add foreign key (codUnidadeMedida) references UnidadeMedida(id);
+alter table Produto add foreign key (idUnidadeMedida) references UnidadeMedida(id);
 
 select * from Produto
 

@@ -12,8 +12,10 @@ import com.jfoenix.controls.JFXTextField;
 
 import control.produto.ControlCategoria;
 import control.produto.ControlProduto;
+import control.produto.ControlUnidadeMedida;
 import entitys.Categoria;
 import entitys.Produto;
+import entitys.UnidadeMedida;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -56,7 +58,7 @@ public class CadProdutoController implements Initializable {
 	private JFXTextField txtQtd;
 
 	@FXML
-	private JFXTextField txtUnMedida;
+	private JFXComboBox<UnidadeMedida> cbUnidadeMedida;
 
 	@FXML
 	private JFXComboBox<Categoria> cbCategoria;
@@ -90,9 +92,10 @@ public class CadProdutoController implements Initializable {
 
 		try {
 			Categoria categoriaSelecionada = this.cbCategoria.getSelectionModel().getSelectedItem();
+			UnidadeMedida unidadeSelecionada = this.cbUnidadeMedida.getSelectionModel().getSelectedItem();
 
 			Produto produto = new Produto(txtDescricao.getText(), txtValor.getText(), txtQtd.getText(),
-					txtUnMedida.getText(), categoriaSelecionada);
+					unidadeSelecionada, categoriaSelecionada);
 
 			if (new ControlProduto().Inserir(produto) == 1) {
 				Limpar();
@@ -161,16 +164,50 @@ public class CadProdutoController implements Initializable {
 
 	}
 
+	void ListarUnidade() throws Exception {
+		try {
+			List<UnidadeMedida> lstUnidadeMedida = new ControlUnidadeMedida().Listar("");
+
+			ObservableList<UnidadeMedida> unidades = FXCollections.observableArrayList(lstUnidadeMedida);
+
+			cbUnidadeMedida.setItems(unidades);
+		}
+
+		catch (ClassNotFoundException e) {
+			Alert alert = new Alert(AlertType.WARNING);
+
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+
+			alert.showAndWait();
+		} catch (SQLException e) {
+			Alert alert = new Alert(AlertType.WARNING);
+
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+
+			alert.showAndWait();
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.WARNING);
+
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+
+			alert.showAndWait();
+		}
+
+	}
+
 	void Limpar() {
 		txtCodProd.setText("");
 		txtDescricao.setText("");
 		txtQtd.setText("");
-		txtUnMedida.setText("");
 		txtValor.setText("");
 		btnEditar.setVisible(false);
 		btnExcluir.setVisible(false);
 		btnGravar.setVisible(true);
 		cbCategoria.getSelectionModel().select(null);
+		cbUnidadeMedida.getSelectionModel().select(null);
 		ProdutoEstatico = null;
 	}
 
@@ -185,10 +222,11 @@ public class CadProdutoController implements Initializable {
 		if (result.isPresent() && result.get() == ButtonType.OK) {
 			try {
 				Categoria categoriaSelecionada = this.cbCategoria.getSelectionModel().getSelectedItem();
+				UnidadeMedida unidadeSelecionada = this.cbUnidadeMedida.getSelectionModel().getSelectedItem();
 
 				Produto produtoEditar = new Produto(Integer.parseInt(txtCodProd.getText()), txtDescricao.getText(),
-						Double.parseDouble(txtValor.getText()), Integer.parseInt(txtQtd.getText()),
-						txtUnMedida.getText(), categoriaSelecionada);
+						Double.parseDouble(txtValor.getText()), Integer.parseInt(txtQtd.getText()), unidadeSelecionada,
+						categoriaSelecionada);
 
 				if (new ControlProduto().Editar(produtoEditar) == 1) {
 					Limpar();
@@ -257,7 +295,6 @@ public class CadProdutoController implements Initializable {
 					txtCodProd.setText(produto.getCod() + "");
 					txtDescricao.setText(produto.getDescricao());
 					txtQtd.setText(produto.getQtd_atual() + "");
-					txtUnMedida.setText(produto.getUnidadeMedida());
 					txtValor.setText(produto.getValor_un() + "");
 
 					Categoria c = produto.getCategoria();
@@ -269,6 +306,16 @@ public class CadProdutoController implements Initializable {
 							.orElse(null);
 
 					cbCategoria.getSelectionModel().select(indice.getCod() - 1);
+
+					UnidadeMedida u = produto.getUnidadeMedida();
+
+					List<UnidadeMedida> lstUnidades = new ControlUnidadeMedida().Listar("");
+					ObservableList<UnidadeMedida> unidades = FXCollections.observableArrayList(lstUnidades);
+
+					UnidadeMedida indiceUn = unidades.stream().filter(x -> x.getId() == u.getId()).findFirst()
+							.orElse(null);
+
+					cbUnidadeMedida.getSelectionModel().select(indiceUn.getId() - 1);
 
 					btnEditar.setVisible(true);
 					btnExcluir.setVisible(true);
@@ -301,6 +348,7 @@ public class CadProdutoController implements Initializable {
 		if (ProdutoEstatico != null) {
 			try {
 				this.ListarCategoria();
+				this.ListarUnidade();
 				this.CarregarProduto(ProdutoEstatico);
 			} catch (Exception e) {
 				Alert alert = new Alert(AlertType.WARNING);

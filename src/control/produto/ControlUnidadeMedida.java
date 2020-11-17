@@ -50,37 +50,17 @@ public class ControlUnidadeMedida {
 		return retorno;
 	}
 
-	public int Editar(UnidadeMedida cat) throws ClassNotFoundException, SQLException {
+	public int Editar(UnidadeMedida unidade) throws ClassNotFoundException, SQLException, Exception {
 		int retorno = 0;
 
 		try {
 
-			this.ValidarUnidadeMedidaId(cat);
+			this.ValidarUnidadeMedidaId(unidade);
 
 			Connection conn = ConexaoMySql.getInstance().getConnection();
-			UnidadeMedidaDAO catDAO = new UnidadeMedidaDAO(conn);
+			UnidadeMedidaDAO unidadeDAO = new UnidadeMedidaDAO(conn);
 
-			retorno = catDAO.Editar(cat);
-
-			conn.close();
-		} catch (SQLException ex) {
-			throw ex;
-		}
-
-		return retorno;
-	}
-
-	public UnidadeMedida Carregar(int id) throws Exception {
-		UnidadeMedida cat = null;
-		try {
-
-			if (id <= 0)
-				throw new Error("Informe uma ID válida para carregar uma UnidadeMedida.");
-
-			Connection conn = ConexaoMySql.getInstance().getConnection();
-			UnidadeMedidaDAO catDAO = new UnidadeMedidaDAO(conn);
-
-			cat = catDAO.Carregar(id);
+			retorno = unidadeDAO.Editar(unidade);
 
 			conn.close();
 		} catch (SQLException ex) {
@@ -89,21 +69,43 @@ public class ControlUnidadeMedida {
 			throw e;
 		}
 
-		return cat;
+		return retorno;
+	}
+
+	public UnidadeMedida Carregar(int id) throws Exception {
+		UnidadeMedida unidade = null;
+		try {
+
+			if (id <= 0)
+				throw new Exception("Informe uma ID válida para carregar uma UnidadeMedida.");
+
+			Connection conn = ConexaoMySql.getInstance().getConnection();
+			UnidadeMedidaDAO unidadeDAO = new UnidadeMedidaDAO(conn);
+
+			unidade = unidadeDAO.Carregar(id);
+
+			conn.close();
+		} catch (SQLException ex) {
+			throw ex;
+		} catch (Exception e) {
+			throw e;
+		}
+
+		return unidade;
 	}
 
 	public List<UnidadeMedida> Listar(String pesquisa) throws Exception {
 
-		List<UnidadeMedida> lstCat = null;
+		List<UnidadeMedida> lstUnidade = null;
 		try {
 
 			Connection conn = ConexaoMySql.getInstance().getConnection();
-			UnidadeMedidaDAO catDAO = new UnidadeMedidaDAO(conn);
+			UnidadeMedidaDAO unidadeDAO = new UnidadeMedidaDAO(conn);
 
 			if (pesquisa.trim().equals("")) {
-				lstCat = catDAO.Buscar();
+				lstUnidade = unidadeDAO.Buscar();
 			} else {
-				lstCat = catDAO.Buscar(pesquisa);
+				lstUnidade = unidadeDAO.Buscar(pesquisa);
 			}
 
 			conn.close();
@@ -111,26 +113,26 @@ public class ControlUnidadeMedida {
 			throw ex;
 		}
 
-		return lstCat;
+		return lstUnidade;
 	}
 
-	private void ValidarUnidadeMedida(UnidadeMedida unidade) {
+	private void ValidarUnidadeMedida(UnidadeMedida unidade) throws Exception {
 		if (unidade == null)
-			throw new Error("Informe uma UnidadeMedida para a gravação.");
+			throw new Exception("Informe uma UnidadeMedida para a gravação.");
 
 		if (unidade.getNome().trim().equals(""))
-			throw new Error("Informe um nome para a Unidade de medida.");
+			throw new Exception("Informe um nome para a Unidade de medida.");
 	}
 
-	private void ValidarUnidadeMedidaId(UnidadeMedida unidade) {
+	private void ValidarUnidadeMedidaId(UnidadeMedida unidade) throws Exception {
 		if (unidade == null)
-			throw new Error("Informe uma UnidadeMedida para a gravação.");
+			throw new Exception("Informe uma UnidadeMedida para a gravação.");
 
 		if (unidade.getId() <= 0)
-			throw new Error("Informe um código válido para a Unidade de medida.");
+			throw new Exception("Informe um código válido para a Unidade de medida.");
 
 		if (unidade.getNome().trim().equals(""))
-			throw new Error("Informe um nome para a Unidade de medida.");
+			throw new Exception("Informe um nome para a Unidade de medida.");
 	}
 
 }
