@@ -26,3 +26,17 @@ drop primary key;
 alter table vendaitem 
 add primary key (num_item, cod_venda, cod_Produto);
 
+create table UnidadeMedida(
+	id int primary key,
+	codUnidade varchar(2) unique,
+    nome varchar(50),
+    permiteFracionada varchar(1)
+);
+
+alter table Produto drop column un_medida;
+alter table Produto add column idUnidadeMedida int;
+alter table Produto add foreign key (codUnidadeMedida) references UnidadeMedida(id);
+
+select * from Produto
+
+

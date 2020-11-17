@@ -3,6 +3,7 @@ package entitys;
 import java.util.List;
 
 import control.produto.ControlProduto;
+import utils.Verifica;
 
 public class Compra_Item {
 
@@ -63,6 +64,19 @@ public class Compra_Item {
 			new ControlProduto().ValidarProdutoId(item.getProduto());
 		else 
 			throw new Exception("Produto não informado");
+		
+		if(item.getProduto().getUnidadeMedida() != null)
+		{
+			if(item.getProduto().getUnidadeMedida().getPermiteFracionado() == false) {
+				if(!Verifica.NumeroInt(item.getQtd_item())) {
+					throw new Exception("A unidade de medida: " + item.getProduto().getUnidadeMedida().getNome() + " não permite venda fracionada");
+				}
+			}
+		}
+		else {
+			throw new Exception("Informe a unidade de medida do produto.");
+		}
+		
 		if(item.getQtd_item() <= 0)
 			throw new Exception("Quantidade invalida");
 		if(item.getValor_unitario() <=0)
@@ -76,6 +90,19 @@ public class Compra_Item {
 			new ControlProduto().ValidarProdutoId(item.getProduto());
 		else 
 			throw new Exception("Produto não informado");
+		
+		if(item.getProduto().getUnidadeMedida() != null)
+		{
+			if(item.getProduto().getUnidadeMedida().getPermiteFracionado() == false) {
+				if(!Verifica.NumeroInt(item.getQtd_item())) {
+					throw new Exception("A unidade de medida: " + item.getProduto().getUnidadeMedida().getNome() + " não permite venda fracionada");
+				}
+			}
+		}
+		else {
+			throw new Exception("Informe a unidade de medida do produto.");
+		}
+		
 		if(item.getQtd_item() <= 0)
 			throw new Exception("Quantidade invalida");
 		if(item.getValor_unitario() <=0)

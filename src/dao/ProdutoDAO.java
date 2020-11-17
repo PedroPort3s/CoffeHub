@@ -20,8 +20,10 @@ public class ProdutoDAO implements IProdutoDAO {
 	
 	private String Select_ProdutoCategoria() {
 		StringBuilder sql = new StringBuilder();
-		sql.append("select p.cod_produto, p.nome_produto, p.valor_un, p.qtd_atual, p.un_medida, c.cod, c.nome");
-		sql.append(" from produto as p inner join categoria as c on c.cod = p.categoria_cod");
+		sql.append("select p.cod_produto, p.nome_produto, p.valor_un, p.qtd_atual, p.codUnidadeMedida, c.cod, c.nome");
+		sql.append(" from produto as p ");
+		sql.append(" inner join categoria as c on c.cod = p.categoria_cod");
+		sql.append(" inner join unidadeMedida as u on u.cod = p.codUnidadeMedida");
 		return sql.toString();
 	}
 
@@ -30,7 +32,7 @@ public class ProdutoDAO implements IProdutoDAO {
 		int retorno = 0;
 		
 		try {
-			String sql = "INSERT INTO produto(cod_produto,nome_produto,valor_un,qtd_atual,categoria_cod,un_medida) VALUES (?,?,?,?,?,?)";
+			String sql = "INSERT INTO produto(cod_produto,nome_produto,valor_un,qtd_atual,categoria_cod,codUnidadeMedida) VALUES (?,?,?,?,?,?)";
 
 			PreparedStatement statement = conexao.prepareStatement(sql);
 			
@@ -39,7 +41,7 @@ public class ProdutoDAO implements IProdutoDAO {
 			statement.setDouble(3, prod.getValor_un());
 			statement.setInt(4, prod.getQtd_atual());
 			statement.setInt(5, prod.getCategoria().getCod());
-			statement.setString(6, prod.getUnidadeMedida());
+			statement.setInt(6, prod.getUnidadeMedida().getId());
 			
 			retorno = statement.executeUpdate();
 			
@@ -92,7 +94,7 @@ public class ProdutoDAO implements IProdutoDAO {
 			sql.append("valor_un = "+prod.getValor_un()+",");
 			sql.append("qtd_atual = "+prod.getQtd_atual()+",");
 			sql.append("Categoria_cod = "+prod.getCategoria().getCod() + ",");
-			sql.append("un_medida = '"+prod.getUnidadeMedida()+"'");
+			sql.append("idUnidadeMedida = "+prod.getUnidadeMedida().getCod());
 			sql.append(" WHERE cod_produto = "+prod.getCod());
 
 			PreparedStatement statement = conexao.prepareStatement(sql.toString());
@@ -142,7 +144,7 @@ public class ProdutoDAO implements IProdutoDAO {
 	}
 
 	@Override
-	public List<Produto> Buscar(String pesquisa) throws ClassNotFoundException, SQLException {
+	public List<Produto> Buscar(String pesquisa) throws Exception {
 		
 		List<Produto> lista = new ArrayList<Produto>();
 		
@@ -183,7 +185,7 @@ public class ProdutoDAO implements IProdutoDAO {
 		return lista;
 	}
 	
-	public List<Produto> Buscar_Produtos_e_Categoria(String pesquisa, int codCategoria) throws ClassNotFoundException, SQLException {
+	public List<Produto> Buscar_Produtos_e_Categoria(String pesquisa, int codCategoria) throws Exception {
 		List<Produto> lista = new ArrayList<Produto>();
 		try {
 
@@ -226,7 +228,7 @@ public class ProdutoDAO implements IProdutoDAO {
 	}
 
 	@Override
-	public List<Produto> Buscar() throws ClassNotFoundException, SQLException {
+	public List<Produto> Buscar() throws Exception {
 		List<Produto> lista = new ArrayList<Produto>();
 		try {
 
@@ -257,13 +259,13 @@ public class ProdutoDAO implements IProdutoDAO {
 		return lista;
 	}
 	
-	public Produto PreencherProduto(ResultSet resultSet) throws SQLException, ClassNotFoundException {
+	public Produto PreencherProduto(ResultSet resultSet) throws Exception {
 		Produto prod = new Produto();
 		prod.setCod(resultSet.getInt("p.cod_produto"));
 		prod.setDescricao(resultSet.getString("p.nome_produto"));
 		prod.setValor_un(resultSet.getDouble("p.valor_un"));
 		prod.setQtd_atual(resultSet.getInt("p.qtd_atual"));
-		prod.setUnidadeMedida(resultSet.getString("p.un_medida"));
+		prod.setUnidadeMedida(new UnidadeMedidaDAO(conexao).Carregar(resultSet.getInt("p.codUnidadeMedida")));
 		prod.setCategoria(new CategoriaDAO(conexao).Carregar(resultSet.getInt("c.cod")));
 		return prod;
 	}

@@ -3,6 +3,7 @@ package entitys;
 import java.util.List;
 
 import control.produto.ControlProduto;
+import utils.Verifica;
 
 public class Venda_Item {
 
@@ -45,40 +46,64 @@ public class Venda_Item {
 	public void setProduto(Produto produto) {
 		this.produto = produto;
 	}
-	
-	public static void ValidarVendaItens(List<Venda_Item> itens) throws Exception{
+
+	public static void ValidarVendaItens(List<Venda_Item> itens) throws Exception {
 		if (itens != null) {
-			for(Venda_Item item: itens) {
-				ValidarVendaItemNumItem(item);	
+			for (Venda_Item item : itens) {
+				ValidarVendaItemNumItem(item);
 			}
 		}
 	}
-	
-	public static void ValidarVendaItemNumItem(Venda_Item item) throws Exception{
-		if(item == null)
+
+	public static void ValidarVendaItemNumItem(Venda_Item item) throws Exception {
+		if (item == null)
 			throw new Exception("Item invalido");
-		if(item.getNum_item() <= 0)
+		if (item.getNum_item() <= 0)
 			throw new Exception("Item invalido");
-		if(item.getProduto() != null)
+		if (item.getProduto() != null)
 			new ControlProduto().ValidarProdutoId(item.getProduto());
-		else 
+		else
 			throw new Exception("Produto não informado");
-		if(item.getQtd_item() <= 0)
+
+		if (item.getProduto().getUnidadeMedida() != null) {
+			if (item.getProduto().getUnidadeMedida().getPermiteFracionado() == false) {
+				if (!Verifica.NumeroInt(item.getQtd_item())) {
+					throw new Exception("A unidade de medida: " + item.getProduto().getUnidadeMedida().getNome()
+							+ " não permite venda fracionada");
+				}
+			}
+		} else {
+			throw new Exception("Informe a unidade de medida do produto.");
+		}
+
+		if (item.getQtd_item() <= 0)
 			throw new Exception("Quantidade invalida");
-		if(item.getValor_venda() <=0)
+		if (item.getValor_venda() <= 0)
 			throw new Exception("Valor invalido");
 	}
-	
-	public static void ValidarVendaItem(Venda_Item item) throws Exception{
-		if(item == null)
+
+	public static void ValidarVendaItem(Venda_Item item) throws Exception {
+		if (item == null)
 			throw new Exception("Item invalido");
-		if(item.getProduto() != null)
+		if (item.getProduto() != null)
 			new ControlProduto().ValidarProdutoId(item.getProduto());
-		else 
+		else
 			throw new Exception("Produto não informado");
-		if(item.getQtd_item() <= 0)
+
+		if (item.getProduto().getUnidadeMedida() != null) {
+			if (item.getProduto().getUnidadeMedida().getPermiteFracionado() == false) {
+				if (!Verifica.NumeroInt(item.getQtd_item())) {
+					throw new Exception("A unidade de medida: " + item.getProduto().getUnidadeMedida().getNome()
+							+ " não permite venda fracionada");
+				}
+			}
+		} else {
+			throw new Exception("Informe a unidade de medida do produto.");
+		}
+
+		if (item.getQtd_item() <= 0)
 			throw new Exception("Quantidade invalida");
-		if(item.getValor_venda() <=0)
+		if (item.getValor_venda() <= 0)
 			throw new Exception("Valor invalido");
 	}
 }

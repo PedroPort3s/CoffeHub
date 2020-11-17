@@ -16,12 +16,12 @@ public class Produto {
 	
 	private int qtd_atual;
 
-	private String unidadeMedida;
+	private UnidadeMedida unidadeMedida;
 
 	private Categoria categoria;
 
 
-	public Produto(String descricao, double valor_un, int qtd_atual, String unidadeMedida, Categoria categoria) {
+	public Produto(String descricao, double valor_un, int qtd_atual, UnidadeMedida unidadeMedida, Categoria categoria) {
 		super();
 		this.descricao = descricao;
 		this.valor_un = valor_un;
@@ -31,7 +31,7 @@ public class Produto {
 	}
 		
 	
-	public Produto(int cod, String descricao, double valor_un, int qtd_atual, String unidadeMedida,
+	public Produto(int cod, String descricao, double valor_un, int qtd_atual, UnidadeMedida unidadeMedida,
 			Categoria categoria) {
 		super();
 		this.cod = cod;
@@ -43,7 +43,7 @@ public class Produto {
 	}
 
 
-	public Produto(String descricao, String valor_un, String qtd_atual, String unidadeMedida, Categoria categoriaSelecionada) {
+	public Produto(String descricao, String valor_un, String qtd_atual, UnidadeMedida unidadeMedida, Categoria categoriaSelecionada) {
 		super();
 		this.descricao = descricao;
 		this.setValor_un(valor_un);
@@ -104,11 +104,11 @@ public class Produto {
 		this.qtd_atual = qtd_atual;
 	}
 
-	public String getUnidadeMedida() {
+	public UnidadeMedida getUnidadeMedida() {
 		return unidadeMedida;
 	}
 
-	public void setUnidadeMedida(String unidadeMedida) {
+	public void setUnidadeMedida(UnidadeMedida unidadeMedida) {
 		this.unidadeMedida = unidadeMedida;
 	}
 
