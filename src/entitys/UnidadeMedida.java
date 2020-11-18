@@ -10,6 +10,17 @@ public class UnidadeMedida {
 		return id;
 	}
 
+	public UnidadeMedida(int id, String cod, String nome, Boolean permiteFracionado) {
+		super();
+		this.id = id;
+		this.cod = cod;
+		this.nome = nome;
+		this.permiteFracionado = permiteFracionado;
+	}
+	
+	public UnidadeMedida() {}
+
+
 	public void setId(int id) {
 		this.id = id;
 	}

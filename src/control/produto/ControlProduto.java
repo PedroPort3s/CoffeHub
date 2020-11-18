@@ -137,7 +137,7 @@ public class ControlProduto {
 		return lstProd;
 	}
 
-	public List<Produto> ListarEmCategoria(String pesquisa, int codCategoria) throws Exception {
+	public List<Produto> ListarCategoriaUnidadeMedida(String pesquisa, int codCategoria, int idUnidadeMedida) throws Exception {
 		List<Produto> lstProd = null;
 		try {
 
@@ -148,7 +148,7 @@ public class ControlProduto {
 
 			ProdutoDAO prodDAO = new ProdutoDAO(conn);
 
-			lstProd = prodDAO.Buscar_Produtos_e_Categoria(pesquisa, codCategoria);
+			lstProd = prodDAO.Buscar_ProdutosCategoriaUnidadeMedida(pesquisa, codCategoria,idUnidadeMedida);
 
 			conn.close();
 		} catch (SQLException ex) {

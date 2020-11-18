@@ -119,9 +119,19 @@ public class ControlUnidadeMedida {
 	private void ValidarUnidadeMedida(UnidadeMedida unidade) throws Exception {
 		if (unidade == null)
 			throw new Exception("Informe uma UnidadeMedida para a gravação.");
+		
+		if (unidade.getCod().trim().equals(""))
+			throw new Exception("Informe um código para a unidade de medida.");
+		
+		if (unidade.getCod().length() > 2 || unidade.getCod().length() < 2)
+			throw new Exception("Informe um código com dois caracteres para a unidade de medida.");
 
 		if (unidade.getNome().trim().equals(""))
 			throw new Exception("Informe um nome para a Unidade de medida.");
+		
+		if (unidade.getNome().length() < 3)
+			throw new Exception("Informe um nome com pelo menos 3 caracteres.");
+		
 	}
 
 	private void ValidarUnidadeMedidaId(UnidadeMedida unidade) throws Exception {
@@ -131,8 +141,17 @@ public class ControlUnidadeMedida {
 		if (unidade.getId() <= 0)
 			throw new Exception("Informe um código válido para a Unidade de medida.");
 
+		if (unidade.getCod().trim().equals(""))
+			throw new Exception("Informe um código para a unidade de medida.");
+		
+		if (unidade.getCod().length() > 2 || unidade.getCod().length() < 2)
+			throw new Exception("Informe um código com dois caracteres para a unidade de medida.");
+
 		if (unidade.getNome().trim().equals(""))
 			throw new Exception("Informe um nome para a Unidade de medida.");
+		
+		if (unidade.getNome().length() < 3)
+			throw new Exception("Informe um nome com pelo menos 3 caracteres.");
 	}
 
 }

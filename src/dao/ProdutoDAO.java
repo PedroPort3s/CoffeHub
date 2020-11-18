@@ -20,10 +20,10 @@ public class ProdutoDAO implements IProdutoDAO {
 	
 	private String Select_ProdutoCategoria() {
 		StringBuilder sql = new StringBuilder();
-		sql.append("select p.cod_produto, p.nome_produto, p.valor_un, p.qtd_atual, p.codUnidadeMedida, c.cod, c.nome");
+		sql.append("select p.cod_produto, p.nome_produto, p.valor_un, p.qtd_atual, p.idUnidadeMedida, c.cod, c.nome");
 		sql.append(" from produto as p ");
 		sql.append(" inner join categoria as c on c.cod = p.categoria_cod");
-		sql.append(" inner join unidadeMedida as u on u.cod = p.codUnidadeMedida");
+		sql.append(" inner join unidadeMedida as u on u.codUnidade = p.idUnidadeMedida");
 		return sql.toString();
 	}
 
@@ -32,7 +32,7 @@ public class ProdutoDAO implements IProdutoDAO {
 		int retorno = 0;
 		
 		try {
-			String sql = "INSERT INTO produto(cod_produto,nome_produto,valor_un,qtd_atual,categoria_cod,codUnidadeMedida) VALUES (?,?,?,?,?,?)";
+			String sql = "INSERT INTO produto(cod_produto,nome_produto,valor_un,qtd_atual,categoria_cod,idUnidadeMedida) VALUES (?,?,?,?,?,?)";
 
 			PreparedStatement statement = conexao.prepareStatement(sql);
 			
@@ -185,7 +185,7 @@ public class ProdutoDAO implements IProdutoDAO {
 		return lista;
 	}
 	
-	public List<Produto> Buscar_Produtos_e_Categoria(String pesquisa, int codCategoria) throws Exception {
+	public List<Produto> Buscar_ProdutosCategoriaUnidadeMedida(String pesquisa, int codCategoria, int idUnidadeMedida) throws Exception {
 		List<Produto> lista = new ArrayList<Produto>();
 		try {
 
@@ -201,6 +201,10 @@ public class ProdutoDAO implements IProdutoDAO {
 			
 			if(codCategoria > 0) {
 				sql.append("and c.cod="+codCategoria);
+			}
+			
+			if(idUnidadeMedida > 0) {
+				sql.append("and p.idUnidadeMedida="+idUnidadeMedida);
 			}
 
 			PreparedStatement statement = conexao.prepareStatement(sql.toString());
@@ -265,7 +269,7 @@ public class ProdutoDAO implements IProdutoDAO {
 		prod.setDescricao(resultSet.getString("p.nome_produto"));
 		prod.setValor_un(resultSet.getDouble("p.valor_un"));
 		prod.setQtd_atual(resultSet.getInt("p.qtd_atual"));
-		prod.setUnidadeMedida(new UnidadeMedidaDAO(conexao).Carregar(resultSet.getInt("p.codUnidadeMedida")));
+		prod.setUnidadeMedida(new UnidadeMedidaDAO(conexao).Carregar(resultSet.getInt("p.idUnidadeMedida")));
 		prod.setCategoria(new CategoriaDAO(conexao).Carregar(resultSet.getInt("c.cod")));
 		return prod;
 	}
