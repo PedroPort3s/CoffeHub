@@ -30,6 +30,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.TablePosition;
 import javafx.scene.control.TableView;
 import javafx.scene.control.Tooltip;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -155,34 +156,40 @@ public class PesquisaFuncionarioController {
 			cCod.setCellValueFactory(new PropertyValueFactory<Funcionario, Integer>("cod"));
 			cCod.setMaxWidth(35);
 			cCod.setMinWidth(35);
-			cDoc.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Funcionario, String>, ObservableValue<String>>() {
-	            @Override
-	            public ObservableValue<String> call(CellDataFeatures<Funcionario, String> param) {
-	                return new ReadOnlyStringWrapper(Formatacao.formatarDocumento(param.getValue().getDocumento()));
-	            }
-	        });
-			cFone.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Funcionario, String>, ObservableValue<String>>() {
-	            @Override
-	            public ObservableValue<String> call(CellDataFeatures<Funcionario, String> param) {
-	                return new ReadOnlyStringWrapper(Formatacao.formatarTelefone(param.getValue().getTelefone()));
-	            }
-	        });	
+			cDoc.setCellValueFactory(
+					new Callback<TableColumn.CellDataFeatures<Funcionario, String>, ObservableValue<String>>() {
+						@Override
+						public ObservableValue<String> call(CellDataFeatures<Funcionario, String> param) {
+							return new ReadOnlyStringWrapper(
+									Formatacao.formatarDocumento(param.getValue().getDocumento()));
+						}
+					});
+			cFone.setCellValueFactory(
+					new Callback<TableColumn.CellDataFeatures<Funcionario, String>, ObservableValue<String>>() {
+						@Override
+						public ObservableValue<String> call(CellDataFeatures<Funcionario, String> param) {
+							return new ReadOnlyStringWrapper(
+									Formatacao.formatarTelefone(param.getValue().getTelefone()));
+						}
+					});
 			cNome.setCellValueFactory(new PropertyValueFactory<Funcionario, String>("nome"));
 			cEndereco.setCellValueFactory(new PropertyValueFactory<Funcionario, String>("endereco"));
 			cEmail.setCellValueFactory(new PropertyValueFactory<Funcionario, String>("email"));
 			cSalario.setCellValueFactory(new PropertyValueFactory<Funcionario, Double>("salario"));
-			cDataContratacao.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Funcionario, String>, ObservableValue<String>>() {
-	            @Override
-	            public ObservableValue<String> call(CellDataFeatures<Funcionario, String> param) {
-	                return new ReadOnlyStringWrapper(param.getValue().getData_contratacaoString());
-	            }
-	        });
-			cDataDemissao.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Funcionario, String>, ObservableValue<String>>() {
-				@Override
-				public ObservableValue<String> call(CellDataFeatures<Funcionario, String> param) {
-					return new ReadOnlyStringWrapper(param.getValue().getData_demissaoString());
-				}
-			});
+			cDataContratacao.setCellValueFactory(
+					new Callback<TableColumn.CellDataFeatures<Funcionario, String>, ObservableValue<String>>() {
+						@Override
+						public ObservableValue<String> call(CellDataFeatures<Funcionario, String> param) {
+							return new ReadOnlyStringWrapper(param.getValue().getData_contratacaoString());
+						}
+					});
+			cDataDemissao.setCellValueFactory(
+					new Callback<TableColumn.CellDataFeatures<Funcionario, String>, ObservableValue<String>>() {
+						@Override
+						public ObservableValue<String> call(CellDataFeatures<Funcionario, String> param) {
+							return new ReadOnlyStringWrapper(param.getValue().getData_demissaoString());
+						}
+					});
 			cSenha.setCellValueFactory(new PropertyValueFactory<Funcionario, String>("senha_funcionario"));
 			cAcesso.setCellValueFactory(new PropertyValueFactory<Funcionario, Integer>("cod_acesso"));
 
@@ -309,6 +316,12 @@ public class PesquisaFuncionarioController {
 	@FXML
 	void btnPesquisar_Action(ActionEvent event) {
 		listarFuncionarios();
+		cDoc.setOnEditCommit(
+                (TableColumn.CellEditEvent<Funcionario, String> t) ->
+                    ( t.getTableView().getItems().get(
+                            t.getTablePosition().getRow())
+                    ).setDocumento(t.getNewValue())
+                );
 	}
 
 	@FXML
@@ -320,6 +333,23 @@ public class PesquisaFuncionarioController {
 			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
 			alert.showAndWait();
 		}
+	}
+
+	@FXML
+	void onCancelEditDoc(ActionEvent event) {
+
+		System.out.println(tableView.getSelectionModel().getSelectedItem().getCod());
+		System.out.println("cancelar o edit");
+	}
+
+	@FXML
+	void onEndEditDoc(ActionEvent event) {
+		System.out.println("terminou o edit");
+	}
+
+	@FXML
+	void onInitEditDoc(ActionEvent event) {
+		System.out.println("Iniciando o edit");
 	}
 
 	@FXML

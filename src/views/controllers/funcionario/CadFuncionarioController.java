@@ -267,7 +267,7 @@ public class CadFuncionarioController implements Initializable {
 		if (texto.equals("") || texto == null)
 			throw new CampoVazioException(msg);
 		if (!texto.matches(".*@.*") && !texto.matches(".*.com.*"))
-			throw new TextoInvalidoException("Senhas não estão iguais");
+			throw new TextoInvalidoException("Insira um email adequado");
 		return true;
 	}
 
