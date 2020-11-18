@@ -139,6 +139,36 @@ public class UnidadeMedidaDAO implements IPadraoDB<UnidadeMedida> {
 
 		return unidadeMedida;
 	}
+	
+	public UnidadeMedida Carregar(String codigo) throws Exception {
+
+		UnidadeMedida unidadeMedida = null;
+
+		try {
+
+			StringBuilder sql = new StringBuilder();
+			sql.append(this.Select_UnidadeMedida());
+			sql.append(" where codUnidade='" + codigo + "'");
+
+			PreparedStatement statement = conexao.prepareStatement(sql.toString());
+
+			ResultSet resultSet = statement.executeQuery();
+
+			if (resultSet.next()) {
+				unidadeMedida = this.PreencherUnidade(resultSet);
+			}
+
+			statement.close();
+		} catch (SQLException sqlEx) {
+			sqlEx.printStackTrace();
+			throw sqlEx;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			throw ex;
+		}
+
+		return unidadeMedida;
+	}
 
 	@Override
 	public List<UnidadeMedida> Buscar(String pesquisa) throws ClassNotFoundException, SQLException, Exception {
@@ -201,10 +231,12 @@ public class UnidadeMedidaDAO implements IPadraoDB<UnidadeMedida> {
 	}
 
 	private UnidadeMedida PreencherUnidade(ResultSet result) throws SQLException {
+		
+		
 		return new UnidadeMedida(result.getInt("id"), 
 				result.getString("codUnidade"), 
 				result.getString("nome"),
-				result.getString("permiteFracionada") == "S" ? true : false);
+				result.getString("permiteFracionada").equals("S") ? true : false);
 	}
 
 }

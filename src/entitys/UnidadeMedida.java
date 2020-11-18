@@ -49,7 +49,7 @@ public class UnidadeMedida {
 	@Override
 	public String toString() {
 		return "UnidadeMedida: " + id + " - cod: " + cod + " - nome: " + nome + " - permiteFracionado: "
-				+ permiteFracionado + "";
+				+ (permiteFracionado ? "Sim" : "Nao") + "";
 	}
 	
 	
