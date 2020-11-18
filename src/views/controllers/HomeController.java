@@ -7,18 +7,16 @@ import java.util.ResourceBundle;
 
 import control.compra_venda.ControlCompra;
 import control.compra_venda.ControlVenda;
-import dao.FuncionarioDAO;
-import entitys.Funcionario;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -27,8 +25,6 @@ import javafx.stage.StageStyle;
 import utils.Logado;
 import views.controllers.cliente.PesquisaClienteController;
 import views.controllers.fornecedor.PesquisaFornecedorController;
-
-import views.controllers.fornecedor.PesquisaFornecedorGeralController;
 import views.controllers.funcionario.PesquisaFuncionarioController;
 
 
@@ -84,6 +80,9 @@ public class HomeController implements Initializable{
 
     @FXML
     private Label lblTotalVendas;
+    
+    @FXML
+    private Button btnUnidadeMedida;
     
 
 	public Stage getHome() {
@@ -211,6 +210,19 @@ public class HomeController implements Initializable{
     	try {
     	Home.hide();
     	new PesquisaCategoriaController().getPesquisaCategoria().show();
+    	}
+		catch(Exception e)
+		{
+			Alert alert = new Alert(AlertType.ERROR,e.getMessage(),ButtonType.OK);
+			alert.showAndWait();	
+    	}
+    }
+    
+    @FXML
+    void btnUnidadeMedida_Action(ActionEvent event) {
+    	try {
+    	Home.hide();
+    	new PesquisaUnidadeMedidaController().getPesquisaUnidadeMedida().show();
     	}
 		catch(Exception e)
 		{

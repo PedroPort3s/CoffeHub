@@ -84,17 +84,26 @@ public class CadUnidadeMedidaController implements Initializable {
 	void btnEditar_Action(ActionEvent event) {
 		try {
 			UnidadeMedida unidade = new UnidadeMedida();
+			unidade.setId(Integer.parseInt(txtIdUnidade.getText()));
 			unidade.setCod(txtCodUnidade.getText());
 			unidade.setNome(txtDescricao.getText());
 
 			if (optNao.isSelected())
 				unidade.setPermiteFracionado(false);
-			else if(optSim.isSelected())
+			else if (optSim.isSelected())
 				unidade.setPermiteFracionado(true);
 			else
 				throw new Exception("Informe se a unidade permite fracionamento");
-	
-			new ControlUnidadeMedida().Editar(unidade);
+
+			if (new ControlUnidadeMedida().Editar(unidade) == 1) {
+				Limpar();
+				Alert alert = new Alert(AlertType.INFORMATION);
+
+				alert.setTitle("Sucesso");
+				alert.setHeaderText("Unidade de medida editado com sucesso");
+
+				alert.showAndWait();
+			}
 
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);
@@ -143,18 +152,26 @@ public class CadUnidadeMedidaController implements Initializable {
 	void btnGravar_Action(ActionEvent event) {
 		try {
 			UnidadeMedida unidade = new UnidadeMedida();
-			unidade.setCod(txtCodUnidade.getText());
+			unidade.setCod(txtCodUnidade.getText().toUpperCase());
 			unidade.setNome(txtDescricao.getText());
 
 			if (optNao.isSelected())
 				unidade.setPermiteFracionado(false);
-			else if(optSim.isSelected())
+			else if (optSim.isSelected())
 				unidade.setPermiteFracionado(true);
 			else
 				throw new Exception("Informe se a unidade permite fracionamento");
-	
-			new ControlUnidadeMedida().Inserir(unidade);
-			
+
+			if (new ControlUnidadeMedida().Inserir(unidade) == 1) {
+				Alert alert = new Alert(AlertType.INFORMATION);
+
+				alert.setTitle("Sucesso");
+				alert.setHeaderText("Unidade de medida cadastrada com sucesso");
+
+				alert.showAndWait();
+				Limpar();
+			}
+
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);
 
@@ -173,12 +190,13 @@ public class CadUnidadeMedidaController implements Initializable {
 	@FXML
 	void btnVoltar_Action(ActionEvent event) {
 		Limpar();
-		CadUnidadeMedida = null;
 		CadUnidadeMedida.close();
+		CadUnidadeMedida = null;
 		new PesquisaUnidadeMedidaController().getPesquisaUnidadeMedida().show();
 	}
 
 	private void Limpar() {
+		txtIdUnidade.setText("");
 		txtCodUnidade.setText("");
 		txtDescricao.setText("");
 		optNao.setSelected(true);
@@ -186,11 +204,14 @@ public class CadUnidadeMedidaController implements Initializable {
 		btnEditar.setVisible(false);
 		btnExcluir.setVisible(false);
 		btnGravar.setVisible(true);
+
+		UnidadeEstatica = null;
 	}
 
 	private void CarregarUnidade(UnidadeMedida unidade) {
 		try {
 			if (unidade != null && !unidade.getCod().equals("")) {
+				txtIdUnidade.setText(unidade.getId() + "");
 				txtCodUnidade.setText(unidade.getCod());
 				txtDescricao.setText(unidade.getNome());
 
@@ -199,6 +220,10 @@ public class CadUnidadeMedidaController implements Initializable {
 
 				else
 					optNao.setSelected(true);
+
+				btnGravar.setVisible(false);
+				btnEditar.setVisible(true);
+				btnExcluir.setVisible(true);
 
 			}
 		} catch (Exception e) {

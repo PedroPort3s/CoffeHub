@@ -45,4 +45,13 @@ public class UnidadeMedida {
 	public void setPermiteFracionado(Boolean permiteFracionado) {
 		this.permiteFracionado = permiteFracionado;
 	}
+
+	@Override
+	public String toString() {
+		return "UnidadeMedida: " + id + " - cod: " + cod + " - nome: " + nome + " - permiteFracionado: "
+				+ permiteFracionado + "";
+	}
+	
+	
+	
 }

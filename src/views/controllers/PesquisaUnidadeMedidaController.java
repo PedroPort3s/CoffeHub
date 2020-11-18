@@ -1,13 +1,14 @@
 package views.controllers;
 
-import java.awt.event.MouseEvent;
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
 import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 
+import control.produto.ControlUnidadeMedida;
 import entitys.UnidadeMedida;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,9 +18,11 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+
 
 public class PesquisaUnidadeMedidaController implements Initializable {
 
@@ -60,8 +63,8 @@ public class PesquisaUnidadeMedidaController implements Initializable {
 
 	@FXML
 	void btnCadUnidadeMedida_Action(ActionEvent event) {
-		PesquisaUnidadeMedida = null;
 		PesquisaUnidadeMedida.close();
+		PesquisaUnidadeMedida = null;
 		new CadUnidadeMedidaController().getCadUnidadeMedida().show();
 	}
 
@@ -72,14 +75,21 @@ public class PesquisaUnidadeMedidaController implements Initializable {
 
 	@FXML
 	void btnVoltar_Action(ActionEvent event) {
-		PesquisaUnidadeMedida = null;
 		PesquisaUnidadeMedida.close();
+		PesquisaUnidadeMedida = null;
 		new HomeController().getHome().show();
 
 	}
 
 	private void Listar() {
+		List<UnidadeMedida> lstUnidades = null;
+		lvUnidades.getItems().clear();
 		try {
+			lstUnidades = new ControlUnidadeMedida().Listar(txtDescricao.getText());
+			
+			if (lstUnidades != null) {
+				lstUnidades.forEach(u -> lvUnidades.getItems().add(u));
+			}
 
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);
@@ -91,14 +101,14 @@ public class PesquisaUnidadeMedidaController implements Initializable {
 		}
 	}
 
-	@FXML
-	void lvCategorias_MouseClicked(MouseEvent event) {
+    @FXML
+    void lvUnidades_MouseClicked(MouseEvent event) {
 		try {
 			UnidadeMedida unidade = lvUnidades.getSelectionModel().getSelectedItem();
 
 			if (unidade != null) {
 				CadUnidadeMedidaController.UnidadeEstatica = unidade;
-				new CadVendaController().getCadVenda().show();
+				new CadUnidadeMedidaController().getCadUnidadeMedida().show();
 				PesquisaUnidadeMedida.close();
 				PesquisaUnidadeMedida = null;
 			}
@@ -115,8 +125,7 @@ public class PesquisaUnidadeMedidaController implements Initializable {
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 		try {
-
-
+			Listar();
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
 			alert.showAndWait();

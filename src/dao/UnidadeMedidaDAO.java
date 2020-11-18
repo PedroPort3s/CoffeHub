@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import dao.interfaces.IPadraoDB;
-import entitys.Categoria;
 import entitys.UnidadeMedida;
 import utils.Verifica;
 import utils.db;
@@ -37,8 +36,8 @@ public class UnidadeMedidaDAO implements IPadraoDB<UnidadeMedida> {
 			un.setId(db.ProximaID(conexao, "id", "UnidadeMedida"));
 			statement.setInt(1, un.getId());
 			statement.setString(2, un.getCod());
-			statement.setString(2, un.getNome());
-			statement.setString(2, un.getPermiteFracionado() ? "S" : "N");
+			statement.setString(3, un.getNome());
+			statement.setString(4, un.getPermiteFracionado() ? "S" : "N");
 			retorno = statement.executeUpdate();
 
 		} catch (ClassNotFoundException classEx) {
@@ -95,6 +94,7 @@ public class UnidadeMedidaDAO implements IPadraoDB<UnidadeMedida> {
 			statement.setString(1, un.getCod());
 			statement.setString(2, un.getNome());
 			statement.setString(3, un.getPermiteFracionado() ? "S" : "N");
+			statement.setInt(4, un.getId());
 
 			retorno = statement.executeUpdate();
 			statement.close();
