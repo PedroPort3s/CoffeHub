@@ -6,11 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import Helper.Verifica;
 import dao.interfaces.IProdutoDAO;
 import entitys.Produto;
-import utils.ConexaoMySql;
+import utils.Verifica;
 
 public class ProdutoDAO implements IProdutoDAO {
 	
@@ -302,6 +300,5 @@ public class ProdutoDAO implements IProdutoDAO {
 
 		return numProduto + 1;
 	}
-
 
 }

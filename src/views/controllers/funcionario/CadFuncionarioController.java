@@ -2,6 +2,7 @@ package views.controllers.funcionario;
 
 import java.net.URL;
 import java.time.LocalDate;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
@@ -15,6 +16,8 @@ import entitys.Funcionario;
 import exceptions.CampoVazioException;
 import exceptions.MoreThanOneException;
 import exceptions.TextoInvalidoException;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -153,12 +156,18 @@ public class CadFuncionarioController implements Initializable {
 	@FXML
 	void btnExcluir_Action(ActionEvent event) {
 		try {
-			dao.deletar(funcionarioStatic.getCod());
+			Alert alert = new Alert(AlertType.CONFIRMATION);
 
-			Alert alert = new Alert(AlertType.CONFIRMATION, "Funcionario excluído com sucesso", ButtonType.OK);
-			alert.setHeaderText("Funcionario excluído!!");
-			alert.showAndWait();
-			fechar();
+			alert.setTitle("Excluir Funcionario");
+			alert.setHeaderText(
+					" Caso o funcionário seja excluído seus dados serão perdidos permanentemente! \n Se deseja editar ou demitir funcionário vá para guia de edição.");
+			Optional<ButtonType> result = alert.showAndWait();
+			if (result.isPresent() && result.get() == ButtonType.OK) {
+				if (funcionarioStatic != null) {
+					dao.deletar(funcionarioStatic.getCod());
+					fechar();
+				}
+			}
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
 			alert.setHeaderText("Atenção");

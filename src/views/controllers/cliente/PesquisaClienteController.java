@@ -1,26 +1,20 @@
 package views.controllers.cliente;
 
-import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXListView;
-import com.jfoenix.controls.JFXTextField;
-import com.sun.istack.internal.Nullable;
-
-import control.produto.ControlCategoria;
-import control.produto.ControlProduto;
-import dao.ClienteDAO;
-import entitys.Categoria;
-import entitys.Cliente;
-import entitys.Produto;
-
 import java.io.IOException;
 import java.net.URL;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
+import com.jfoenix.controls.JFXButton;
+import com.jfoenix.controls.JFXTextField;
+
+import dao.ClienteDAO;
+import entitys.Cliente;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,15 +22,17 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
-import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Callback;
+import utils.Formatacao;
 import utils.GenericTableButton;
 import views.controllers.HomeController;
 
@@ -69,7 +65,7 @@ public class PesquisaClienteController {
 	private TableColumn<Cliente, String> cFone;
 
 	@FXML
-	private TableColumn<Cliente, LocalDate> cDataNascimento;
+	private TableColumn<Cliente, String> cDataNascimento;
 
 	@FXML
 	private TableColumn<Cliente, Cliente> cEditar;
@@ -158,13 +154,29 @@ public class PesquisaClienteController {
 			listCli = FXCollections.observableArrayList(dao.listar());
 			
 			cCod.setCellValueFactory(new PropertyValueFactory<Cliente, Integer>("cod"));
-			cDoc.setCellValueFactory(new PropertyValueFactory<Cliente, String>("documento"));
-			cFone.setCellValueFactory(new PropertyValueFactory<Cliente, String>("telefone"));
+			cCod.setMaxWidth(35);
+			cCod.setMinWidth(35);
+			cDoc.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Cliente, String>, ObservableValue<String>>() {
+	            @Override
+	            public ObservableValue<String> call(CellDataFeatures<Cliente, String> param) {
+	                return new ReadOnlyStringWrapper(Formatacao.formatarDocumento(param.getValue().getDocumento()));
+	            }
+	        });
+			cFone.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Cliente, String>, ObservableValue<String>>() {
+	            @Override
+	            public ObservableValue<String> call(CellDataFeatures<Cliente, String> param) {
+	                return new ReadOnlyStringWrapper(Formatacao.formatarTelefone(param.getValue().getTelefone()));
+	            }
+	        });			
 			cNome.setCellValueFactory(new PropertyValueFactory<Cliente, String>("nome"));
 			cEndereco.setCellValueFactory(new PropertyValueFactory<Cliente, String>("endereco"));
 			cEmail.setCellValueFactory(new PropertyValueFactory<Cliente, String>("email"));
-			cDataNascimento.setCellValueFactory(new PropertyValueFactory<Cliente, LocalDate>("data_nascimento"));
-
+			cDataNascimento.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Cliente, String>, ObservableValue<String>>() {
+	            @Override
+	            public ObservableValue<String> call(CellDataFeatures<Cliente, String> param) {
+	                return new ReadOnlyStringWrapper(param.getValue().getData_nascimentoString());
+	            }
+	        });	
 			tableView.setItems(listCli);
 			
 			GenericTableButton.initButtons(cEditar, 15, PEN_SOLID, "svg-gray",

@@ -201,7 +201,8 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 			if (resultSet.next()) {
 				if (resultSet.getDate(EnumFuncionario.data_demissao.name()) == null) {
 					funcionario = new Funcionario(
-							resultSet.getDate(EnumFuncionario.data_contratacao.name()).toLocalDate(), null,
+							resultSet.getDate(EnumFuncionario.data_contratacao.name()).toLocalDate(), 
+							null,
 							resultSet.getDouble(EnumFuncionario.salario.name()),
 							resultSet.getString(EnumFuncionario.senha_funcionario.name()),
 							resultSet.getInt(EnumFuncionario.cod_acesso.name()),
@@ -237,11 +238,8 @@ public class FuncionarioDAO implements IFuncionarioDAO {
 	}
 
 	@Override
-	public List<Funcionario> listar() {
-		
-		
+	public List<Funcionario> listar() {		
 		List<Funcionario> listFunc = new ArrayList<>();
-		
 		
 		String sql = "SELECT * FROM " + EnumPessoa.pessoa + " p" + " inner join " + EnumFuncionario.funcionario + " f "
 				+ "on p." + EnumPessoa.cod + "=" + EnumFuncionario.cod_pessoa;
