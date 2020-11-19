@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXListView?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="328.0" prefWidth="672.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.controllers.PesquisaUnidadeMedidaController">
+   <children>
+      <JFXTextField fx:id="txtDescricao" focusColor="#2e1d04" labelFloat="true" layoutX="24.0" layoutY="34.0" prefHeight="40.0" prefWidth="304.0" promptText="Descrição" unFocusColor="BLACK" />
+      <JFXButton fx:id="btnPesquisar" buttonType="RAISED" layoutX="357.0" layoutY="44.0" onAction="#btnPesquisar_Action" prefHeight="30.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Pesquisar" textFill="WHITE" />
+      <JFXButton fx:id="btnVoltar" buttonType="RAISED" layoutX="551.0" layoutY="44.0" onAction="#btnVoltar_Action" prefHeight="30.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Voltar" textFill="WHITE" />
+      <JFXButton fx:id="btnCadUnidadeMedida" buttonType="RAISED" layoutX="453.0" layoutY="44.0" onAction="#btnCadUnidadeMedida_Action" prefHeight="30.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Novo" textFill="WHITE" />
+      <JFXListView fx:id="lvUnidades" layoutX="28.0" layoutY="106.0" onMouseClicked="#lvUnidades_MouseClicked" prefHeight="199.0" prefWidth="617.0" />
+   </children>
+</AnchorPane>
