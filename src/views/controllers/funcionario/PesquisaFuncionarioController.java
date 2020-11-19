@@ -39,12 +39,14 @@ import javafx.util.Callback;
 import utils.GenericTableButton;
 import views.controllers.HomeController;
 
+import utils.Formatacao;
+
 public class PesquisaFuncionarioController {
 
 	private static Stage pesquisaFuncionario;
 
 	private FuncionarioDAO dao = new FuncionarioDAO();
-
+	
 	// TABELA:
 
 	@FXML
