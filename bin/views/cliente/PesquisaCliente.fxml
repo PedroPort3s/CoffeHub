@@ -1,21 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.text.*?>
-<?import com.jfoenix.controls.*?>
-<?import java.lang.*?>
-<?import javafx.scene.layout.*?>
 <?import com.jfoenix.controls.JFXButton?>
-<?import com.jfoenix.controls.JFXListView?>
 <?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.controllers.cliente.PesquisaClienteController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="views.controllers.cliente.PesquisaClienteController">
    <children>
       <JFXTextField fx:id="txtCodPesquisa" focusColor="#2e1d04" labelFloat="true" layoutX="10.0" layoutY="60.0" prefHeight="40.0" prefWidth="57.0" promptText="Código" unFocusColor="BLACK" />
       <JFXTextField fx:id="txtNomePesquisa" focusColor="#2e1d04" labelFloat="true" layoutX="80.0" layoutY="60.0" prefHeight="40.0" prefWidth="424.0" promptText="Nome" unFocusColor="BLACK" />
       <JFXButton fx:id="btnPesquisar" buttonType="RAISED" layoutX="512.0" layoutY="60.0" onAction="#btnPesquisar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Pesquisar" textFill="WHITE" />
-      <JFXButton fx:id="btnCadCliente" buttonType="RAISED" layoutX="666.0" layoutY="60.0" onAction="#btnCadCliente_Action" prefHeight="40.0" prefWidth="124.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Cadastrar Novo" textFill="WHITE" />
+      <JFXButton fx:id="btnCadCliente" buttonType="RAISED" layoutX="666.0" layoutY="60.0" onAction="#btnCadCliente_Action" prefHeight="40.0" prefWidth="124.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Novo" textFill="WHITE" />
       <JFXButton fx:id="btnVoltar" buttonType="RAISED" layoutX="696.0" layoutY="546.0" onAction="#btnVoltar_Action" prefHeight="40.0" prefWidth="90.0" ripplerFill="WHITE" style="-fx-background-color: #2e1d04; -fx-background-radius: 1em;" text="Voltar" textFill="WHITE" />
       <Text fill="#2f1305" layoutX="14.0" layoutY="36.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Clientes">
          <font>

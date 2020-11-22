@@ -94,7 +94,7 @@ public class ProdutoDAO implements IProdutoDAO {
 			sql.append("valor_un = "+prod.getValor_un()+",");
 			sql.append("qtd_atual = "+prod.getQtd_atual()+",");
 			sql.append("Categoria_cod = "+prod.getCategoria().getCod() + ",");
-			sql.append("idUnidadeMedida = "+prod.getUnidadeMedida().getCod());
+			sql.append("idUnidadeMedida = "+prod.getUnidadeMedida().getId());
 			sql.append(" WHERE cod_produto = "+prod.getCod());
 
 			PreparedStatement statement = conexao.prepareStatement(sql.toString());

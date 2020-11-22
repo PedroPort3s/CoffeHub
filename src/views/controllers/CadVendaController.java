@@ -97,9 +97,6 @@ public class CadVendaController implements Initializable {
 	private JFXTextField txtCodProduto;
 
 	@FXML
-	private JFXButton btnAlterarQtd;
-
-	@FXML
 	private JFXButton btnEditar;
 
 	@FXML
@@ -118,34 +115,34 @@ public class CadVendaController implements Initializable {
 	private JFXTextField txtQtdProxProduto;
 
 	@FXML
-    private TableView<Venda_Item> tableView;
+	private TableView<Venda_Item> tableView;
 
-    @FXML
-    private TableColumn<Venda_Item, Integer> cCod;
+	@FXML
+	private TableColumn<Venda_Item, Integer> cCod;
 
-    @FXML
-    private TableColumn<Venda_Item, String> cNome;
+	@FXML
+	private TableColumn<Venda_Item, String> cNome;
 
-    @FXML
-    private TableColumn<Venda_Item, String> cValor;
+	@FXML
+	private TableColumn<Venda_Item, String> cValor;
 
-    @FXML
-    private TableColumn<Venda_Item, String> cQtd;
-    
-    @FXML
-    private TableColumn<Venda_Item, Void> cEditarQtd;
+	@FXML
+	private TableColumn<Venda_Item, String> cQtd;
 
-    @FXML
-    private TableColumn<Venda_Item, String> cCategoria;
+	@FXML
+	private TableColumn<Venda_Item, Void> cEditarQtd;
 
-    @FXML
-    private TableColumn<Venda_Item, String> cMedida;
-    
-    @FXML
-    private TableColumn<Venda_Item, String> cTotal;
+	@FXML
+	private TableColumn<Venda_Item, String> cCategoria;
 
-    @FXML
-    private TableColumn<Venda_Item, Venda_Item> cRemover;
+	@FXML
+	private TableColumn<Venda_Item, String> cMedida;
+
+	@FXML
+	private TableColumn<Venda_Item, String> cTotal;
+
+	@FXML
+	private TableColumn<Venda_Item, Venda_Item> cRemover;
 
 	public Stage getCadVenda() {
 		if (CadVenda == null) {
@@ -218,8 +215,7 @@ public class CadVendaController implements Initializable {
 						CarregarVenda(VendaPrivate);
 					}
 				}
-			} 
-			else {
+			} else {
 				throw new Exception("Informe um produto para prosseguir.");
 			}
 		} catch (Exception e) {
@@ -292,9 +288,11 @@ public class CadVendaController implements Initializable {
 		btnEditar.setVisible(false);
 
 		lblValorTotal.setVisible(false);
-		
+
 		QtdProximoProduto = 1;
 		txtQtdProxProduto.setText(QtdProximoProduto + "");
+
+		tableView.setItems(null);
 	}
 
 	@FXML
@@ -465,7 +463,7 @@ public class CadVendaController implements Initializable {
 				VendaPrivate = venda;
 
 				iniciarColunas(VendaPrivate);
-				
+
 				txtCodVenda.setText(venda.getCod() + "");
 				txtStatus.setText(venda.getStatus());
 				txtDataOrigem.setText(venda.getData_origem() + "");
@@ -485,10 +483,8 @@ public class CadVendaController implements Initializable {
 					btnBuscarProduto.setVisible(false);
 					btnLimparProduto.setVisible(false);
 					btnEditar.setVisible(false);
-					btnAlterarQtd.setVisible(false);
 				} else {
 					btnEditar.setVisible(true);
-					btnAlterarQtd.setVisible(true);
 				}
 			} else {
 				throw new Exception("Não foi possivel carregar a venda selecionada");
@@ -506,52 +502,57 @@ public class CadVendaController implements Initializable {
 	}
 
 	public static final String TRASH_SOLID = "M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z";
-	
+
 	void iniciarColunas(Venda venda) {
-		
-		System.out.println(venda.getItens());
-		
+
 		tableView.setItems(FXCollections.observableArrayList(venda.getItens()));
 
 //		cCOD.setCellValueFactory(new PropertyValueFactory<>("cod"));
-		cNome.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Venda_Item, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(CellDataFeatures<Venda_Item, String> param) {
-                return new ReadOnlyStringWrapper(param.getValue().getProduto().getDescricao());
-            }
-        });
-		cValor.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Venda_Item, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(CellDataFeatures<Venda_Item, String> param) {
-                return new ReadOnlyStringWrapper("R$ " + param.getValue().getProduto().getValor_un());
-            }
-        });
-		cQtd.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Venda_Item, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(CellDataFeatures<Venda_Item, String> param) {
-                return new ReadOnlyStringWrapper(param.getValue().getQtd_item()+"");
-            }
-        });
+		cNome.setCellValueFactory(
+				new Callback<TableColumn.CellDataFeatures<Venda_Item, String>, ObservableValue<String>>() {
+					@Override
+					public ObservableValue<String> call(CellDataFeatures<Venda_Item, String> param) {
+						return new ReadOnlyStringWrapper(param.getValue().getProduto().getDescricao());
+					}
+				});
+		cValor.setCellValueFactory(
+				new Callback<TableColumn.CellDataFeatures<Venda_Item, String>, ObservableValue<String>>() {
+					@Override
+					public ObservableValue<String> call(CellDataFeatures<Venda_Item, String> param) {
+						return new ReadOnlyStringWrapper("R$ " + param.getValue().getProduto().getValor_un());
+					}
+				});
+		cQtd.setCellValueFactory(
+				new Callback<TableColumn.CellDataFeatures<Venda_Item, String>, ObservableValue<String>>() {
+					@Override
+					public ObservableValue<String> call(CellDataFeatures<Venda_Item, String> param) {
+						return new ReadOnlyStringWrapper(param.getValue().getQtd_item() + "");
+					}
+				});
 		setcellEditarQtdFactory();
-		cCategoria.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Venda_Item, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(CellDataFeatures<Venda_Item, String> param) {
-                return new ReadOnlyStringWrapper(param.getValue().getProduto().getCategoria().getNome());
-            }
-        });
-		cMedida.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Venda_Item, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(CellDataFeatures<Venda_Item, String> param) {
-                return new ReadOnlyStringWrapper(param.getValue().getProduto().getUnidadeMedida().getCod());
-            }
-        });
-		cTotal.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Venda_Item, String>, ObservableValue<String>>() {
-			@Override
-			public ObservableValue<String> call(CellDataFeatures<Venda_Item, String> param) {
-				return new ReadOnlyStringWrapper("R$ " + (param.getValue().getQtd_item() * param.getValue().getProduto().getValor_un()));
-			}
-		});
-		
+		cCategoria.setCellValueFactory(
+				new Callback<TableColumn.CellDataFeatures<Venda_Item, String>, ObservableValue<String>>() {
+					@Override
+					public ObservableValue<String> call(CellDataFeatures<Venda_Item, String> param) {
+						return new ReadOnlyStringWrapper(param.getValue().getProduto().getCategoria().getNome());
+					}
+				});
+		cMedida.setCellValueFactory(
+				new Callback<TableColumn.CellDataFeatures<Venda_Item, String>, ObservableValue<String>>() {
+					@Override
+					public ObservableValue<String> call(CellDataFeatures<Venda_Item, String> param) {
+						return new ReadOnlyStringWrapper(param.getValue().getProduto().getUnidadeMedida().getCod());
+					}
+				});
+		cTotal.setCellValueFactory(
+				new Callback<TableColumn.CellDataFeatures<Venda_Item, String>, ObservableValue<String>>() {
+					@Override
+					public ObservableValue<String> call(CellDataFeatures<Venda_Item, String> param) {
+						return new ReadOnlyStringWrapper(
+								"R$ " + (param.getValue().getQtd_item() * param.getValue().getProduto().getValor_un()));
+					}
+				});
+
 		GenericTableButton.initButtons(cRemover, 15, TRASH_SOLID, "svg-red",
 				(Venda_Item compraItem, ActionEvent event) -> {
 					try {
@@ -562,8 +563,7 @@ public class CadVendaController implements Initializable {
 
 						Optional<ButtonType> result = ConfirmaRemover.showAndWait();
 						if (result.isPresent() && result.get() == ButtonType.OK) {
-							Venda vendaEscolhida = new ControlVenda()
-									.Carregar(Integer.parseInt(txtCodVenda.getText()));
+							Venda vendaEscolhida = new ControlVenda().Carregar(Integer.parseInt(txtCodVenda.getText()));
 
 							if (venda != null && compraItem != null) {
 								if (new ControlVendaItens().RemoverItem(vendaEscolhida, compraItem) == 1) {
@@ -582,16 +582,16 @@ public class CadVendaController implements Initializable {
 
 				});
 	}
-	
+
 	private void setcellEditarQtdFactory() {
 		Callback<TableColumn<Venda_Item, Void>, TableCell<Venda_Item, Void>> cellQtd = new Callback<TableColumn<Venda_Item, Void>, TableCell<Venda_Item, Void>>() {
-            @Override
-            public TableCell<Venda_Item, Void> call(final TableColumn<Venda_Item, Void> param) {
-                final TableCell<Venda_Item, Void> cell = new TableCell<Venda_Item, Void>() {
-                	
-                	                	
-                	private final Button btn = new Button("Alterar");{
-                        btn.setOnAction((ActionEvent event) -> {
+			@Override
+			public TableCell<Venda_Item, Void> call(final TableColumn<Venda_Item, Void> param) {
+				final TableCell<Venda_Item, Void> cell = new TableCell<Venda_Item, Void>() {
+
+					private final Button btn = new Button("Alterar");
+					{
+						btn.setOnAction((ActionEvent event) -> {
 							try {
 								TextInputDialog textDialog = new TextInputDialog();
 								textDialog.setTitle("Alterar quantidade");
@@ -604,45 +604,45 @@ public class CadVendaController implements Initializable {
 								Double qtd = Double.parseDouble(quantidadeString);
 								atualizarQtd(getTableView().getItems().get(getIndex()), qtd);
 								CarregarVenda(VendaPrivate);
-								
+
 							} catch (Exception e) {
 								Alert alert = new Alert(AlertType.WARNING);
 								alert.setTitle("Atenção");
 								alert.setHeaderText("Não foi possivel alterar a quantidade");
 								alert.showAndWait();
 							}
-                        });
-                        
-                        btn.setPrefWidth(200);
-                    }
+						});
 
-                    @Override
-                    public void updateItem(Void item, boolean empty) {
-                        super.updateItem(item, empty);
-                        if (empty) {
-                            setGraphic(null);
-                        } else {
-                            setGraphic(btn);
-                        }
-                    }
-                };
-                return cell;
-            }
-        };
-        cEditarQtd.setCellFactory(cellQtd);
+						btn.setPrefWidth(200);
+					}
+
+					@Override
+					public void updateItem(Void item, boolean empty) {
+						super.updateItem(item, empty);
+						if (empty) {
+							setGraphic(null);
+						} else {
+							setGraphic(btn);
+						}
+					}
+				};
+				return cell;
+			}
+		};
+		cEditarQtd.setCellFactory(cellQtd);
 	}
-	
+
 	private void atualizarQtd(Venda_Item vendaItem, Double qtd) {
 		try {
 			vendaItem.setQtd_item(qtd);
-    		if(new ControlVendaItens().AlterarQuantidadeItem(VendaPrivate, vendaItem) != 1) {
+			if (new ControlVendaItens().AlterarQuantidadeItem(VendaPrivate, vendaItem) != 1) {
 				throw new Exception("Não foi possivel inserir o item na venda");
-    		}
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-	
+
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 
@@ -656,7 +656,7 @@ public class CadVendaController implements Initializable {
 			if (ClienteEstatico != null && ClienteEstatico.getCod() > 0) {
 				this.CarregarCliente(ClienteEstatico);
 			}
-			
+
 			txtQtdProxProduto.setText(QtdProximoProduto + "");
 
 		} catch (Exception e) {

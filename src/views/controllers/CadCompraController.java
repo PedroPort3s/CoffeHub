@@ -385,6 +385,8 @@ public class CadCompraController implements Initializable {
 		
 		QtdProximoProduto = 1;
 		txtQtdProxProduto.setText(QtdProximoProduto + "");
+		
+		tableView.setItems(null);
 	}
 
 	@FXML

@@ -100,22 +100,25 @@ public class PesquisaFuncionarioGeralController {
 	@FXML
 	void lvFuncionario_MouseClicked(MouseEvent event) {
 		
-		Funcionario funcionario = lvFuncionarios.getSelectionModel().getSelectedItem();		
-		if (CompraVenda == "COMPRA") {
-			pesquisaFuncionario.hide();
-			pesquisaFuncionario = null;
-			
-			PesquisaCompraController.FuncionarioEstatico = funcionario;
-			new PesquisaCompraController().getPesquisaCompra().show();
-			
-			CompraVenda = "";
-		} else if (CompraVenda == "VENDA") {
-			pesquisaFuncionario.hide();
-			pesquisaFuncionario = null;
-			
-			PesquisaVendaController.FuncionarioEstatico = funcionario;
-			new PesquisaVendaController().getPesquisaVenda().show();
-			CompraVenda = "";
+		Funcionario funcionario = lvFuncionarios.getSelectionModel().getSelectedItem();	
+		
+		if(funcionario != null) {			
+			if (CompraVenda == "COMPRA") {
+				pesquisaFuncionario.hide();
+				pesquisaFuncionario = null;
+
+				PesquisaCompraController.FuncionarioEstatico = funcionario;
+				new PesquisaCompraController().getPesquisaCompra().show();
+
+				CompraVenda = "";
+			} else if (CompraVenda == "VENDA") {
+				pesquisaFuncionario.hide();
+				pesquisaFuncionario = null;
+
+				PesquisaVendaController.FuncionarioEstatico = funcionario;
+				new PesquisaVendaController().getPesquisaVenda().show();
+				CompraVenda = "";
+			}
 		}
 	}
 
