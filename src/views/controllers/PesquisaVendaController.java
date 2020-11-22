@@ -30,12 +30,15 @@ import javafx.stage.StageStyle;
 import utils.Logado;
 import utils.Verifica;
 import views.controllers.cliente.PesquisaClienteGeralController;
+import views.controllers.funcionario.PesquisaFuncionarioGeralController;
 
 public class PesquisaVendaController implements Initializable {
 
 	private static Stage PesquisaVenda;
 
 	public static Cliente clienteEstatico = null;
+
+	public static Funcionario FuncionarioEstatico;
 
 	@FXML
 	private JFXButton btnCadVenda;
@@ -113,7 +116,10 @@ public class PesquisaVendaController implements Initializable {
 
 	@FXML
 	void btnBuscarFuncionario_Action(ActionEvent event) {
-
+		PesquisaVenda.close();
+		PesquisaVenda = null;
+		PesquisaFuncionarioGeralController.CompraVenda = "VENDA";
+		new PesquisaFuncionarioGeralController().getPesquisaFuncionarioGeral().show();
 	}
 
 	@FXML
@@ -165,7 +171,7 @@ public class PesquisaVendaController implements Initializable {
 	@FXML
 	void lvVendas_MouseClicked(MouseEvent event) {
 		try {
-			
+
 			Venda venda = lvVendas.getSelectionModel().getSelectedItem();
 
 			if (venda != null) {
@@ -202,7 +208,7 @@ public class PesquisaVendaController implements Initializable {
 
 			String dataFim = txtDataFinal.getText();
 			Date dataFinal = new SimpleDateFormat("dd/MM/yyyy").parse(dataFim);
-			
+
 			int codFuncionario = Verifica.ehNumeroInt(txtCodFuncionario.getText()) == true
 					? Integer.parseInt(txtCodFuncionario.getText())
 					: 0;
@@ -210,7 +216,7 @@ public class PesquisaVendaController implements Initializable {
 			int codCliente = Verifica.ehNumeroInt(txtCodCliente.getText()) == true
 					? Integer.parseInt(txtCodCliente.getText())
 					: 0;
-			
+
 			lstVendas = new ControlVenda().Listar(dataIni, dataFinal, txtStatus.getText(), codFuncionario, codCliente);
 
 			if (lstVendas != null)
@@ -253,16 +259,15 @@ public class PesquisaVendaController implements Initializable {
 					btnLimparCliente.setVisible(false);
 					btnCadVenda.setVisible(false);
 					btnPesquisar.setVisible(false);
-				} 
-				
+				}
+
 				// Administrador, pode fazer o que bem entender
 				else if (funcionario.getCod_acesso() == 1) {
 					txtCodFuncionario.setText(funcionario.getCod() + "");
 					txtFuncionario.setText(funcionario.getNome());
 
 					this.ListarVendas();
-				} 
-				
+				}
 
 			}
 		} catch (Exception e) {
@@ -292,6 +297,24 @@ public class PesquisaVendaController implements Initializable {
 			alert.showAndWait();
 		}
 	}
+	
+	void CarregarFuncionario(Funcionario funcionario) {
+		try {
+			if (funcionario.getCod() > 0) {
+				txtCodFuncionario.setText(funcionario.getCod() + "");
+				txtFuncionario.setText(funcionario.getNome());
+				
+				FuncionarioEstatico = null;
+			}
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.WARNING);
+			
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+			
+			alert.showAndWait();
+		}
+	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -300,6 +323,9 @@ public class PesquisaVendaController implements Initializable {
 
 			if (clienteEstatico != null && clienteEstatico.getCod() > 0) {
 				this.CarregarCliente(clienteEstatico);
+			}
+			if(FuncionarioEstatico != null && FuncionarioEstatico.getCod() > 0) {
+				this.CarregarFuncionario(FuncionarioEstatico);
 			}
 
 		} catch (Exception e) {

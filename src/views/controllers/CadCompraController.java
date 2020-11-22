@@ -1,21 +1,17 @@
 package views.controllers;
 
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 import com.jfoenix.controls.JFXButton;
-import com.jfoenix.controls.JFXListView;
 import com.jfoenix.controls.JFXTextField;
 
 import control.compra_venda.ControlCompra;
 import control.compra_venda.ControlCompraItens;
 import control.produto.ControlProduto;
 import dao.FornecedorDAO;
-import entitys.Cliente;
 import entitys.Compra;
 import entitys.Compra_Item;
 import entitys.Fornecedor;
@@ -23,23 +19,21 @@ import entitys.Produto;
 import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
-import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputDialog;
-import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -52,7 +46,7 @@ import views.controllers.fornecedor.PesquisaFornecedorGeralController;
 
 public class CadCompraController implements Initializable {
 
-	private static int QtdProximoProduto;
+	private static double QtdProximoProduto;
 
 	private static Stage CadCompra;
 
@@ -469,8 +463,8 @@ public class CadCompraController implements Initializable {
 			Optional<String> resultado = textDialog.showAndWait();
 			String quantidadeString = resultado.map(Object::toString).orElse(null);
 
-			if (Integer.parseInt(quantidadeString) > 0) {
-				QtdProximoProduto = Integer.parseInt(quantidadeString);
+			if (Double.parseDouble(quantidadeString) > 0) {
+				QtdProximoProduto = Double.parseDouble(quantidadeString);
 				txtQtdProxProduto.setText(QtdProximoProduto + "");
 				textDialog.close();
 			}

@@ -30,12 +30,15 @@ import javafx.stage.StageStyle;
 import utils.Logado;
 import utils.Verifica;
 import views.controllers.fornecedor.PesquisaFornecedorGeralController;
+import views.controllers.funcionario.PesquisaFuncionarioGeralController;
 
 public class PesquisaCompraController implements Initializable {
 
 	private static Stage PesquisaCompra;
 
 	public static Fornecedor fornecedorEstatico;
+
+	public static Funcionario FuncionarioEstatico;
 
 	@FXML
 	private JFXButton btnPesquisar;
@@ -113,7 +116,10 @@ public class PesquisaCompraController implements Initializable {
 
 	@FXML
 	void btnBuscarFuncionario_Action(ActionEvent event) {
-
+		PesquisaCompra.close();
+		PesquisaCompra = null;
+		PesquisaFuncionarioGeralController.CompraVenda = "COMPRA";
+		new PesquisaFuncionarioGeralController().getPesquisaFuncionarioGeral().show();
 	}
 
 	@FXML
@@ -125,12 +131,14 @@ public class PesquisaCompraController implements Initializable {
 
 	@FXML
 	void btnLimparFornecedor_Action(ActionEvent event) {
-
+		txtCodFornecedor.setText("");
+		txtFornecedor.setText("");
 	}
 
 	@FXML
 	void btnLimparFuncionario_Action(ActionEvent event) {
-
+		txtCodFuncionario.setText("");
+		txtFuncionario.setText("");
 	}
 
 	@FXML
@@ -274,7 +282,7 @@ public class PesquisaCompraController implements Initializable {
 
 					this.ListarCompras();
 				}
-				
+
 				// Administrador, pode tudo
 				else if (funcionario.getCod_acesso() == 1) {
 					txtCodFuncionario.setText(funcionario.getCod() + "");
@@ -310,6 +318,24 @@ public class PesquisaCompraController implements Initializable {
 			alert.showAndWait();
 		}
 	}
+	
+	void CarregarFuncionario(Funcionario funcionario) {
+		try {
+			if (funcionario.getCod() > 0) {
+				txtCodFuncionario.setText(funcionario.getCod() + "");
+				txtFuncionario.setText(funcionario.getNome());
+				
+				FuncionarioEstatico = null;
+			}
+		} catch (Exception e) {
+			Alert alert = new Alert(AlertType.WARNING);
+			
+			alert.setTitle("Atenção");
+			alert.setHeaderText(e.getMessage());
+			
+			alert.showAndWait();
+		}
+	}
 
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
@@ -318,6 +344,9 @@ public class PesquisaCompraController implements Initializable {
 
 			if (fornecedorEstatico != null && fornecedorEstatico.getCod() > 0) {
 				this.CarregarFornecedor(fornecedorEstatico);
+			}
+			if(FuncionarioEstatico != null && FuncionarioEstatico.getCod() > 0) {
+				this.CarregarFuncionario(FuncionarioEstatico);
 			}
 
 		} catch (Exception e) {

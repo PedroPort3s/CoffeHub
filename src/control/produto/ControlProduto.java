@@ -177,7 +177,7 @@ public class ControlProduto {
 		if (prod.getValor_un() <= 0)
 			throw new Exception("O valor unitário não pode ser menor ou igual a zero.");
 
-		if (prod.getUnidadeMedida() == null || prod.getUnidadeMedida().getId() > 0)
+		if (prod.getUnidadeMedida() == null || prod.getUnidadeMedida().getId() < 0)
 			throw new Exception("Informe a unidade de medida do Produto");
 
 		if (prod.getCategoria() == null)

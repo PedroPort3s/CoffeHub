@@ -242,14 +242,16 @@ public class HomeController implements Initializable{
     			btnFuncionarios.setDisable(true);
     			btnProdutos.setDisable(true);
     			btnCategorias.setDisable(true);
-    			btnFornecedores.setDisable(true);
-    			btnCompras.setDisable(true);
-    			
+    			btnFornecedores.setDisable(true);    			
     		}
     		if(Logado.Funcionario.getCod_acesso() == 3) {
     			btnFuncionarios.setDisable(true);
     			btnClientes.setDisable(true);
     			btnVendas.setDisable(true);
+    			btnCategorias.setDisable(true);
+    			btnFornecedores.setDisable(true);  
+    			btnFornecedores.setDisable(true);
+    			btnUnidadeMedida.setDisable(true);
     		}
     	}
     }

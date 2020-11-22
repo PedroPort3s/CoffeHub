@@ -23,12 +23,16 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import views.controllers.PesquisaCompraController;
+import views.controllers.PesquisaVendaController;
 
 public class PesquisaFuncionarioGeralController {
 
 	private static Stage pesquisaFuncionario;
 
 	public static String cadPesqCompra;
+	
+	public static String CompraVenda;
 
 	private FuncionarioDAO dao = new FuncionarioDAO();
 
@@ -55,7 +59,17 @@ public class PesquisaFuncionarioGeralController {
 
 	@FXML
 	void btnVoltar_Action(ActionEvent event) {
-		//TODO: voltar para onde? depois que chegar nessa tela?
+		if (CompraVenda == "COMPRA") {
+			pesquisaFuncionario.hide();
+			pesquisaFuncionario = null;
+			new PesquisaCompraController().getPesquisaCompra().show();
+			CompraVenda = "";
+		} else if (CompraVenda == "VENDA") {
+			pesquisaFuncionario.hide();
+			pesquisaFuncionario = null;
+			new PesquisaVendaController().getPesquisaVenda().show();
+			CompraVenda = "";
+		}
 	}
 
 	public Stage getPesquisaFuncionarioGeral() {
@@ -85,7 +99,24 @@ public class PesquisaFuncionarioGeralController {
 
 	@FXML
 	void lvFuncionario_MouseClicked(MouseEvent event) {
-		//TODO: quando selecionar o carinha, vai fazer o que?
+		
+		Funcionario funcionario = lvFuncionarios.getSelectionModel().getSelectedItem();		
+		if (CompraVenda == "COMPRA") {
+			pesquisaFuncionario.hide();
+			pesquisaFuncionario = null;
+			
+			PesquisaCompraController.FuncionarioEstatico = funcionario;
+			new PesquisaCompraController().getPesquisaCompra().show();
+			
+			CompraVenda = "";
+		} else if (CompraVenda == "VENDA") {
+			pesquisaFuncionario.hide();
+			pesquisaFuncionario = null;
+			
+			PesquisaVendaController.FuncionarioEstatico = funcionario;
+			new PesquisaVendaController().getPesquisaVenda().show();
+			CompraVenda = "";
+		}
 	}
 
 	private void listarFuncionarios() {
