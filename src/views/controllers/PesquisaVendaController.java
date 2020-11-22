@@ -165,18 +165,22 @@ public class PesquisaVendaController implements Initializable {
 	@FXML
 	void lvVendas_MouseClicked(MouseEvent event) {
 		try {
+			
 			Venda venda = lvVendas.getSelectionModel().getSelectedItem();
 
-			Cliente clienteCompra = new ClienteDAO().buscarId(venda.getCliente().getCod());
-			venda.setCliente(clienteCompra);
-
 			if (venda != null) {
-				CadVendaController.VendaPrivate = venda;
-				CadVendaController.ClienteEstatico = clienteCompra;
-				new CadVendaController().getCadVenda().show();
-				PesquisaVenda.close();
-				PesquisaVenda = null;
-				clienteEstatico = null;
+
+				Cliente clienteCompra = new ClienteDAO().buscarId(venda.getCliente().getCod());
+				venda.setCliente(clienteCompra);
+
+				if (venda != null) {
+					CadVendaController.VendaPrivate = venda;
+					CadVendaController.ClienteEstatico = clienteCompra;
+					new CadVendaController().getCadVenda().show();
+					PesquisaVenda.close();
+					PesquisaVenda = null;
+					clienteEstatico = null;
+				}
 			}
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);
@@ -249,7 +253,16 @@ public class PesquisaVendaController implements Initializable {
 					btnLimparCliente.setVisible(false);
 					btnCadVenda.setVisible(false);
 					btnPesquisar.setVisible(false);
-				}
+				} 
+				
+				// Administrador, pode fazer o que bem entender
+				else if (funcionario.getCod_acesso() == 1) {
+					txtCodFuncionario.setText(funcionario.getCod() + "");
+					txtFuncionario.setText(funcionario.getNome());
+
+					this.ListarVendas();
+				} 
+				
 
 			}
 		} catch (Exception e) {

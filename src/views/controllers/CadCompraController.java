@@ -1,7 +1,7 @@
 package views.controllers;
 
 import java.net.URL;
-
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -15,24 +15,38 @@ import control.compra_venda.ControlCompra;
 import control.compra_venda.ControlCompraItens;
 import control.produto.ControlProduto;
 import dao.FornecedorDAO;
+import entitys.Cliente;
 import entitys.Compra;
 import entitys.Compra_Item;
 import entitys.Fornecedor;
 import entitys.Produto;
+import javafx.beans.property.ReadOnlyStringWrapper;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableCell;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TableColumn.CellDataFeatures;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.util.Callback;
+import utils.GenericTableButton;
 import utils.Logado;
 import views.controllers.fornecedor.PesquisaFornecedorGeralController;
 
@@ -58,9 +72,6 @@ public class CadCompraController implements Initializable {
 
 	@FXML
 	private JFXTextField txtDataCompra;
-
-	@FXML
-	private JFXListView<Produto> lvProdutos;
 
 	@FXML
 	private JFXTextField txtProduto;
@@ -112,6 +123,36 @@ public class CadCompraController implements Initializable {
 
 	@FXML
 	private JFXTextField txtQtdProxProduto;
+	
+	@FXML
+    private TableView<Compra_Item> tableView;
+
+    @FXML
+    private TableColumn<Compra_Item, Integer> cCOD;
+
+    @FXML
+    private TableColumn<Compra_Item, String> cNome;
+
+    @FXML
+    private TableColumn<Compra_Item, String> cValor;
+
+    @FXML
+    private TableColumn<Compra_Item, Double> cQtd;
+    
+    @FXML
+    private TableColumn<Compra_Item, Void> cEditarQtd;
+
+    @FXML
+    private TableColumn<Compra_Item, String> cCategoria;
+
+    @FXML
+    private TableColumn<Compra_Item, String> cMedida;
+    
+    @FXML
+    private TableColumn<Compra_Item, String> cTotal;
+
+    @FXML
+    private TableColumn<Compra_Item, Compra_Item> cRemover;
 
 	public Stage getCadCompra() {
 		if (CadCompra == null) {
@@ -342,8 +383,6 @@ public class CadCompraController implements Initializable {
 
 		compraCarregada = null;
 
-		lvProdutos.getItems().clear();
-
 		btnAddProduto.setVisible(true);
 		btnBuscarFornecedor.setVisible(true);
 		btnLimparFornecedor.setVisible(true);
@@ -446,37 +485,6 @@ public class CadCompraController implements Initializable {
 	}
 
 	@FXML
-	void lvProdutos_MouseClicked(MouseEvent event) {
-		try {
-			Alert ConfirmaRemover = new Alert(AlertType.CONFIRMATION);
-
-			ConfirmaRemover.setTitle("Remover Item");
-			ConfirmaRemover.setHeaderText("Deseja realmente remover o item selecionado?");
-
-			Optional<ButtonType> result = ConfirmaRemover.showAndWait();
-			if (result.isPresent() && result.get() == ButtonType.OK) {
-				Compra compra = new ControlCompra().Carregar(Integer.parseInt(txtCodCompra.getText()));
-
-				List<Compra_Item> itens = compra.getItens();
-				Compra_Item ci = itens.get(lvProdutos.getSelectionModel().getSelectedIndex());
-
-				if (compra != null && ci != null) {
-					if (new ControlCompraItens().RemoverItem(compra, ci) == 1) {
-						this.RecarregarCompra(compra);
-					}
-				}
-			}
-		} catch (Exception e) {
-			Alert alert = new Alert(AlertType.WARNING);
-
-			alert.setTitle("Atenção");
-			alert.setHeaderText(e.getMessage());
-
-			alert.showAndWait();
-		}
-	}
-
-	@FXML
 	void txtFornecedor_MouseClicked(MouseEvent event) {
 
 	}
@@ -525,6 +533,8 @@ public class CadCompraController implements Initializable {
 
 				compraPrivate = compra;
 
+				iniciarColunas(compra);
+				
 				txtCodCompra.setText(compra.getCod() + "");
 				txtStatusCompra.setText(compra.getStatus());
 				txtDataCompra.setText(compra.getData_origem() + "");
@@ -534,12 +544,8 @@ public class CadCompraController implements Initializable {
 
 				lblTotalCompra.setText("Total: R$ 0.00");
 
-				// Lista de produto para o list view
-				lvProdutos.getItems().clear();
-				if (compra.getItens() != null && compra.getItens().size() > 0) {
-					compra.getItens().forEach(p -> lvProdutos.getItems().add(p.getProduto()));
-					lblTotalCompra.setText("Total: R$" + compra.TotalCompra());
-				}
+				lblTotalCompra.setText("Total: R$" + compra.TotalCompra());
+
 				if (compra.getStatus().equals("F")) {
 					btnAddProduto.setVisible(false);
 					btnBuscarFornecedor.setVisible(false);
@@ -590,6 +596,8 @@ public class CadCompraController implements Initializable {
 
 				compraPrivate = compra;
 
+				iniciarColunas(compra);
+				
 				txtCodCompra.setText(compra.getCod() + "");
 				txtDataCompra.setText(compra.getData_origem() + "");
 
@@ -600,12 +608,7 @@ public class CadCompraController implements Initializable {
 				lblTotalCompra.setVisible(true);
 				lblTotalCompra.setText("Total: R$ 0.00");
 
-				// Lista de produto para o list view
-				lvProdutos.getItems().clear();
-				if (compra.getItens() != null && compra.getItens().size() > 0) {
-					compra.getItens().forEach(p -> lvProdutos.getItems().add(p.getProduto()));
-					lblTotalCompra.setText("Total: R$" + compra.TotalCompra());
-				}
+				lblTotalCompra.setText("Total: R$" + compra.TotalCompra());
 
 				if (compra.getStatus().equals("F")) {
 					btnAddProduto.setVisible(false);
@@ -643,6 +646,137 @@ public class CadCompraController implements Initializable {
 		}
 	}
 
+	public static final String TRASH_SOLID = "M432 32H312l-9.4-18.7A24 24 0 0 0 281.1 0H166.8a23.72 23.72 0 0 0-21.4 13.3L136 32H16A16 16 0 0 0 0 48v32a16 16 0 0 0 16 16h416a16 16 0 0 0 16-16V48a16 16 0 0 0-16-16zM53.2 467a48 48 0 0 0 47.9 45h245.8a48 48 0 0 0 47.9-45L416 128H32z";
+	
+	void iniciarColunas(Compra compra) {
+		
+		tableView.setItems(FXCollections.observableArrayList(compra.getItens()));
+
+		cCOD.setCellValueFactory(new PropertyValueFactory<>("num_item"));
+		cNome.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Compra_Item, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<Compra_Item, String> param) {
+                return new ReadOnlyStringWrapper(param.getValue().getProduto().getDescricao());
+            }
+        });
+		cValor.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Compra_Item, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<Compra_Item, String> param) {
+                return new ReadOnlyStringWrapper("R$ " + param.getValue().getValor_unitario());
+            }
+        });
+		cQtd.setCellValueFactory(new PropertyValueFactory<>("qtd_item"));
+		setcellEditarQtdFactory();
+		cCategoria.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Compra_Item, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<Compra_Item, String> param) {
+                return new ReadOnlyStringWrapper(param.getValue().getProduto().getCategoria().getNome());
+            }
+        });
+		cMedida.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Compra_Item, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(CellDataFeatures<Compra_Item, String> param) {
+                return new ReadOnlyStringWrapper(param.getValue().getProduto().getUnidadeMedida().getCod());
+            }
+        });
+		cTotal.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Compra_Item, String>, ObservableValue<String>>() {
+			@Override
+			public ObservableValue<String> call(CellDataFeatures<Compra_Item, String> param) {
+				return new ReadOnlyStringWrapper("R$ " + (param.getValue().getQtd_item() * param.getValue().getValor_unitario()));
+			}
+		});
+		
+		GenericTableButton.initButtons(cRemover, 15, TRASH_SOLID, "svg-red",
+				(Compra_Item compraItem, ActionEvent event) -> {
+					try {
+						Alert ConfirmaRemover = new Alert(AlertType.CONFIRMATION);
+
+						ConfirmaRemover.setTitle("Remover Item");
+						ConfirmaRemover.setHeaderText("Deseja realmente remover o item selecionado?");
+
+						Optional<ButtonType> result = ConfirmaRemover.showAndWait();
+						if (result.isPresent() && result.get() == ButtonType.OK) {
+							Compra compraEscolhida = new ControlCompra()
+									.Carregar(Integer.parseInt(txtCodCompra.getText()));
+
+							if (compra != null && compraItem != null) {
+								if (new ControlCompraItens().RemoverItem(compraEscolhida, compraItem) == 1) {
+									this.RecarregarCompra(compraEscolhida);
+								}
+							}
+						}
+					} catch (Exception e) {
+						Alert alert = new Alert(AlertType.WARNING);
+
+						alert.setTitle("Atenção");
+						alert.setHeaderText(e.getMessage());
+
+						alert.showAndWait();
+					}
+
+				});
+	}
+	
+	private void setcellEditarQtdFactory() {
+		Callback<TableColumn<Compra_Item, Void>, TableCell<Compra_Item, Void>> cellQtd = new Callback<TableColumn<Compra_Item, Void>, TableCell<Compra_Item, Void>>() {
+            @Override
+            public TableCell<Compra_Item, Void> call(final TableColumn<Compra_Item, Void> param) {
+                final TableCell<Compra_Item, Void> cell = new TableCell<Compra_Item, Void>() {
+                	
+                	                	
+                	private final Button btn = new Button("Alterar");{
+                        btn.setOnAction((ActionEvent event) -> {
+							try {
+								TextInputDialog textDialog = new TextInputDialog();
+								textDialog.setTitle("Alterar quantidade");
+								textDialog.setHeaderText("Alterar quantidade do proximo produto");
+								textDialog.setContentText("Informe uma quantidade: ");
+
+								Optional<String> resultado = textDialog.showAndWait();
+								String quantidadeString = resultado.map(Object::toString).orElse(null);
+
+								int qtd = Integer.parseInt(quantidadeString);
+								atualizarQtd(getTableView().getItems().get(getIndex()), qtd);
+								RecarregarCompra(compraPrivate);
+								
+							} catch (Exception e) {
+								Alert alert = new Alert(AlertType.WARNING);
+								alert.setTitle("Atenção");
+								alert.setHeaderText("Não foi possivel alterar a quantidade");
+								alert.showAndWait();
+							}
+                        });
+                        
+                        btn.setPrefWidth(200);
+                    }
+
+                    @Override
+                    public void updateItem(Void item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(btn);
+                        }
+                    }
+                };
+                return cell;
+            }
+        };
+        cEditarQtd.setCellFactory(cellQtd);
+	}
+	
+	private void atualizarQtd(Compra_Item compraItem, int qtd) {
+		try {
+    		compraItem.setQtd_item(qtd);
+    		if(new ControlCompraItens().AlterarQuantidadeItem(compraPrivate, compraItem) != 1) {
+				throw new Exception("Não foi possivel inserir o item na compra");
+    		}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	@Override
 	public void initialize(URL arg0, ResourceBundle arg1) {
 

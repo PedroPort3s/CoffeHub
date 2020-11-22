@@ -23,7 +23,7 @@ public class ProdutoDAO implements IProdutoDAO {
 		sql.append("select p.cod_produto, p.nome_produto, p.valor_un, p.qtd_atual, p.idUnidadeMedida, c.cod, c.nome");
 		sql.append(" from produto as p ");
 		sql.append(" inner join categoria as c on c.cod = p.categoria_cod");
-		sql.append(" inner join unidadeMedida as u on u.codUnidade = p.idUnidadeMedida");
+		sql.append(" inner join unidadeMedida as u on u.id = p.idUnidadeMedida");
 		return sql.toString();
 	}
 

@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import control.compra_venda.ControlCompra;
 import control.compra_venda.ControlVenda;
+import dao.FuncionarioDAO;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -231,6 +232,28 @@ public class HomeController implements Initializable{
     	}
     }
     
+    private void configurarAcessos() {
+    	if(Logado.Funcionario != null) {
+    		Logado.Funcionario = new FuncionarioDAO().buscarId(Logado.Funcionario.getCod());
+    		if(Logado.Funcionario.getCod_acesso() == 1) {
+    			//TODO todo poderoso
+    		}
+    		if(Logado.Funcionario.getCod_acesso() == 2) {
+    			btnFuncionarios.setDisable(true);
+    			btnProdutos.setDisable(true);
+    			btnCategorias.setDisable(true);
+    			btnFornecedores.setDisable(true);
+    			btnCompras.setDisable(true);
+    			
+    		}
+    		if(Logado.Funcionario.getCod_acesso() == 3) {
+    			btnFuncionarios.setDisable(true);
+    			btnClientes.setDisable(true);
+    			btnVendas.setDisable(true);
+    		}
+    	}
+    }
+    
     @FXML
     void initialize() {
         assert btnOverview != null : "fx:id=\"btnOverview\" was not injected: check your FXML file 'Home.fxml'.";
@@ -258,7 +281,8 @@ public class HomeController implements Initializable{
 		try 
 		{
 			lblTotalCompras.setText(new ControlCompra().TotalComprasDia(new Date()) + "");
-			lblTotalVendas.setText(new ControlVenda().TotalVendasDia(new Date()) + "");			
+			lblTotalVendas.setText(new ControlVenda().TotalVendasDia(new Date()) + "");	
+			configurarAcessos();
 		} 
 		catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);

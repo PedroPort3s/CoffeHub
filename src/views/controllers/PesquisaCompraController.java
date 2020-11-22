@@ -161,16 +161,19 @@ public class PesquisaCompraController implements Initializable {
 		try {
 			Compra compra = lvCompras.getSelectionModel().getSelectedItem();
 
-			Fornecedor fornecedorCompra = new FornecedorDAO().buscarId(compra.getFornecedor().getCod());
-			compra.setFornecedor(fornecedorCompra);
-
 			if (compra != null) {
-				CadCompraController.compraCarregada = compra;
-				CadCompraController.FornecedorEstatico = fornecedorCompra;
-				new CadCompraController().getCadCompra().show();
-				PesquisaCompra.close();
-				PesquisaCompra = null;
-				fornecedorEstatico = null;
+
+				Fornecedor fornecedorCompra = new FornecedorDAO().buscarId(compra.getFornecedor().getCod());
+				compra.setFornecedor(fornecedorCompra);
+
+				if (compra != null) {
+					CadCompraController.compraCarregada = compra;
+					CadCompraController.FornecedorEstatico = fornecedorCompra;
+					new CadCompraController().getCadCompra().show();
+					PesquisaCompra.close();
+					PesquisaCompra = null;
+					fornecedorEstatico = null;
+				}
 			}
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);
@@ -271,7 +274,14 @@ public class PesquisaCompraController implements Initializable {
 
 					this.ListarCompras();
 				}
+				
+				// Administrador, pode tudo
+				else if (funcionario.getCod_acesso() == 1) {
+					txtCodFuncionario.setText(funcionario.getCod() + "");
+					txtFuncionario.setText(funcionario.getNome());
 
+					this.ListarCompras();
+				}
 			}
 		} catch (Exception e) {
 			Alert alert = new Alert(AlertType.WARNING);
