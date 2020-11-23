@@ -85,6 +85,11 @@ public class HomeController implements Initializable{
     @FXML
     private Button btnUnidadeMedida;
     
+    @FXML
+    private Label lblTotalPagoMes;
+
+    @FXML
+    private Label lblTotalRecebidoMes;
 
 	public Stage getHome() {
 		if (Home == null)
@@ -109,7 +114,8 @@ public class HomeController implements Initializable{
     @FXML
     void btnClientes_Action(ActionEvent event) {
 		try {
-			Home.hide();
+			Home.close();
+			Home = null;
 			new PesquisaClienteController().getPesquisaCliente().show();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -162,7 +168,8 @@ public class HomeController implements Initializable{
     void btnProdutos_Action(ActionEvent event) {
 		try
 		{
-	    	Home.hide();
+			Home.close();
+			Home = null;
 			new PesquisaProdutoController().getPesquisaProduto().show();
 		}
 		catch(Exception e)
@@ -191,7 +198,8 @@ public class HomeController implements Initializable{
     void btnVendas_Action(ActionEvent event) {
 		try
 		{
-	    	Home.hide();
+			Home.close();
+			Home = null;
 			new PesquisaVendaController().getPesquisaVenda().show();
 		}
 		catch(Exception e)
@@ -209,7 +217,8 @@ public class HomeController implements Initializable{
     @FXML
     void btnCategorias_Action(ActionEvent event) {
     	try {
-    	Home.hide();
+			Home.close();
+			Home = null;
     	new PesquisaCategoriaController().getPesquisaCategoria().show();
     	}
 		catch(Exception e)
@@ -222,7 +231,8 @@ public class HomeController implements Initializable{
     @FXML
     void btnUnidadeMedida_Action(ActionEvent event) {
     	try {
-    	Home.hide();
+			Home.close();
+			Home = null;
     	new PesquisaUnidadeMedidaController().getPesquisaUnidadeMedida().show();
     	}
 		catch(Exception e)
@@ -258,23 +268,23 @@ public class HomeController implements Initializable{
     
     @FXML
     void initialize() {
-        assert btnOverview != null : "fx:id=\"btnOverview\" was not injected: check your FXML file 'Home.fxml'.";
-        assert btnVendas != null : "fx:id=\"btnVendas\" was not injected: check your FXML file 'Home.fxml'.";
-        assert btnProdutos != null : "fx:id=\"btnProdutos\" was not injected: check your FXML file 'Home.fxml'.";
-        assert btnCategorias != null : "fx:id=\"btnCategorias\" was not injected: check your FXML file 'Home.fxml'.";
-        assert btnFuncionarios != null : "fx:id=\"btnFuncionarios\" was not injected: check your FXML file 'Home.fxml'.";
-        assert btnFornecedores != null : "fx:id=\"btnFornecedores\" was not injected: check your FXML file 'Home.fxml'.";
+    	assert btnCategorias != null : "fx:id=\"btnCategorias\" was not injected: check your FXML file 'Home.fxml'.";
         assert btnClientes != null : "fx:id=\"btnClientes\" was not injected: check your FXML file 'Home.fxml'.";
         assert btnCompras != null : "fx:id=\"btnCompras\" was not injected: check your FXML file 'Home.fxml'.";
+        assert btnFornecedores != null : "fx:id=\"btnFornecedores\" was not injected: check your FXML file 'Home.fxml'.";
+        assert btnFuncionarios != null : "fx:id=\"btnFuncionarios\" was not injected: check your FXML file 'Home.fxml'.";
+        assert btnProdutos != null : "fx:id=\"btnProdutos\" was not injected: check your FXML file 'Home.fxml'.";
+        assert btnUnidadeMedida != null : "fx:id=\"btnUnidadeMedida\" was not injected: check your FXML file 'Home.fxml'.";
+        assert btnVendas != null : "fx:id=\"btnVendas\" was not injected: check your FXML file 'Home.fxml'.";
         assert btnSair != null : "fx:id=\"btnSair\" was not injected: check your FXML file 'Home.fxml'.";
         assert pnlCustomer != null : "fx:id=\"pnlCustomer\" was not injected: check your FXML file 'Home.fxml'.";
         assert pnlOrders != null : "fx:id=\"pnlOrders\" was not injected: check your FXML file 'Home.fxml'.";
         assert pnlMenus != null : "fx:id=\"pnlMenus\" was not injected: check your FXML file 'Home.fxml'.";
         assert pnlOverview != null : "fx:id=\"pnlOverview\" was not injected: check your FXML file 'Home.fxml'.";
+        assert lblTotalVendas != null : "fx:id=\"lblTotalVendas\" was not injected: check your FXML file 'Home.fxml'.";
         assert lblTotalCompras != null : "fx:id=\"lblTotalCompras\" was not injected: check your FXML file 'Home.fxml'.";
-        assert pnItems != null : "fx:id=\"pnItems\" was not injected: check your FXML file 'Home.fxml'.";
-
-
+        assert lblTotalPagoMes != null : "fx:id=\"lblTotalPagoMes\" was not injected: check your FXML file 'Home.fxml'.";
+        assert lblTotalRecebidoMes != null : "fx:id=\"lblTotalRecebidoMes\" was not injected: check your FXML file 'Home.fxml'.";
     }
     
 	@Override
@@ -284,6 +294,8 @@ public class HomeController implements Initializable{
 		{
 			lblTotalCompras.setText(new ControlCompra().TotalComprasDia(new Date()) + "");
 			lblTotalVendas.setText(new ControlVenda().TotalVendasDia(new Date()) + "");	
+			lblTotalPagoMes.setText(new ControlCompra().TotalComprasMes(new Date()) + "");	
+			lblTotalRecebidoMes.setText(new ControlVenda().TotalVendasMes(new Date()) + "");	
 			configurarAcessos();
 		} 
 		catch (Exception e) {

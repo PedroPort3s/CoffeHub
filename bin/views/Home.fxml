@@ -141,14 +141,14 @@
                   </Label>
                   <HBox alignment="CENTER_LEFT" layoutX="45.0" layoutY="72.0" prefHeight="92.0" prefWidth="661.0" spacing="50.0">
                      <children>
-                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                        <VBox alignment="CENTER" prefHeight="92.0" prefWidth="135.0">
                            <children>
                               <Label fx:id="lblTotalVendas" text="0.0" textFill="#2a73ff">
                                  <font>
                                     <Font name="System Bold" size="26.0" />
                                  </font>
                               </Label>
-                              <Label text="Total a Receber" textFill="#e7e5e5" />
+                              <Label alignment="CENTER" prefHeight="18.0" prefWidth="135.0" text="Total Recebido/Dia" textFill="#e7e5e5" />
                            </children>
                         </VBox>
                         <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
@@ -165,7 +165,30 @@
                               </VBox>
                            </children>
                         </VBox>
-                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" />
+                     </children>
+                  </HBox>
+                  <HBox layoutX="45.0" layoutY="164.0" prefHeight="121.0" prefWidth="661.0" spacing="50.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="121.0" prefWidth="137.0">
+                           <children>
+                              <Label fx:id="lblTotalRecebidoMes" text="0.0" textFill="#0fa10a">
+                                 <font>
+                                    <Font name="System Bold" size="26.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Total Recebido/Mês" textFill="#e7e5e5" />
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+                           <children>
+                              <Label fx:id="lblTotalPagoMes" text="0.0" textFill="#ffab00">
+                                 <font>
+                                    <Font name="System Bold" size="26.0" />
+                                 </font>
+                              </Label>
+                              <Label text="Total Pago/Mês" textFill="#e7e5e5" />
+                           </children>
+                        </VBox>
                      </children>
                   </HBox>
                </children>

@@ -323,5 +323,58 @@ public class ControlCompra {
 
 		return retorno;
 	}
+	
+	public double TotalComprasMes(Date data) throws Exception {
+		double retorno = 0;
+		try {
+
+			conexao = ConexaoMySql.getInstance().getConnection();
+
+			CompraDAO compraDAO = new CompraDAO(conexao);
+
+			if (data == null)
+				throw new Exception("Informe uma data para obter o total de compras naquele dia.");
+
+			retorno = compraDAO.TotalComprasMes(data);
+
+			conexao.close();
+		} catch (SQLException ex) {
+			throw ex;
+		} catch (Exception e) {
+			throw e;
+		}
+
+		return retorno;
+	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

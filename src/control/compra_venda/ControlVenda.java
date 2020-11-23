@@ -257,4 +257,27 @@ public class ControlVenda {
 
 		return retorno;
 	}
+	
+	public double TotalVendasMes(Date data) throws Exception {
+		double retorno = 0;
+		try {
+
+			conexao = ConexaoMySql.getInstance().getConnection();
+
+			VendaDAO vendaDAO = new VendaDAO(conexao);
+
+			if (data == null)
+				throw new Exception("Informe uma data para obter o total de Vendas naquele dia.");
+
+			retorno = vendaDAO.TotalVendasMes(data);
+
+			conexao.close();
+		} catch (SQLException ex) {
+			throw ex;
+		} catch (Exception e) {
+			throw e;
+		}
+
+		return retorno;
+	}
 }

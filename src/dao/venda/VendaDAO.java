@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
 import dao.ClienteDAO;
 import dao.FuncionarioDAO;
 import dao.interfaces.ICompraVenda;
@@ -268,6 +269,37 @@ public class VendaDAO implements ICompraVenda<Venda> {
 
 			String sum = "select sum(valor_total) as 'totalVendas' from venda where data_confirmacao='"
 					+ new SimpleDateFormat("yyyy-MM-dd").format(data) + "' and status='F' ";
+			PreparedStatement statement = conexao.prepareStatement(sum);
+			ResultSet resultSet;
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				retorno = resultSet.getInt("totalVendas");
+			}
+
+			if (retorno < 0)
+				throw new Error("Não foi possível recuperar o total das vendas no dia " + data.toString());
+
+			statement.close();
+		} catch (SQLException e) {
+			throw e;
+		}
+
+		return retorno;
+	}
+
+	public double TotalVendasMes(Date data) throws SQLException {
+
+		double retorno = 0;
+
+		try {
+
+			@SuppressWarnings("deprecation")
+			Date date = new Date(data.getYear(), data.getMonth(), 1);
+
+			String sum = "select sum(valor_total) as 'totalVendas' from venda where data_confirmacao<='"
+					+ new SimpleDateFormat("yyyy-MM-dd").format(data) + "' and data_confirmacao >= '"
+					+ new SimpleDateFormat("yyyy-MM-dd").format(date) + "' and status='F' ";
 			PreparedStatement statement = conexao.prepareStatement(sum);
 			ResultSet resultSet;
 			resultSet = statement.executeQuery();

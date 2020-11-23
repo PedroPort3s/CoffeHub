@@ -16,8 +16,6 @@ import entitys.Funcionario;
 import exceptions.CampoVazioException;
 import exceptions.MoreThanOneException;
 import exceptions.TextoInvalidoException;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -222,7 +220,7 @@ public class CadFuncionarioController implements Initializable {
 
 	private void conferirCampos() {
 		passou(txtNome.getText(), "Insira um Nome");
-		verificaDocumento(txtDocumento.getText(), "Insira um documento adequado");
+		verificaDocumento(txtDocumento.getText(), "Insira um documento adequado(CNJPJ/CPF/RG)");
 		verificaNumero(txtTelefone.getText(), "Insira um Telefone adequado");
 		verificaEmail(txtEmail.getText(), "Insira um Email adequado");
 		passou(txtEndereco.getText(), "Insira um Endereço");
@@ -251,7 +249,7 @@ public class CadFuncionarioController implements Initializable {
 	}
 
 	private Boolean verificaSenha(String senha1, String senha2, String msg) {
-		if (senha1.equals("") && senha2.equals("")) {
+		if (senha1.equals("") && senha2.equals("") && funcionarioStatic != null) {
 			return true;
 		} else {
 			if (senha1.equals("") || senha1 == null || senha2.equals("") || senha2 == null) {

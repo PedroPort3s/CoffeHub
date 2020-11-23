@@ -342,14 +342,46 @@ public class CompraDAO implements ICompraVenda<Compra> {
 		double retorno = 0;
 
 		try {
-			String sum = "select ifnull(sum(valor_total), 0) as 'totalVendas' from compra where data_recebido='"
-					+ new SimpleDateFormat("yyyy-MM-dd").format(data) + "' and status='F' ";
+			String sum = "select ifnull(sum(valor_total), 0) as 'totalCompras' from compra where data_origem='"
+					+ new SimpleDateFormat("yyyy-MM-dd").format(data) + "' and status='E' ";
 			PreparedStatement statement = conexao.prepareStatement(sum);
 			ResultSet resultSet;
 			resultSet = statement.executeQuery();
 
 			while (resultSet.next()) {
-				retorno = resultSet.getDouble("totalVendas");
+				retorno = resultSet.getDouble("totalCompras");
+			}
+
+			if (retorno < 0)
+				throw new Error("Não foi possível recuperar o total das compras no dia " + data.toString());
+
+			statement.close();
+		} catch (SQLException e) {
+			throw e;
+		}
+
+		return retorno;
+	}
+	
+	public double TotalComprasMes(Date data) throws SQLException {
+
+		double retorno = 0;
+
+		try {
+			
+			@SuppressWarnings("deprecation")
+			Date date = new Date(data.getYear(), data.getMonth(), 1);
+
+			String sum = "select ifnull(sum(valor_total), 0) as 'totalCompras' from compra where data_recebido='"
+					+ new SimpleDateFormat("yyyy-MM-dd").format(data) + "' and data_recebido >= '"
+					+ new SimpleDateFormat("yyyy-MM-dd").format(date) + "' and status='F' ";
+			
+			PreparedStatement statement = conexao.prepareStatement(sum);
+			ResultSet resultSet;
+			resultSet = statement.executeQuery();
+
+			while (resultSet.next()) {
+				retorno = resultSet.getDouble("totalCompras");
 			}
 
 			if (retorno < 0)

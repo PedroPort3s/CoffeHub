@@ -1,5 +1,6 @@
 package entitys;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -128,8 +129,47 @@ public class Venda {
 
 	@Override
 	public String toString() {
-		return "Cod: " + cod + " - data origem: " + data_origem + " - data confirmação: " + data_confirmacao
+		return "Cod: " + cod + " - data origem: " + data_origem + " - data confirmação: " 
+				+ (data_confirmacao != null ? new SimpleDateFormat("dd/MM/yyyy").format(data_confirmacao) : "Sem data de confirmação")
 				+ " - status: " + status + " - funcionario: " + funcionario + " - cliente: " + cliente + "";
 	}
 
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
