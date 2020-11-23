@@ -124,20 +124,16 @@ public class PesquisaProdutoController implements Initializable {
 
 	@FXML
 	void lvProdutos_MouseClicked(MouseEvent event) {
-		int codProduto = lvProdutos.getSelectionModel().getSelectedItem().getCod();
+		Produto produto = lvProdutos.getSelectionModel().getSelectedItem();
 
-		if (codProduto > 0) {
+		if (produto != null) {
 			try {
-				Produto produto = new ControlProduto().Carregar(codProduto);
-				if (produto != null) {
-					/* new CadCategoriaController().CarregarCategoria(categoria); */
-					CadProdutoController.ProdutoEstatico = produto;
-					PesquisaProduto.hide();
-					PesquisaProduto = null;
-					new CadProdutoController().getCadProduto().show();
-				} else {
-					throw new Exception("Não foi possível carregar o produto selecionado");
-				}
+				/* new CadCategoriaController().CarregarCategoria(categoria); */
+				CadProdutoController.ProdutoEstatico = produto;
+				PesquisaProduto.hide();
+				PesquisaProduto = null;
+				new CadProdutoController().getCadProduto().show();
+
 			} catch (Exception e) {
 				Alert alert = new Alert(AlertType.ERROR, e.getMessage(), ButtonType.OK);
 				alert.showAndWait();
